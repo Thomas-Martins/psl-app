@@ -1,0 +1,22 @@
+{
+    "generics" : {
+        "email": "Email",
+        "password": "Password",
+        "login_btn": "Login"
+    },
+    "orders" : {},
+    "errors" : {
+        "login": {
+            "invalid": "The credentials entered are invalid.",
+            "email": "Please enter a valid email address containing an '@'.",
+            "password": "Please enter a password."
+        }
+    },
+    "users" : {},
+    "clients" : {},
+    "products" : {},
+    "categories" : {},
+    "suppliers" : {},
+    "carriers": {},
+    "stores": {}
+}

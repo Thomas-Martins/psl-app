@@ -1,13 +1,7 @@
-import { Button } from "@heroui/react"
+import AppRoutes from "@core/router/AppRoutes.tsx";
 
 function App() {
-
-  return (
-    <div>
-      <h1 className="text-3xl text-red-500">App</h1>
-      <Button color="primary">Click me</Button>
-    </div>
-  )
+    return <AppRoutes />;
 }
 
-export default App
+export default App;

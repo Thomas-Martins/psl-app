@@ -1,16 +1,50 @@
-import { heroui } from '@heroui/react';
+import { heroui } from "@heroui/react";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}"
-  ],
-  theme: {
-    extend: {},
-  },
-  darkMode: "class",
-  plugins: [heroui()],
-}
-
+    content: [
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+        "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {
+            boxShadow: {
+                right: "2px 0 10px rgba(0, 0, 0, 0.2)",
+            },
+        },
+        colors: {
+            primary: {
+                50: "#EFF8FF",
+                100: "#DCEEFD",
+                200: "#C0E3FD",
+                300: "#95D2FB",
+                400: "#63B7F7",
+                500: "#3F99F2",
+                600: "#297CE7",
+                700: "#2166D4",
+                800: "#2153AC",
+                900: "#204888",
+                950: "#182D53",
+            },
+            light: {
+                50: "#F6F6F6",
+                100: "#E7E7E7",
+                200: "#D1D1D1",
+                300: "#B0B0B0",
+                400: "#999999",
+                500: "#6D6D6D",
+                600: "#5D5D5D",
+                700: "#4F4F4F",
+                800: "#454545",
+                900: "#3D3D3D",
+                950: "#262626",
+            },
+            white: "#FFFFFF",
+            black: "#000000",
+            violet: "#7828C8",
+        },
+    },
+    darkMode: "class",
+    plugins: [heroui()],
+};
