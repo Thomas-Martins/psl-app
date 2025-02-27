@@ -50,7 +50,12 @@ export default function NavbarIntranet() {
         { label: "Transporteurs", url: "/carriers" },
     ];
 
-    const selectedKey: React.Key = location.pathname;
+    const selectedKey: React.Key =
+        menuItems.find(
+            (item) =>
+                location.pathname === item.url ||
+                location.pathname.startsWith(`${item.url}/`),
+        )?.url || location.pathname;
 
     const handleTabChange = (key: Key) => {
         navigate(String(key));

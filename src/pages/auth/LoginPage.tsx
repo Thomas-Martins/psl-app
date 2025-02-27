@@ -96,7 +96,7 @@ export default function LoginPage() {
             <div className="hidden lg:flex ">
                 <img
                     className={"object-cover w-full h-full"}
-                    src="/src/assets/img/login-bg.jpg"
+                    src="/img/login-bg.jpg"
                     alt="background-image"
                 />
             </div>

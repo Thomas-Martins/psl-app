@@ -22,7 +22,7 @@ export default function AppRoutes() {
                 path="/login"
                 element={
                     isAuthenticated ? (
-                        user.role === "client" ? (
+                        user?.role === "client" ? (
                             <Navigate to="/shop" />
                         ) : (
                             <Navigate to="/commands" />
@@ -36,7 +36,7 @@ export default function AppRoutes() {
             <Route
                 path="/shop"
                 element={
-                    user.role === "client" ? (
+                    user?.role === "client" ? (
                         <ShopLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -47,7 +47,7 @@ export default function AppRoutes() {
             <Route
                 path="/*"
                 element={
-                    isAuthenticated && user.role !== "client" ? (
+                    isAuthenticated && user?.role !== "client" ? (
                         <IntranetLayout />
                     ) : (
                         <Navigate to="/login" />
