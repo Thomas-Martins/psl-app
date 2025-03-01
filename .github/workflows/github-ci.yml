@@ -102,7 +102,7 @@ jobs:
           AUTHOR: ${{ github.actor }}
           BRANCH: ${{ github.head_ref || github.ref_name }}
           TARGET_BRANCH: ${{ github.base_ref || github.ref_name }}
-          STATUS: ${{ needs.build.result }}
+          STATUS: ${{ needs.i18n.result }}
         run: |
           MESSAGE=""
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
