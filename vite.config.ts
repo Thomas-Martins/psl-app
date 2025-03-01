@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+if (!globalThis.crypto) {
+    globalThis.crypto = require("crypto").webcrypto;
+}
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
