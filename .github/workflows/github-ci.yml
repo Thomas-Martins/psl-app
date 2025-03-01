@@ -93,7 +93,7 @@ jobs:
     name: Notify Discord
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request_target'
-    needs: [build]
+    needs: [i18n]
     steps:
       - name: Define message and notify Discord
         env:
