@@ -1,6 +1,5 @@
 import {
     Avatar,
-    Chip,
     Dropdown,
     DropdownItem,
     DropdownMenu,
@@ -8,35 +7,15 @@ import {
 } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
-import LogoutIcon from "@ui/icons/LogoutIcon.tsx";
+import LogoutIcon from "@components/ui/icons/LogoutIcon.tsx";
 import { useNavigate } from "react-router";
 import { userSlice } from "@store/userSlice.ts";
+import RoleChip from "@components/ui/user/RoleChip.tsx";
 
 export default function UserAccountActivator() {
     const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const roleName = (role: string) => {
-        switch (role) {
-            case "admin":
-                return "Administrateur";
-            case "gestionnaire":
-                return "Gestionnaire";
-            case "logisticien":
-                return "Logisticien";
-        }
-    };
-
-    const chipRoleColor = (role: string) => {
-        switch (role) {
-            case "admin":
-                return "bg-primary-400";
-            case "gestionnaire":
-                return "bg-violet";
-            case "logisticien":
-                return "bg-light-100";
-        }
-    };
 
     const handleLogout = () => {
         dispatch(userSlice.actions.clearUser());
@@ -50,13 +29,7 @@ export default function UserAccountActivator() {
                         <p className="text-white">
                             {user.firstname + " " + user.lastname}
                         </p>
-                        <Chip
-                            className={"text-white " + chipRoleColor(user.role)}
-                            radius="sm"
-                            size="sm"
-                        >
-                            {roleName(user.role)}
-                        </Chip>
+                        <RoleChip role={user.role} />
                     </div>
                     <Avatar
                         isBordered
