@@ -1,12 +1,18 @@
 import { Alert } from "@heroui/react";
 
+// Defines the properties for the GlobalAlert component
 interface GlobalDialogProps {
     title: string;
     type: "danger" | "success" | "warning" | "default";
     hideIcon: boolean;
     variant: "solid" | "faded" | "flat" | "bordered";
 }
-export default function GlobalDialog({
+
+/**
+ * GlobalAlert displays a styled alert at the top center of the screen.
+ * It leverages the Alert component from @heroui/react with predefined positioning and animation.
+ */
+export default function GlobalAlert({
     title,
     type,
     hideIcon,
