@@ -1,5 +1,5 @@
 // LoginProvider.ts
-import api from "./api";
+import api from "../api.ts";
 
 interface LoginPayload {
     email: string;
@@ -7,7 +7,7 @@ interface LoginPayload {
 }
 
 class LoginProvider {
-    // La méthode login retourne la promesse de l'appel API
+    // Login route
     static login(payload: LoginPayload) {
         return api.post("/login", payload);
     }

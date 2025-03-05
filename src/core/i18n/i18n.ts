@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 import en from "./langs/en.json";
 import fr from "./langs/fr.json";
 
-// Récupère la langue sélectionnée depuis le localStorage ou utilise "fr" par défaut
+// Get the selected lang in the localStorage or use "fr"
 const savedLanguage = localStorage.getItem("lang") || "fr";
 
 i18n.use(initReactI18next).init({
@@ -19,7 +19,11 @@ i18n.use(initReactI18next).init({
     lng: savedLanguage,
     fallbackLng: "en",
     interpolation: {
-        escapeValue: false, // React gère la sécurisation
+        escapeValue: true,
+    },
+    react: {
+        transSupportBasicHtmlNodes: true,
+        transKeepBasicHtmlNodesFor: ["br", "strong", "i", "b"],
     },
 });
 

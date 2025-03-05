@@ -10,7 +10,7 @@ import { RootState } from "@store/store.ts";
 import LogoutIcon from "@components/ui/icons/LogoutIcon.tsx";
 import { useNavigate } from "react-router";
 import { userSlice } from "@store/userSlice.ts";
-import RoleChip from "@components/ui/user/RoleChip.tsx";
+import RoleChip from "@components/ui/global/RoleChip.tsx";
 
 export default function UserAccountActivator() {
     const user = useSelector((state: RootState) => state.user);

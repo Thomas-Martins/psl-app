@@ -1,22 +1,118 @@
 {
-    "generics" : {
+    "generics": {
         "email": "Email",
         "password": "Password",
-        "login_btn": "Login"
+        "login_btn": "Log In",
+        "cancel": "Cancel",
+        "save": "Save"
     },
-    "orders" : {},
-    "errors" : {
+    "orders": {
+        "_name": "Orders"
+    },
+    "errors": {
         "login": {
             "invalid": "The credentials entered are invalid.",
             "email": "Please enter a valid email address containing an '@'.",
             "password": "Please enter a password."
         }
     },
-    "users" : {},
-    "clients" : {},
-    "products" : {},
-    "categories" : {},
-    "suppliers" : {},
-    "carriers": {},
-    "stores": {}
+    "users": {
+        "_name": "Users",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete User",
+                        "message": "Are you sure you want to delete <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    }
+                }
+            },
+            "headers": {
+                "user": "User",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "role": "Role",
+                "actions": "Actions"
+            },
+            "filter": {
+                "role": {
+                    "all": "All Users",
+                    "admin": "Administrator",
+                    "gestionnaire": "Manager",
+                    "logisticien": "Logistician"
+                }
+            },
+            "empty": "No user found."
+        },
+        "add": {
+            "title": "Add User",
+            "button": "Add",
+            "inputs": {
+                "firstname": "First Name",
+                "lastname": "Last Name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal Code",
+                "city": "City",
+                "role": {
+                    "title": "Role",
+                    "placeholder": "Select a role"
+                }
+            },
+            "errors": {
+                "firstname": {
+                    "required": "First name is required",
+                    "value": "First name must contain at least 3 characters"
+                },
+                "lastname": {
+                    "required": "Last name is required",
+                    "value": "Last name must contain at least 3 characters"
+                },
+                "email": {
+                    "required": "Email is required",
+                    "value": "Email must be valid"
+                },
+                "phone": {
+                    "required": "Phone is required",
+                    "value": "Phone number must contain 10 digits"
+                },
+                "address": {
+                    "required": "Address is required"
+                },
+                "zipcode": {
+                    "required": "Postal code is required",
+                    "value": "Postal code must contain only 5 digits"
+                },
+                "city": {
+                    "required": "City is required"
+                },
+                "role": {
+                    "required": "Role is required"
+                }
+            }
+        }
+    },
+    "customer": {
+        "_name": "Customer"
+    },
+    "products": {
+        "_name": "Inventory"
+    },
+    "categories": {},
+    "suppliers": {
+        "_name": "Suppliers"
+    },
+    "carriers": {
+        "_name": "Carriers"
+    },
+    "stores": {},
+    "global": {
+        "confirmation": "Confirmation"
+    }
 }
