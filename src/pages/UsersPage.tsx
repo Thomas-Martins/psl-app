@@ -5,7 +5,7 @@ import {
     SelectItem,
     useDisclosure,
 } from "@heroui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import UsersTableList from "@components/Intranet/Users/UsersTableList.tsx";
 import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
@@ -23,29 +23,35 @@ export default function UsersPage() {
         last_page: 1,
     });
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedRole, setSelectedRole] = useState("all");
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    useEffect(() => {
-        (async () => {
-            await fetchUsers();
-        })();
-    }, []);
-    const fetchUsers = async (page: number = 1, limit: number = 10) => {
-        setIsLoading(true);
-        try {
-            await UsersProvider.getUsers({
-                onlyUsers: true,
-                paginate: true,
-                page,
-                limit,
-            }).then((response) => {
-                setUsers(response.data);
-            });
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+
+    const fetchUsers = useCallback(
+        async (page: number = 1, limit: number = 10, role: string = "all") => {
+            setIsLoading(true);
+            try {
+                const params = {
+                    onlyUsers: true,
+                    paginate: true,
+                    page,
+                    limit,
+                    role,
+                };
+
+                if (selectedRole !== "all") {
+                    params.role = selectedRole;
+                }
+                await UsersProvider.getUsers(params).then((response) => {
+                    setUsers(response.data);
+                });
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [selectedRole],
+    );
 
     const roleFilter = [
         { label: t("users.table.filter.role.all"), value: "all" },
@@ -59,6 +65,12 @@ export default function UsersPage() {
             value: "logisticien",
         },
     ];
+
+    useEffect(() => {
+        (async () => {
+            await fetchUsers(1, 10, selectedRole);
+        })();
+    }, [fetchUsers, selectedRole]);
     return (
         <div className="space-y-5">
             <div className="flex items-center justify-between">
@@ -66,8 +78,10 @@ export default function UsersPage() {
                     aria-label="role-filter"
                     className="w-1/4"
                     size="md"
-                    selectionMode="multiple"
                     defaultSelectedKeys={["all"]}
+                    onChange={(e) => {
+                        setSelectedRole(e.target.value);
+                    }}
                 >
                     {roleFilter.map((role) => (
                         <SelectItem key={role.value}>{role.label}</SelectItem>
