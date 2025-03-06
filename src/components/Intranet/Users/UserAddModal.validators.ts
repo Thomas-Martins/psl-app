@@ -12,8 +12,9 @@ export const validators: {
         if (value.length < 3) return i18n.t("users.add.errors.lastname.value");
     },
     email: (value) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!value) return i18n.t("users.add.errors.email.required");
-        if (!value.includes("@") || !value.includes("."))
+        if (!emailRegex.test(value))
             return i18n.t("users.add.errors.email.value");
     },
     phone: (value) => {
