@@ -11,8 +11,9 @@ import {
     Tab,
     Tabs,
 } from "@heroui/react";
-import UserAccountActivator from "@ui/user/UserAccountActivator.tsx";
+import UserAccountActivator from "@components/ui/user/UserAccountActivator.tsx";
 import { useLocation, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 interface LogoProps {
     className?: string;
@@ -37,17 +38,18 @@ export const Logo = ({ height }: LogoProps) => {
 };
 
 export default function NavbarIntranet() {
+    const { t } = useTranslation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const menuItems = [
-        { label: "Commandes", url: "/commands" },
-        { label: "Clients", url: "/clients" },
-        { label: "Stocks", url: "/stocks" },
-        { label: "Utilisateurs", url: "/users" },
-        { label: "Fournisseurs", url: "/suppliers" },
-        { label: "Transporteurs", url: "/carriers" },
+        { label: t("orders._name"), url: "/commands" },
+        { label: t("customer._name"), url: "/clients" },
+        { label: t("products._name"), url: "/stocks" },
+        { label: t("users._name"), url: "/users" },
+        { label: t("suppliers._name"), url: "/suppliers" },
+        { label: t("carriers._name"), url: "/carriers" },
     ];
 
     const selectedKey: React.Key =
@@ -62,7 +64,7 @@ export default function NavbarIntranet() {
     };
 
     return (
-        <div className="h-36 lg:h-96">
+        <div>
             <div className="max-w-screen-xl m-auto flex flex-col">
                 <Navbar
                     onMenuOpenChange={setIsMenuOpen}
@@ -124,6 +126,7 @@ export default function NavbarIntranet() {
                     ))}
                 </Tabs>
             </div>
+            <div className="bg-primary-500 h-96 absolute inset-0 top-0 -z-10"></div>
         </div>
     );
 }

@@ -1,0 +1,26 @@
+//UsersProvider.ts
+import api from "../api.ts";
+
+class UsersProvider {
+    static getUsers(query = {}) {
+        return api.get("/users", { params: query });
+    }
+
+    static getUser(id: number) {
+        return api.get(`/users/${id}`);
+    }
+
+    static createUser(payload: object) {
+        return api.post("/users", payload);
+    }
+
+    static deleteUser(id: number) {
+        return api.delete(`/users/${id}`);
+    }
+
+    static logout() {
+        return api.post("/logout");
+    }
+}
+
+export default UsersProvider;

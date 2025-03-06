@@ -1,13 +1,13 @@
 import { Button, Input } from "@heroui/react";
 import { useState } from "react";
-import ToggleVisibilityPassword from "@ui/Form/ToggleVisibilityPassword.tsx";
-import LoginProvider from "@core/api/LoginProvider.ts";
+import ToggleVisibilityPassword from "@components/ui/Form/ToggleVisibilityPassword.tsx";
+import LoginProvider from "@core/api/Providers/LoginProvider.ts";
 import { useTranslation } from "react-i18next";
 import ToggleLanguage from "@components/tools/ToggleLanguage.tsx";
 import { useDispatch } from "react-redux";
 import { setUser } from "@store/userSlice.ts";
 import { useNavigate } from "react-router";
-import GlobalDialog from "@ui/global/GlobalDialog.tsx";
+import GlobalAlert from "@components/ui/global/GlobalAlert.tsx";
 
 export default function LoginPage() {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,9 +22,11 @@ export default function LoginPage() {
         try {
             setErrorMessage("");
             const response = await LoginProvider.login({ email, password });
-
+            localStorage.setItem(
+                "psl_access_token",
+                response.data.access_token,
+            );
             dispatch(setUser(response.data.user));
-
             navigate("/");
         } catch (error) {
             console.error(error);
@@ -82,7 +84,7 @@ export default function LoginPage() {
                             </Button>
                         </div>
                         {errorMessage && (
-                            <GlobalDialog
+                            <GlobalAlert
                                 type="danger"
                                 hideIcon
                                 title={errorMessage}

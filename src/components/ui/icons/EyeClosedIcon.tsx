@@ -1,4 +1,4 @@
-import { IconsProps } from "@/types/icons";
+import { IconsProps } from "@/types/icons.ts";
 
 export default function EyeClosedIcon({ color = "black" }: IconsProps) {
     return (

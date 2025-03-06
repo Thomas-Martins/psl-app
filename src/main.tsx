@@ -7,13 +7,16 @@ import "./styles/main.css";
 import "./core/i18n/i18n.ts";
 import { Provider } from "react-redux";
 import { store } from "@/store/store.ts";
+import { ConfirmationModalProvider } from "@components/ui/global/GlobalConfirmationModal.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <Provider store={store}>
             <BrowserRouter>
                 <HeroUIProvider>
-                    <App />
+                    <ConfirmationModalProvider>
+                        <App />
+                    </ConfirmationModalProvider>
                 </HeroUIProvider>
             </BrowserRouter>
         </Provider>
