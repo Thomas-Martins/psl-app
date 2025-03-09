@@ -133,7 +133,7 @@
                 "address": "Adresse",
                 "actions": "Actions"
             },
-            "empty": "Aucun utilisateur trouvé."
+            "empty": "Aucun fournisseurs trouvés."
         },
         "add": {
             "title": "Ajouter un fournisseur",

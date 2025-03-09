@@ -14,7 +14,7 @@ export const validators: {
         return null;
     },
     email: (value) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!value) return i18n.t("users.add.errors.email.required");
         if (!emailRegex.test(value))
             return i18n.t("users.add.errors.email.value");
@@ -22,7 +22,9 @@ export const validators: {
     },
     phone: (value) => {
         if (!value) return i18n.t("users.add.errors.phone.required");
-        if (value.length < 10) return i18n.t("users.add.errors.phone.value");
+        const phoneRegex = /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/;
+        if (!phoneRegex.test(value))
+            return i18n.t("users.add.errors.phone.value");
         return null;
     },
     address: (value) => {
@@ -31,7 +33,9 @@ export const validators: {
     },
     zipcode: (value) => {
         if (!value) return i18n.t("users.add.errors.zipcode.required");
-        if (value.length < 5) return i18n.t("users.add.errors.zipcode.value");
+        const frZipRegex = /^[0-9]{5}$/;
+        if (!frZipRegex.test(value))
+            return i18n.t("users.add.errors.zipcode.value");
         return null;
     },
     city: (value) => {

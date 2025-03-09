@@ -62,8 +62,12 @@ export default function SuppliersTableList({
     };
 
     const handleDeleteSupplier = async (supplier: Supplier) => {
-        await SuppliersProvider.deleteSupplier(supplier.id);
-        await mutate();
+        try {
+            await SuppliersProvider.deleteSupplier(supplier.id);
+            await mutate();
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const loadingState =

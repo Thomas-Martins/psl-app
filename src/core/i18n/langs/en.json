@@ -133,7 +133,7 @@
                 "address": "Address",
                 "actions": "Actions"
             },
-            "empty": "No supplier found."
+            "empty": "No suppliers found."
         },
         "add": {
             "title": "Add a supplier",

@@ -72,8 +72,12 @@ export default function UsersTableList({
     };
 
     const handleDeleteUser = async (user: User) => {
-        await UsersProvider.deleteUser(user.id);
-        await mutate();
+        try {
+            await UsersProvider.deleteUser(user.id);
+            await mutate();
+        } catch (e) {
+            console.error(e);
+        }
     };
     const loadingState = isLoading ? "loading" : "idle";
 

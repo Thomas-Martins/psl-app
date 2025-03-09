@@ -14,6 +14,10 @@ class SuppliersProvider {
         return api.post("/suppliers", payload);
     }
 
+    static updateSupplier(id: number, payload: object) {
+        return api.put(`/suppliers/${id}`, payload);
+    }
+
     static deleteSupplier(id: number) {
         return api.delete(`/suppliers/${id}`);
     }
