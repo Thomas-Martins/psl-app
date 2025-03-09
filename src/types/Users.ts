@@ -8,6 +8,7 @@ export interface User {
     address: string;
     zipcode: string;
     city: string;
+    identity: string;
 }
 
 export interface PaginatedUsers {

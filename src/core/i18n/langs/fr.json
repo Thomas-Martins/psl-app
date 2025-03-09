@@ -4,7 +4,13 @@
         "password": "Mot de passe",
         "login_btn": "Se connecter",
         "cancel": "Annuler",
-        "save": "Enregistrer"
+        "save": "Enregistrer",
+        "add": "Ajouter",
+        "all": "Tous",
+        "errors": {
+            "required": "Ce champ est obligatoire",
+            "value": "La valeur saisie est invalide"
+        }
     },
     "orders" : {
         "_name": "Commandes"
@@ -52,6 +58,7 @@
         "add": {
             "title": "Ajouter un utilisateur",
             "button": "Ajouter",
+            "unknown": "Inconnu",
             "inputs": {
                 "firstname": "Prénom",
                 "lastname": "Nom",
@@ -106,7 +113,82 @@
     },
     "categories" : {},
     "suppliers" : {
-        "_name": "Fournisseurs"
+        "_name": "Fournisseurs",
+        "table": {
+            "actions": {
+                "view": "Voir",
+                "edit": "Modifier",
+                "delete": {
+                    "title":"Supprimer",
+                    "dialog": {
+                        "title": "Supprimer le fournisseur",
+                        "message": "Êtes-vous sûr de vouloir supprimer le fournisseur : <b>{{name}}</b> ? Cette action est irréversible.",
+                        "confirm": "Supprimer"
+                    }
+                }
+            },
+            "headers": {
+                "name": "Fournisseur",
+                "contact": "Contact",
+                "address": "Adresse",
+                "actions": "Actions"
+            },
+            "empty": "Aucun utilisateur trouvé."
+        },
+        "add": {
+            "title": "Ajouter un fournisseur",
+            "button": "Ajouter",
+            "inputs": {
+                "title": "Informations de l'entreprise",
+                "subtitle": "Informations de contact",
+                "name": "Nom de l'entreprise",
+                "email": "Email",
+                "phone": "Téléphone",
+                "address": "Adresse",
+                "zipcode": "Code postal",
+                "city": "Ville",
+                "country": "Pays",
+                "contact_person_firstname": "Prénom",
+                "contact_person_lastname": "Nom",
+                "contact_person_email": "Email",
+                "contact_person_phone": "Téléphone"
+            },
+            "errors": {
+                "name": {
+                    "required":"Le nom de l'entreprise est obligatoire",
+                    "value": "Le nom de l'entreprise doit contenir au moins 3 caractères"
+                },
+                "firstname": {
+                    "required":"Le prénom est obligatoire",
+                    "value": "Le prénom doit contenir au moins 3 caractères"
+                },
+                "lastname": {
+                    "required": "Le nom est obligatoire",
+                    "value": "Le nom doit contenir au moins 3 caractères"
+                },
+                "email": {
+                    "required": "L'email est obligatoire",
+                    "value": "L'email doit être valide"
+                },
+                "phone": {
+                    "required": "Le téléphone est obligatoire",
+                    "value": "Le téléphone doit être contenir 10 chiffres"
+                },
+                "address": {
+                    "required": "L'adresse est obligatoire"
+                },
+                "zipcode": {
+                    "required": "Le code postal est obligatoire",
+                    "value": "Le code postal doit contenir seulement 5 chiffres"
+                },
+                "city": {
+                    "required": "La ville est obligatoire"
+                },
+                "country": {
+                    "required": "Le pays est obligatoire"
+                }
+            }
+        }
     },
     "carriers": {
         "_name": "Transporteurs"

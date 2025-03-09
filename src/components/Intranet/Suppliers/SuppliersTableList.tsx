@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { PaginatedSuppliers, Supplier } from "@/types/Suppliers.ts";
+import { SuppliersTableListHeaders } from "@components/Intranet/Suppliers/SuppliersTableList.headers.ts";
 import {
     CircularProgress,
     Table,
@@ -8,45 +10,34 @@ import {
     TableHeader,
     TableRow,
 } from "@heroui/react";
-import { UsersTableListHeaders } from "@components/Intranet/Users/UsersTableList.headers.ts";
-import RoleChip from "@components/ui/global/RoleChip.tsx";
-import { PaginatedUsers, User } from "@/types/Users.ts";
+import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
-import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { Action } from "@utils/Action.ts";
 import { useTranslation } from "react-i18next";
-import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared";
+import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
 
-interface UsersTableListProps {
-    users: PaginatedUsers;
-    isLoading: boolean;
+interface SuppliersTableListProps {
+    suppliers: PaginatedSuppliers;
     onSortChange: (newOrderBy: string, newOrderWay: "ASC" | "DESC") => void;
     orderBy: string;
     orderWay: "ASC" | "DESC";
-    mutate: () => Promise<PaginatedUsers | undefined>;
+    isLoading: boolean;
+    mutate: () => Promise<PaginatedSuppliers | undefined>;
 }
 
-export default function UsersTableList({
-    users,
-    isLoading,
+export default function SuppliersTableList({
+    suppliers,
     onSortChange,
     orderBy,
     orderWay,
+    isLoading,
     mutate,
-}: UsersTableListProps) {
+}: SuppliersTableListProps) {
     const { t } = useTranslation();
-
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
-
-    useEffect(() => {
-        setSortDescriptor({
-            column: orderBy,
-            direction: orderWay === "ASC" ? "ascending" : "descending",
-        });
-    }, [orderBy, orderWay]);
 
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
@@ -67,26 +58,27 @@ export default function UsersTableList({
                 ? newDescriptor.column
                 : String(newDescriptor.column);
         const newOrderWay = newDirection === "ascending" ? "ASC" : "DESC";
-
         onSortChange(newOrderBy, newOrderWay);
     };
 
-    const handleDeleteUser = async (user: User) => {
-        await UsersProvider.deleteUser(user.id);
+    const handleDeleteSupplier = async (supplier: Supplier) => {
+        await SuppliersProvider.deleteSupplier(supplier.id);
         await mutate();
     };
-    const loadingState = isLoading ? "loading" : "idle";
+
+    const loadingState =
+        isLoading || suppliers.data.length === 0 ? "loading" : "idle";
 
     return (
         <div>
             <Table
                 removeWrapper
-                aria-label="users-table-list"
+                aria-label="suppliers-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
             >
                 <TableHeader>
-                    {UsersTableListHeaders.map((header) => (
+                    {SuppliersTableListHeaders.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}
@@ -96,78 +88,92 @@ export default function UsersTableList({
                     ))}
                 </TableHeader>
                 <TableBody
-                    items={users.data ?? []}
+                    items={suppliers.data}
                     loadingContent={
                         <CircularProgress
                             aria-label="loader"
                             className="stroke-primary-500"
                         />
                     }
-                    emptyContent={t("users.table.empty")}
                     loadingState={loadingState}
                 >
-                    {(user: User) => (
-                        <TableRow key={user.id}>
-                            <TableCell>{user.identity}</TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>{user.phone}</TableCell>
+                    {suppliers.data.map((supplier) => (
+                        <TableRow key={supplier.id}>
                             <TableCell>
-                                <RoleChip role={user.role} />
+                                <h3 className="text-md">{supplier.name}</h3>
+                                <p className="text-sm text-light-400">
+                                    {supplier.email}
+                                </p>
                             </TableCell>
                             <TableCell>
-                                {user.address} {user.zipcode} {user.city}
+                                <h3 className="text-md">
+                                    {supplier.contact_person_lastname +
+                                        " " +
+                                        supplier.contact_person_firstname}
+                                </h3>
+                                <p className="text-sm text-light-400">
+                                    {supplier.contact_person_email}
+                                </p>
+                            </TableCell>
+                            <TableCell>
+                                {supplier.address +
+                                    ", " +
+                                    supplier.zipcode +
+                                    " " +
+                                    supplier.city +
+                                    ", " +
+                                    supplier.country}
                             </TableCell>
                             <TableCell>
                                 <ThreeDotMenu
                                     actions={[
                                         {
                                             label: t(
-                                                "users.table.actions.view",
+                                                "suppliers.table.actions.view",
                                             ),
                                             variant: "default",
                                             onClick: async () => {
                                                 const { data } =
-                                                    await UsersProvider.getUser(
-                                                        user.id,
+                                                    await SuppliersProvider.getSupplier(
+                                                        supplier.id,
                                                     );
                                                 console.log("Voir", data);
                                             },
                                         },
                                         {
                                             label: t(
-                                                "users.table.actions.edit",
+                                                "suppliers.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
                                                 console.log(
                                                     "Modifier",
-                                                    user.id,
+                                                    supplier.id,
                                                 ),
                                         },
                                         {
                                             label: t(
-                                                "users.table.actions.delete.title",
+                                                "suppliers.table.actions.delete.title",
                                             ),
                                             variant: "danger",
                                             onClick: Action.create(async () => {
-                                                await handleDeleteUser(user);
+                                                await handleDeleteSupplier(
+                                                    supplier,
+                                                );
                                             })
                                                 .confirm(
                                                     t(
-                                                        "users.table.actions.delete.dialog.title",
+                                                        "suppliers.table.actions.delete.dialog.title",
                                                     ),
                                                     t(
-                                                        "users.table.actions.delete.dialog.message",
+                                                        "suppliers.table.actions.delete.dialog.message",
                                                         {
-                                                            name:
-                                                                user.firstname +
-                                                                " " +
-                                                                user.lastname,
+                                                            name: supplier.name,
                                                         },
                                                     ),
                                                     "danger",
                                                     t(
-                                                        "users.table.actions.delete.dialog.confirm",
+                                                        "suppliers.table.actions.delete.dialog.confirm",
                                                     ),
                                                     t("generics.cancel"),
                                                 )
@@ -177,7 +183,7 @@ export default function UsersTableList({
                                 />
                             </TableCell>
                         </TableRow>
-                    )}
+                    ))}
                 </TableBody>
             </Table>
         </div>

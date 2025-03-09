@@ -75,9 +75,7 @@ export const ConfirmationModalProvider: React.FC<{
                                 <Button
                                     color={modalProps?.color || "primary"}
                                     onPress={() => {
-                                        if (modalProps?.onConfirm()) {
-                                            modalProps?.onConfirm();
-                                        }
+                                        modalProps?.onConfirm?.();
                                         closeModal();
                                     }}
                                 >
