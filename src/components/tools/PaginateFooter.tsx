@@ -1,5 +1,6 @@
 import { Pagination, Select, SelectItem, SharedSelection } from "@heroui/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface PaginateFooterProps {
     totalPages: number;
@@ -18,11 +19,26 @@ export default function PaginateFooter({
     totalItems,
     onLimitChange,
 }: PaginateFooterProps) {
-    const [selectedLimit, setSelectedLimit] = useState(itemsPerPage.toString());
+    const { t } = useTranslation();
+    const initialSelection =
+        totalItems <= 10 || itemsPerPage === totalItems
+            ? "all"
+            : itemsPerPage.toString();
+
+    const [selectedLimit, setSelectedLimit] = useState(initialSelection);
+    const [userSelected, setUserSelected] = useState(false);
 
     useEffect(() => {
-        setSelectedLimit(itemsPerPage.toString());
-    }, [itemsPerPage]);
+        if (!userSelected) {
+            const newSelection =
+                totalItems <= 10 || itemsPerPage === totalItems
+                    ? "all"
+                    : itemsPerPage.toString();
+            if (newSelection !== selectedLimit) {
+                setSelectedLimit(newSelection);
+            }
+        }
+    }, [itemsPerPage, totalItems, userSelected, selectedLimit]);
 
     const handleSelectChange = (selection: SharedSelection) => {
         let selectedKey: string;
@@ -36,6 +52,7 @@ export default function PaginateFooter({
             console.error("Unexpected selection type", selection);
             return;
         }
+        setUserSelected(true);
         setSelectedLimit(selectedKey);
         if (selectedKey === "all") {
             onLimitChange(totalItems);
@@ -76,8 +93,8 @@ export default function PaginateFooter({
                     <SelectItem key="100" value="100">
                         100
                     </SelectItem>
-                    <SelectItem key={totalItems.toString()} value="all">
-                        Tous
+                    <SelectItem key="all" value="all">
+                        {t("generics.all")}
                     </SelectItem>
                 </Select>
                 <span className="text-sm whitespace-nowrap">

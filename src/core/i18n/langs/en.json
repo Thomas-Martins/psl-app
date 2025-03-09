@@ -4,7 +4,13 @@
         "password": "Password",
         "login_btn": "Log In",
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "add": "Add",
+        "all": "All",
+        "errors": {
+            "required": "This field is required",
+            "value": "The value entered is invalid"
+        }
     },
     "orders": {
         "_name": "Orders"
@@ -52,6 +58,7 @@
         "add": {
             "title": "Add User",
             "button": "Add",
+            "unknown": "Unknown",
             "inputs": {
                 "firstname": "First Name",
                 "lastname": "Last Name",
@@ -106,7 +113,82 @@
     },
     "categories": {},
     "suppliers": {
-        "_name": "Suppliers"
+        "_name": "Suppliers",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete Supplier",
+                        "message": "Are you sure you want to delete the supplier: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    }
+                }
+            },
+            "headers": {
+                "name": "Supplier",
+                "contact": "Contact",
+                "address": "Address",
+                "actions": "Actions"
+            },
+            "empty": "No suppliers found."
+        },
+        "add": {
+            "title": "Add a supplier",
+            "button": "Add",
+            "inputs": {
+                "title": "Company Information",
+                "subtitle": "Contact Information",
+                "name": "Company Name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal Code",
+                "city": "City",
+                "country": "Country",
+                "contact_person_firstname": "First Name",
+                "contact_person_lastname": "Last Name",
+                "contact_person_email": "Email",
+                "contact_person_phone": "Phone"
+            },
+            "errors": {
+                "name": {
+                    "required": "Company name is required",
+                    "value": "Company name must contain at least 3 characters"
+                },
+                "firstname": {
+                    "required": "First name is required",
+                    "value": "First name must contain at least 3 characters"
+                },
+                "lastname": {
+                    "required": "Last name is required",
+                    "value": "Last name must contain at least 3 characters"
+                },
+                "email": {
+                    "required": "Email is required",
+                    "value": "Email must be valid"
+                },
+                "phone": {
+                    "required": "Phone is required",
+                    "value": "Phone must contain 10 digits"
+                },
+                "address": {
+                    "required": "Address is required"
+                },
+                "zipcode": {
+                    "required": "Postal code is required",
+                    "value": "Postal code must contain only 5 digits"
+                },
+                "city": {
+                    "required": "City is required"
+                },
+                "country": {
+                    "required": "Country is required"
+                }
+            }
+        }
     },
     "carriers": {
         "_name": "Carriers"
