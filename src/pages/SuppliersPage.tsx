@@ -10,6 +10,7 @@ import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/global/AddFormModal.tsx";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import { SuppliersAddModalInputs } from "@components/Intranet/Suppliers/SuppliersAddForm.inputs.ts";
+import SearchInput from "@components/tools/SearchInput.tsx";
 
 const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
     const params = JSON.parse(key);
@@ -19,6 +20,7 @@ const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
         limit: params.limit,
         orderBy: params.orderBy,
         orderWay: params.orderWay,
+        search: params.search,
     });
     return response.data;
 };
@@ -31,12 +33,15 @@ export default function SuppliersPage() {
     const [orderWay, setOrderWay] = useState<"ASC" | "DESC">("ASC");
     const [inputs, setInputs] = useState<FieldDefinition[]>([]);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [search, setSearch] = useState<string | null>(null);
 
     const swrKey = JSON.stringify({
+        key: "suppliers",
         page: currentPage,
         limit,
         orderBy,
         orderWay,
+        search,
     });
 
     const {
@@ -90,6 +95,7 @@ export default function SuppliersPage() {
     return (
         <div className="space-y-5">
             <div className="flex items-center justify-between">
+                <SearchInput setSearch={setSearch} />
                 <Button
                     aria-label="add"
                     color="primary"

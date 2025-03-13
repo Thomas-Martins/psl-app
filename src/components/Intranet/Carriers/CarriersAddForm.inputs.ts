@@ -2,12 +2,12 @@ import { FieldDefinition } from "@/types/FormTypes.ts";
 import { validators } from "@/utils/InputForm.validators.ts";
 import i18n from "i18next";
 
-export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
+export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
     return [
         {
             type: "form-title",
             visible: true,
-            title: i18n.t("suppliers.add.inputs.title"),
+            title: i18n.t("carriers.add.inputs.title"),
         },
         {
             type: "form-row",
@@ -16,8 +16,8 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                 {
                     name: "name",
                     type: "text",
-                    placeholder: i18n.t("suppliers.add.inputs.name"),
-                    label: i18n.t("suppliers.add.inputs.name"),
+                    placeholder: i18n.t("carriers.add.inputs.name"),
+                    label: i18n.t("carriers.add.inputs.name"),
                     required: true,
                     validators: [validators.name],
                 },
@@ -31,7 +31,7 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     name: "email",
                     type: "email",
                     placeholder: "example@mail.com",
-                    label: i18n.t("suppliers.add.inputs.email"),
+                    label: i18n.t("carriers.add.inputs.email"),
                     required: true,
                     validators: [validators.email],
                 },
@@ -39,7 +39,7 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     name: "phone",
                     type: "tel",
                     placeholder: "0601020304",
-                    label: i18n.t("suppliers.add.inputs.phone"),
+                    label: i18n.t("carriers.add.inputs.phone"),
                     required: true,
                     validators: [validators.phone],
                 },
@@ -52,18 +52,10 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                 {
                     name: "address",
                     type: "text",
-                    placeholder: i18n.t("suppliers.add.inputs.address"),
-                    label: i18n.t("suppliers.add.inputs.address"),
+                    placeholder: i18n.t("carriers.add.inputs.address"),
+                    label: i18n.t("carriers.add.inputs.address"),
                     required: true,
                     validators: [validators.address],
-                },
-                {
-                    name: "zipcode",
-                    type: "text",
-                    placeholder: "75000",
-                    label: i18n.t("suppliers.add.inputs.zipcode"),
-                    required: true,
-                    validators: [validators.zipcode],
                 },
             ],
         },
@@ -72,27 +64,27 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
             visible: true,
             elements: [
                 {
+                    name: "zipcode",
+                    type: "text",
+                    placeholder: "75000",
+                    label: i18n.t("carriers.add.inputs.zipcode"),
+                    required: true,
+                    validators: [validators.zipcode],
+                },
+                {
                     name: "city",
                     type: "text",
                     placeholder: "Paris",
-                    label: i18n.t("suppliers.add.inputs.city"),
+                    label: i18n.t("carriers.add.inputs.city"),
                     required: true,
                     validators: [validators.city],
-                },
-                {
-                    name: "country",
-                    type: "text",
-                    placeholder: "France",
-                    label: i18n.t("suppliers.add.inputs.country"),
-                    required: true,
-                    validators: [validators.country],
                 },
             ],
         },
         {
             type: "form-title",
             visible: true,
-            title: i18n.t("suppliers.add.inputs.subtitle"),
+            title: i18n.t("carriers.add.inputs.subtitle"),
         },
         {
             type: "form-row",
@@ -102,10 +94,10 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     name: "contact_person_lastname",
                     type: "text",
                     placeholder: i18n.t(
-                        "suppliers.add.inputs.contact_person_lastname",
+                        "carriers.add.inputs.contact_person_lastname",
                     ),
                     label: i18n.t(
-                        "suppliers.add.inputs.contact_person_lastname",
+                        "carriers.add.inputs.contact_person_lastname",
                     ),
                     required: true,
                     validators: [validators.lastname],
@@ -114,10 +106,10 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     name: "contact_person_firstname",
                     type: "text",
                     placeholder: i18n.t(
-                        "suppliers.add.inputs.contact_person_firstname",
+                        "carriers.add.inputs.contact_person_firstname",
                     ),
                     label: i18n.t(
-                        "suppliers.add.inputs.contact_person_firstname",
+                        "carriers.add.inputs.contact_person_firstname",
                     ),
                     required: true,
                     validators: [validators.firstname],
@@ -132,7 +124,7 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     name: "contact_person_email",
                     type: "email",
                     placeholder: "example@mail.com",
-                    label: i18n.t("suppliers.add.inputs.contact_person_email"),
+                    label: i18n.t("carriers.add.inputs.contact_person_email"),
                     required: true,
                     validators: [validators.email],
                 },
@@ -140,7 +132,7 @@ export const SuppliersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     name: "contact_person_phone",
                     type: "tel",
                     placeholder: "0601020304",
-                    label: i18n.t("suppliers.add.inputs.contact_person_phone"),
+                    label: i18n.t("carriers.add.inputs.contact_person_phone"),
                     required: true,
                     validators: [validators.phone],
                 },
