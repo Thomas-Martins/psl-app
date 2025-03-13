@@ -10,21 +10,21 @@ import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/global/AddFormModal.tsx";
 import { UserAddModalInputs } from "@components/Intranet/Users/UserAddForm.inputs.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
+import SearchInput from "@components/tools/SearchInput.tsx";
 
 const fetchUsers = async (key: string): Promise<PaginatedUsers> => {
-    const { page, limit, selectedRole, orderBy, orderWay } = JSON.parse(key);
+    const params = JSON.parse(key);
 
-    const params = {
+    const response = await UsersProvider.getUsers({
         onlyUsers: true,
         paginate: true,
-        page,
-        limit,
-        role: selectedRole,
-        orderBy,
-        orderWay,
-    };
-
-    const response = await UsersProvider.getUsers(params);
+        page: params.page,
+        limit: params.limit,
+        role: params.selectedRole,
+        orderBy: params.orderBy,
+        orderWay: params.orderWay,
+        search: params.search,
+    });
     return response.data;
 };
 
@@ -37,14 +37,9 @@ export default function UsersPage() {
     const [selectedRole, setSelectedRole] = useState("all");
     const [orderBy, setOrderBy] = useState("identity");
     const [orderWay, setOrderWay] = useState<"ASC" | "DESC">("ASC");
+    const [search, setSearch] = useState<string | null>(null);
 
     const [inputs, setInputs] = useState<FieldDefinition[]>([]);
-    useEffect(() => {
-        (async () => {
-            const fields = await UserAddModalInputs();
-            setInputs(fields);
-        })();
-    }, []);
 
     const swrKey = JSON.stringify({
         page: currentPage,
@@ -52,6 +47,7 @@ export default function UsersPage() {
         selectedRole,
         orderBy,
         orderWay,
+        search,
     });
 
     const {
@@ -93,6 +89,13 @@ export default function UsersPage() {
         onOpenChange();
     };
 
+    useEffect(() => {
+        (async () => {
+            const fields = await UserAddModalInputs();
+            setInputs(fields);
+        })();
+    }, []);
+
     if (error) {
         return <div>{t("error.message")}</div>;
     }
@@ -100,35 +103,40 @@ export default function UsersPage() {
     return (
         <div className="space-y-5">
             <div className="flex items-center justify-between">
-                <Select
-                    aria-label="role-filter"
-                    className="w-1/4"
-                    size="md"
-                    defaultSelectedKeys={["all"]}
-                    onChange={(e) => handleRoleChange(e.target.value)}
-                >
-                    <SelectItem key="all">
-                        {t("users.table.filter.role.all")}
-                    </SelectItem>
-                    <SelectItem key="admin">
-                        {t("users.table.filter.role.admin")}
-                    </SelectItem>
-                    <SelectItem key="gestionnaire">
-                        {t("users.table.filter.role.gestionnaire")}
-                    </SelectItem>
-                    <SelectItem key="logisticien">
-                        {t("users.table.filter.role.logisticien")}
-                    </SelectItem>
-                </Select>
-                <Button
-                    aria-label="add"
-                    color="primary"
-                    size="md"
-                    onPress={onOpen}
-                >
-                    <AddSquareIcon size={24} color="white" />
-                    {t("users.add.button")}
-                </Button>
+                <div className="flex items-center space-x-5 w-full">
+                    <Select
+                        aria-label="role-filter"
+                        className="w-1/4"
+                        size="md"
+                        defaultSelectedKeys={["all"]}
+                        onChange={(e) => handleRoleChange(e.target.value)}
+                    >
+                        <SelectItem key="all">
+                            {t("users.table.filter.role.all")}
+                        </SelectItem>
+                        <SelectItem key="admin">
+                            {t("users.table.filter.role.admin")}
+                        </SelectItem>
+                        <SelectItem key="gestionnaire">
+                            {t("users.table.filter.role.gestionnaire")}
+                        </SelectItem>
+                        <SelectItem key="logisticien">
+                            {t("users.table.filter.role.logisticien")}
+                        </SelectItem>
+                    </Select>
+                    <SearchInput setSearch={setSearch} />
+                </div>
+                <div>
+                    <Button
+                        aria-label="add"
+                        color="primary"
+                        size="md"
+                        onPress={onOpen}
+                    >
+                        <AddSquareIcon size={24} color="white" />
+                        {t("users.add.button")}
+                    </Button>
+                </div>
             </div>
 
             <UsersTableList

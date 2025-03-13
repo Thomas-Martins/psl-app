@@ -1,6 +1,6 @@
 import RolesProvider from "@core/api/Providers/RolesProvider.ts";
 import { roleName } from "@utils/utils.ts";
-import { validators } from "@components/Intranet/Users/UserAddForm.validators.ts";
+import { validators } from "@/utils/InputForm.validators.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import i18n from "i18next";
 
