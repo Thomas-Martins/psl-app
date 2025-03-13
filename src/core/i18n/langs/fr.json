@@ -211,7 +211,7 @@
                 "address": "Adresse",
                 "actions": "Actions"
             },
-            "empty": "Aucun fournisseurs trouvés."
+            "empty": "Aucun transporteurs trouvés."
         },
         "add": {
             "title": "Ajouter un transporteur",

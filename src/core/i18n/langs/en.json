@@ -206,60 +206,60 @@
                 }
             },
             "headers": {
-                "name": "Carriers",
+                "name": "Carrier",
                 "contact": "Contact",
                 "address": "Address",
                 "actions": "Actions"
             },
-            "empty": "No carriers found.",
-            "add": {
-                "title": "Add a carrier",
-                "button": "Add",
-                "inputs": {
-                    "title": "Company Information",
-                    "subtitle": "Contact Information",
-                    "name": "Company Name",
-                    "email": "Email",
-                    "phone": "Phone",
-                    "address": "Address",
-                    "zipcode": "Postal Code",
-                    "city": "City",
-                    "country": "Country"
+            "empty": "No carriers found."
+        },
+        "add": {
+            "title": "Add a carrier",
+            "button": "Add",
+            "inputs": {
+                "title": "Company Information",
+                "subtitle": "Contact Information",
+                "name": "Company Name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal Code",
+                "city": "City",
+                "country": "Country"
+            },
+            "errors": {
+                "name": {
+                    "required": "Company name is required",
+                    "value": "Company name should have at least 3 characters"
                 },
-                "errors": {
-                    "name": {
-                        "required": "Company name is required",
-                        "value": "Company name should have at least 3 characters"
-                    },
-                    "firstname": {
-                        "required": "First name is required",
-                        "value": "First name should have at least 3 characters"
-                    },
-                    "lastname": {
-                        "required": "Last name is required",
-                        "value": "Last name should have at least 3 characters"
-                    },
-                    "email": {
-                        "required": "Email address is required",
-                        "value": "Email address should be valid"
-                    },
-                    "phone": {
-                        "required": "Phone number is required",
-                        "value": "Phone number should have 10 digits"
-                    },
-                    "address": {
-                        "required": "Address is required"
-                    },
-                    "zipcode": {
-                        "required": "Postal code is required",
-                        "value": "Postal code should have only 5 characters"
-                    },
-                    "city": {
-                        "required": "City is required"
-                    },
-                    "country": {
-                        "required": "Country is required"
-                    }
+                "firstname": {
+                    "required": "First name is required",
+                    "value": "First name should have at least 3 characters"
+                },
+                "lastname": {
+                    "required": "Last name is required",
+                    "value": "Last name should have at least 3 characters"
+                },
+                "email": {
+                    "required": "Email address is required",
+                    "value": "Email address should be valid"
+                },
+                "phone": {
+                    "required": "Phone number is required",
+                    "value": "Phone number should have 10 digits"
+                },
+                "address": {
+                    "required": "Address is required"
+                },
+                "zipcode": {
+                    "required": "Postal code is required",
+                    "value": "Postal code should have only 5 characters"
+                },
+                "city": {
+                    "required": "City is required"
+                },
+                "country": {
+                    "required": "Country is required"
                 }
             }
         }
