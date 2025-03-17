@@ -35,41 +35,117 @@
                         "message": "Are you sure you want to delete <b>{{name}}</b>? This action is irreversible.",
                         "confirm": "Delete"
                     }
+                },
+                "headers": {
+                    "user": "User",
+                    "email": "Email",
+                    "phone": "Phone",
+                    "address": "Address",
+                    "role": "Role",
+                    "actions": "Actions"
+                },
+                "filter": {
+                    "role": {
+                        "all": "All Users",
+                        "admin": "Administrator",
+                        "gestionnaire": "Manager",
+                        "logisticien": "Logistician"
+                    }
+                },
+                "empty": "No user found."
+            },
+            "add": {
+                "title": "Add User",
+                "button": "Add",
+                "unknown": "Unknown",
+                "inputs": {
+                    "firstname": "First Name",
+                    "lastname": "Last Name",
+                    "email": "Email",
+                    "phone": "Phone",
+                    "address": "Address",
+                    "zipcode": "Postal Code",
+                    "city": "City",
+                    "role": {
+                        "title": "Role",
+                        "placeholder": "Select a role"
+                    }
+                },
+                "errors": {
+                    "firstname": {
+                        "required": "First name is required",
+                        "value": "First name must contain at least 3 characters"
+                    },
+                    "lastname": {
+                        "required": "Last name is required",
+                        "value": "Last name must contain at least 3 characters"
+                    },
+                    "email": {
+                        "required": "Email is required",
+                        "value": "Email must be valid"
+                    },
+                    "phone": {
+                        "required": "Phone is required",
+                        "value": "Phone number must contain 10 digits"
+                    },
+                    "address": {
+                        "required": "Address is required"
+                    },
+                    "zipcode": {
+                        "required": "Postal code is required",
+                        "value": "Postal code must contain only 5 digits"
+                    },
+                    "city": {
+                        "required": "City is required"
+                    },
+                    "role": {
+                        "required": "Role is required"
+                    }
+                }
+            }
+        }
+    },
+    "customer": {
+        "_name": "Customer",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete the customer",
+                        "message": "Are you sure you want to delete the customer: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    }
                 }
             },
             "headers": {
-                "user": "User",
+                "name": "Customer",
                 "email": "Email",
                 "phone": "Phone",
-                "address": "Address",
-                "role": "Role",
+                "store": "Point of sale",
+                "address": "Shipping address",
+                "commands_count": "Number of orders",
                 "actions": "Actions"
             },
-            "filter": {
-                "role": {
-                    "all": "All Users",
-                    "admin": "Administrator",
-                    "gestionnaire": "Manager",
-                    "logisticien": "Logistician"
-                }
-            },
-            "empty": "No user found."
+            "empty": "No customers found."
         },
         "add": {
-            "title": "Add User",
+            "title": "Add a customer",
             "button": "Add",
             "unknown": "Unknown",
             "inputs": {
-                "firstname": "First Name",
                 "lastname": "Last Name",
+                "firstname": "First Name",
                 "email": "Email",
                 "phone": "Phone",
                 "address": "Address",
-                "zipcode": "Postal Code",
+                "zipcode": "Postal code",
                 "city": "City",
-                "role": {
-                    "title": "Role",
-                    "placeholder": "Select a role"
+                "store": {
+                    "title": "Point of sale",
+                    "placeholder": "Select a point of sale"
                 }
             },
             "errors": {
@@ -99,14 +175,11 @@
                 "city": {
                     "required": "City is required"
                 },
-                "role": {
-                    "required": "Role is required"
+                "store": {
+                    "required": "The store is required"
                 }
             }
         }
-    },
-    "customer": {
-        "_name": "Customer"
     },
     "products": {
         "_name": "Inventory"

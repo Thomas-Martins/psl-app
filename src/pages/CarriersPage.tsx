@@ -2,7 +2,7 @@ import { PaginatedCarriers } from "@/types/Carriers.ts";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
 import { Button, useDisclosure } from "@heroui/react";
 import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
-import AddFormModal from "@components/ui/global/AddFormModal.tsx";
+import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { FieldDefinition } from "@/types/FormTypes.ts";

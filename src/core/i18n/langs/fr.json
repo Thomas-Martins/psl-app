@@ -106,7 +106,80 @@
         }
     },
     "customer" : {
-        "_name": "Client"
+        "_name": "Client",
+        "table": {
+            "actions": {
+                "view": "Voir",
+                "edit": "Modifier",
+                "delete": {
+                    "title":"Supprimer",
+                    "dialog": {
+                        "title": "Supprimer le client",
+                        "message": "Êtes-vous sûr de vouloir supprimer le client : <b>{{name}}</b> ? Cette action est irréversible.",
+                        "confirm": "Supprimer"
+                    }
+                }
+            },
+            "headers": {
+                "name": "Client",
+                "email": "Email",
+                "phone": "Téléphone",
+                "store": "Point de vente",
+                "address": "Adresse de livraison",
+                "commands_count": "Nb de commandes",
+                "actions": "Actions"
+            },
+            "empty": "Aucun clients trouvés."
+        },
+        "add": {
+            "title": "Ajouter un client",
+            "button": "Ajouter",
+            "unknown": "Inconnu",
+            "inputs": {
+                "lastname": "Nom",
+                "firstname": "Prénom",
+                "email": "Email",
+                "phone": "Téléphone",
+                "address": "Adresse",
+                "zipcode": "Code postal",
+                "city": "Ville",
+                "store": {
+                    "title": "Point de vente",
+                    "placeholder": "Sélectionner un point de vente"
+                }
+            },
+            "errors": {
+                "firstname": {
+                    "required":"Le prénom est obligatoire",
+                    "value": "Le prénom doit contenir au moins 3 caractères"
+                },
+                "lastname": {
+                    "required": "Le nom est obligatoire",
+                    "value": "Le nom doit contenir au moins 3 caractères"
+                },
+                "email": {
+                    "required": "L'email est obligatoire",
+                    "value": "L'email doit être valide"
+                },
+                "phone": {
+                    "required": "Le téléphone est obligatoire",
+                    "value": "Le téléphone doit être contenir 10 chiffres"
+                },
+                "address": {
+                    "required": "L'adresse est obligatoire"
+                },
+                "zipcode": {
+                    "required": "Le code postal est obligatoire",
+                    "value": "Le code postal doit contenir seulement 5 chiffres"
+                },
+                "city": {
+                    "required": "La ville est obligatoire"
+                },
+                "store": {
+                    "required": "Le point de vente rattaché est obligatoire"
+                }
+            }
+        }
     },
     "products" : {
         "_name": "Stocks"

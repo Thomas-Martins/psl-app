@@ -3,7 +3,7 @@ import LoginPage from "@pages/auth/LoginPage.tsx";
 import ShopLayout from "@layouts/ShopLayout/ShopLayout.tsx";
 import IntranetLayout from "@layouts/IntranetLayout/IntranetLayout.tsx";
 import CommandsPage from "@pages/CommandsPage.tsx";
-import ClientsPage from "@pages/ClientsPage.tsx";
+import CustomersPage from "@pages/CustomersPage.tsx";
 import StocksPage from "@pages/StocksPage.tsx";
 import UsersPage from "@pages/UsersPage.tsx";
 import SuppliersPage from "@pages/SuppliersPage.tsx";
@@ -55,7 +55,7 @@ export default function AppRoutes() {
                 }
             >
                 <Route path="commands" element={<CommandsPage />} />
-                <Route path="clients" element={<ClientsPage />} />
+                <Route path="clients" element={<CustomersPage />} />
                 <Route path="stocks" element={<StocksPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="suppliers" element={<SuppliersPage />} />

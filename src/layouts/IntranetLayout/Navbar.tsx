@@ -14,6 +14,8 @@ import {
 import UserAccountActivator from "@components/ui/user/UserAccountActivator.tsx";
 import { useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { RootState } from "@store/store.ts";
 
 interface LogoProps {
     className?: string;
@@ -42,18 +44,43 @@ export default function NavbarIntranet() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.user);
 
     const menuItems = [
         { label: t("orders._name"), url: "/commands" },
-        { label: t("customer._name"), url: "/clients" },
-        { label: t("products._name"), url: "/stocks" },
-        { label: t("users._name"), url: "/users" },
-        { label: t("suppliers._name"), url: "/suppliers" },
-        { label: t("carriers._name"), url: "/carriers" },
+        {
+            label: t("customer._name"),
+            url: "/clients",
+            visible: user.role === "admin",
+        },
+        {
+            label: t("products._name"),
+            url: "/stocks",
+            visible: user.role === "admin" || user.role === "gestionnaire",
+        },
+        {
+            label: t("users._name"),
+            url: "/users",
+            visible: user.role === "admin",
+        },
+        {
+            label: t("suppliers._name"),
+            url: "/suppliers",
+            visible: user.role === "admin" || user.role === "gestionnaire",
+        },
+        {
+            label: t("carriers._name"),
+            url: "/carriers",
+            visible: user.role === "admin" || user.role === "gestionnaire",
+        },
     ];
 
+    const filteredMenuItems = menuItems.filter(
+        (item) => item.visible !== false,
+    );
+
     const selectedKey: React.Key =
-        menuItems.find(
+        filteredMenuItems.find(
             (item) =>
                 location.pathname === item.url ||
                 location.pathname.startsWith(`${item.url}/`),
@@ -84,7 +111,7 @@ export default function NavbarIntranet() {
                     </NavbarContent>
                     <NavbarMenu className="bg-blue-500">
                         <UserAccountActivator />
-                        {menuItems.map((item) => (
+                        {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
                                 <Link
                                     className="w-full text-white"
@@ -121,7 +148,7 @@ export default function NavbarIntranet() {
                     color="primary"
                     variant="underlined"
                 >
-                    {menuItems.map((item) => (
+                    {filteredMenuItems.map((item) => (
                         <Tab key={item.url} title={item.label} />
                     ))}
                 </Tabs>
