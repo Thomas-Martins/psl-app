@@ -84,10 +84,16 @@ export default function CustomersPage() {
     const handleCustomerAddSubmit = async (
         formData: Record<string, string>,
     ) => {
-        formData.role_id = "4";
-        await UsersProvider.createUser(formData);
-        await mutate();
-        onOpenChange();
+        try {
+            formData.role_id = "4";
+            await UsersProvider.createUser(formData);
+            await mutate();
+            onOpenChange();
+            //add toast notification
+        } catch (e) {
+            console.error(e);
+            //add toast notification
+        }
     };
 
     useEffect(() => {
