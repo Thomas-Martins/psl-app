@@ -1,62 +1,60 @@
-import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
-import useSWR from "swr";
-import { useEffect, useState } from "react";
-import UsersProvider from "@core/api/Providers/UsersProvider.ts";
-import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
-import { PaginatedUsers } from "@/types/Users.ts";
+import { PaginatedCustomers } from "@/types/Customers.ts";
+import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
 import { useTranslation } from "react-i18next";
-import UsersTableList from "@components/Intranet/Users/UsersTableList.tsx";
+import { Button, useDisclosure } from "@heroui/react";
+import { useEffect, useState } from "react";
+import { FieldDefinition } from "@/types/FormTypes.ts";
+import useSWR from "swr";
+import SearchInput from "@components/tools/SearchInput.tsx";
+import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
-import { UserAddModalInputs } from "@components/Intranet/Users/UserAddForm.inputs.ts";
-import { FieldDefinition } from "@/types/FormTypes.ts";
-import SearchInput from "@components/tools/SearchInput.tsx";
+import CustomersTableList from "@components/Intranet/Clients/CustomersTableList.tsx";
+import { CustomersAddModalInputs } from "@components/Intranet/Clients/CustomersAddForm.inputs.ts";
+import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 
-const fetchUsers = async (key: string): Promise<PaginatedUsers> => {
+const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
     const params = JSON.parse(key);
 
-    const response = await UsersProvider.getUsers({
-        onlyUsers: true,
+    const response = await CustomersProvider.getCustomers({
+        onlyCustomers: true,
         paginate: true,
         page: params.page,
         limit: params.limit,
-        role: params.selectedRole,
         orderBy: params.orderBy,
         orderWay: params.orderWay,
         search: params.search,
     });
+
     return response.data;
 };
 
-export default function UsersPage() {
+export default function CustomersPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const [selectedRole, setSelectedRole] = useState("all");
     const [orderBy, setOrderBy] = useState("identity");
     const [orderWay, setOrderWay] = useState<"ASC" | "DESC">("ASC");
     const [search, setSearch] = useState<string | null>(null);
 
     const [inputs, setInputs] = useState<FieldDefinition[]>([]);
-
     const swrKey = JSON.stringify({
-        key: "users",
+        key: "customers",
         page: currentPage,
         limit,
-        selectedRole,
         orderBy,
         orderWay,
         search,
     });
 
     const {
-        data: users,
+        data: customers,
         error,
         isLoading,
         mutate,
-    } = useSWR<PaginatedUsers>(swrKey, fetchUsers, {
+    } = useSWR<PaginatedCustomers>(swrKey, fetchCustomers, {
         keepPreviousData: true,
     });
 
@@ -66,13 +64,12 @@ export default function UsersPage() {
 
     const handleLimitChange = (newLimit: number | "all") => {
         const effectiveLimit =
-            newLimit === "all" ? (users ? Number(users.total) : 10) : newLimit;
+            newLimit === "all"
+                ? customers
+                    ? Number(customers.total)
+                    : 10
+                : newLimit;
         setLimit(effectiveLimit);
-        setCurrentPage(1);
-    };
-
-    const handleRoleChange = (roleValue: string) => {
-        setSelectedRole(roleValue);
         setCurrentPage(1);
     };
 
@@ -84,7 +81,10 @@ export default function UsersPage() {
         setOrderWay(newOrderWay);
     };
 
-    const handleUserAddSubmit = async (formData: Record<string, string>) => {
+    const handleCustomerAddSubmit = async (
+        formData: Record<string, string>,
+    ) => {
+        formData.role_id = "4";
         await UsersProvider.createUser(formData);
         await mutate();
         onOpenChange();
@@ -92,7 +92,7 @@ export default function UsersPage() {
 
     useEffect(() => {
         (async () => {
-            const fields = await UserAddModalInputs();
+            const fields = await CustomersAddModalInputs();
             setInputs(fields);
         })();
     }, []);
@@ -105,26 +105,6 @@ export default function UsersPage() {
         <div className="space-y-5">
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-5 w-full">
-                    <Select
-                        aria-label="role-filter"
-                        className="w-1/4"
-                        size="md"
-                        defaultSelectedKeys={["all"]}
-                        onChange={(e) => handleRoleChange(e.target.value)}
-                    >
-                        <SelectItem key="all">
-                            {t("users.table.filter.role.all")}
-                        </SelectItem>
-                        <SelectItem key="admin">
-                            {t("users.table.filter.role.admin")}
-                        </SelectItem>
-                        <SelectItem key="gestionnaire">
-                            {t("users.table.filter.role.gestionnaire")}
-                        </SelectItem>
-                        <SelectItem key="logisticien">
-                            {t("users.table.filter.role.logisticien")}
-                        </SelectItem>
-                    </Select>
                     <SearchInput setSearch={setSearch} />
                 </div>
                 <div>
@@ -140,9 +120,9 @@ export default function UsersPage() {
                 </div>
             </div>
 
-            <UsersTableList
-                users={
-                    users || {
+            <CustomersTableList
+                customers={
+                    customers || {
                         current_page: 1,
                         data: [],
                         per_page: 10,
@@ -160,18 +140,18 @@ export default function UsersPage() {
             <PaginateFooter
                 currentPage={currentPage}
                 handlePageChange={handlePageChange}
-                totalPages={users?.last_page || 1}
-                totalItems={users?.total || 0}
+                totalPages={customers?.last_page || 1}
+                totalItems={customers?.total || 0}
                 itemsPerPage={limit}
                 onLimitChange={handleLimitChange}
             />
 
             <AddFormModal
-                title={t("users.add.title")}
+                title={t("customer.add.title")}
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 fields={inputs}
-                onSubmit={handleUserAddSubmit}
+                onSubmit={handleCustomerAddSubmit}
             />
         </div>
     );

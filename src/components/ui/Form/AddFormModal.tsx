@@ -169,6 +169,7 @@ export default function AddFormModal({
                                                         "select" ? (
                                                             <Select
                                                                 label={el.label}
+                                                                labelPlacement="outside"
                                                                 name={el.name}
                                                                 placeholder={
                                                                     el.placeholder
@@ -213,6 +214,7 @@ export default function AddFormModal({
                                                             <Input
                                                                 label={el.label}
                                                                 name={el.name}
+                                                                labelPlacement="outside"
                                                                 placeholder={
                                                                     el.placeholder
                                                                 }
@@ -250,6 +252,7 @@ export default function AddFormModal({
                                             {field.type === "select" ? (
                                                 <Select
                                                     label={field.label}
+                                                    labelPlacement="outside"
                                                     name={field.name}
                                                     placeholder={
                                                         field.placeholder
@@ -283,6 +286,7 @@ export default function AddFormModal({
                                             ) : (
                                                 <Input
                                                     label={field.label}
+                                                    labelPlacement="outside"
                                                     name={field.name}
                                                     placeholder={
                                                         field.placeholder
