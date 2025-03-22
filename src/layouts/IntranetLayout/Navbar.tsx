@@ -65,6 +65,11 @@ export default function NavbarIntranet() {
             visible: user.role === "admin",
         },
         {
+            label: t("stores._name"),
+            url: "/stores",
+            visible: user.role === "admin" || user.role === "gestionnaire",
+        },
+        {
             label: t("suppliers._name"),
             url: "/suppliers",
             visible: user.role === "admin" || user.role === "gestionnaire",

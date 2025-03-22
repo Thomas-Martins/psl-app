@@ -109,8 +109,12 @@ export default function AddFormModal({
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (validate()) {
-            await onSubmit(formData);
-            onOpenChange(false);
+            try {
+                await onSubmit(formData);
+                onOpenChange(false);
+            } catch (e) {
+                console.error(e);
+            }
         }
     };
 
