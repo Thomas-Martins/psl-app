@@ -14,7 +14,6 @@ import {
     TableRow,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
-import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
 import { Action } from "@utils/Action.ts";
 
 interface StoresTableListProps {
@@ -139,7 +138,7 @@ export default function StoresTableList({
                                             variant: "default",
                                             onClick: async () => {
                                                 const { data } =
-                                                    await SuppliersProvider.getSupplier(
+                                                    await StoresProvider.getStore(
                                                         store.id,
                                                     );
                                                 console.log("Voir", data);
