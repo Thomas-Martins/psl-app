@@ -35,6 +35,7 @@ export default function UsersTableList({
     mutate,
 }: UsersTableListProps) {
     const { t } = useTranslation();
+    const headers = UsersTableListHeaders(t);
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -91,7 +92,7 @@ export default function UsersTableList({
                 onSortChange={handleSortChange}
             >
                 <TableHeader>
-                    {UsersTableListHeaders.map((header) => (
+                    {headers.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}

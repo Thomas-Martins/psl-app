@@ -34,6 +34,7 @@ export default function SuppliersTableList({
     mutate,
 }: SuppliersTableListProps) {
     const { t } = useTranslation();
+    const headers = SuppliersTableListHeaders(t);
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -82,7 +83,7 @@ export default function SuppliersTableList({
                 onSortChange={handleSortChange}
             >
                 <TableHeader>
-                    {SuppliersTableListHeaders.map((header) => (
+                    {headers.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}

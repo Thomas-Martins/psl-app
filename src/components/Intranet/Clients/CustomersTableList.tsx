@@ -34,6 +34,7 @@ export default function CustomersTableList({
     mutate,
 }: CustomersTableListProps) {
     const { t } = useTranslation();
+    const headers = CustomersTableListHeaders(t);
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -89,7 +90,7 @@ export default function CustomersTableList({
                 onSortChange={handleSortChange}
             >
                 <TableHeader>
-                    {CustomersTableListHeaders.map((header) => (
+                    {headers.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}
