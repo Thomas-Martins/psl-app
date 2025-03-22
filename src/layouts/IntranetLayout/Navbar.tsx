@@ -16,6 +16,7 @@ import { useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
+import ToggleLanguage from "@components/tools/ToggleLanguage.tsx";
 
 interface LogoProps {
     className?: string;
@@ -99,18 +100,16 @@ export default function NavbarIntranet() {
                     className="bg-primary-500"
                 >
                     <NavbarContent>
-                        <NavbarBrand className="justify-between ">
+                        <NavbarBrand>
                             <Logo height={40} />
-                            <NavbarMenuToggle
-                                aria-label={
-                                    isMenuOpen ? "Close menu" : "Open menu"
-                                }
-                                className="flex lg:hidden text-white"
-                            />
                         </NavbarBrand>
+                        <NavbarMenuToggle
+                            className="[&>span::before]:bg-white [&>span::after]:bg-white lg:hidden"
+                            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                        />
                     </NavbarContent>
-                    <NavbarMenu className="bg-blue-500">
-                        <UserAccountActivator />
+                    <NavbarMenu className="bg-primary-500">
+                        {/*<UserAccountActivator />*/}
                         {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
                                 <Link
@@ -129,6 +128,7 @@ export default function NavbarIntranet() {
                         justify="end"
                     >
                         <UserAccountActivator />
+                        <ToggleLanguage />
                     </NavbarContent>
                 </Navbar>
                 <Divider className="bg-primary-400" />
