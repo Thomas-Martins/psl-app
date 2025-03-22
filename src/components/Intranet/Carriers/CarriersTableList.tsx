@@ -33,6 +33,7 @@ export default function CarriersTableList({
     mutate,
 }: CarriersTableListProps) {
     const { t } = useTranslation();
+    const headers = CarriersTableListHeaders(t);
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -81,7 +82,7 @@ export default function CarriersTableList({
                 onSortChange={handleSortChange}
             >
                 <TableHeader>
-                    {CarriersTableListHeaders.map((header) => (
+                    {headers.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}

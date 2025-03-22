@@ -1,29 +1,29 @@
-import i18n from "i18next";
+import { TFunction } from "i18next";
 
-export const CustomersTableListHeaders = [
+export const CustomersTableListHeaders = (t: TFunction) => [
     {
         key: "identity",
-        label: i18n.t("customer.table.headers.name"),
+        label: t("customer.table.headers.name"),
         sortable: true,
     },
     {
         key: "store",
-        label: i18n.t("customer.table.headers.store"),
+        label: t("customer.table.headers.store"),
         sortable: false,
     },
     {
         key: "address",
-        label: i18n.t("customer.table.headers.address"),
+        label: t("customer.table.headers.address"),
         sortable: false,
     },
     {
         key: "commands_count",
-        label: i18n.t("customer.table.headers.commands_count"),
+        label: t("customer.table.headers.commands_count"),
         sortable: false,
     },
     {
         key: "actions",
-        label: i18n.t("customer.table.headers.actions"),
+        label: t("customer.table.headers.actions"),
         sortable: false,
     },
 ];

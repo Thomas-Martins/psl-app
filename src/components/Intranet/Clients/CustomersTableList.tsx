@@ -12,10 +12,10 @@ import {
     TableRow,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
-import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
 import { Action } from "@utils/Action.ts";
 import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
 import { CustomersTableListHeaders } from "@components/Intranet/Clients/CustomersTableList.headers.ts";
+import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
 
 interface CustomersTableListProps {
     customers: PaginatedCustomers;
@@ -34,6 +34,7 @@ export default function CustomersTableList({
     mutate,
 }: CustomersTableListProps) {
     const { t } = useTranslation();
+    const headers = CustomersTableListHeaders(t);
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -89,7 +90,7 @@ export default function CustomersTableList({
                 onSortChange={handleSortChange}
             >
                 <TableHeader>
-                    {CustomersTableListHeaders.map((header) => (
+                    {headers.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}
@@ -144,7 +145,7 @@ export default function CustomersTableList({
                                             variant: "default",
                                             onClick: async () => {
                                                 const { data } =
-                                                    await SuppliersProvider.getSupplier(
+                                                    await CarriersProvider.getCarrier(
                                                         customer.id,
                                                     );
                                                 console.log("Voir", data);

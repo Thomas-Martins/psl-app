@@ -7,9 +7,46 @@
         "save": "Enregistrer",
         "add": "Ajouter",
         "all": "Tous",
+        "search": "Rechercher...",
         "errors": {
-            "required": "Ce champ est obligatoire",
-            "value": "La valeur saisie est invalide"
+            "add": {
+                "name": {
+                    "required":"Le nom du point de vente est obligatoire",
+                    "value": "Le nom du point de vente doit contenir au moins 3 caractères"
+                },
+                "address": {
+                    "required": "L'adresse est obligatoire"
+                },
+                "zipcode": {
+                    "required": "Le code postal est obligatoire",
+                    "value": "Le code postal doit contenir seulement 5 chiffres"
+                },
+                "city": {
+                    "required": "La ville est obligatoire"
+                },
+                "country": {
+                    "required": "Le pays est obligatoire"
+                },
+                "phone": {
+                    "required": "Le téléphone est obligatoire",
+                    "value": "Le téléphone doit être contenir 10 chiffres"
+                },
+                "email": {
+                    "required": "L'email est obligatoire",
+                    "value": "L'email doit être valide"
+                },
+                "siret": {
+                    "required": "Le SIRET est obligatoire",
+                    "value": "Le SIRET doit contenir 14 chiffres",
+                    "unique": "Le SIRET correspond a un autre point de vente"
+                },
+                "store": {
+                    "required": "Le point de vente rattaché est obligatoire"
+                },
+                "role": {
+                    "required": "Le rôle est obligatoire"
+                }
+            }
         }
     },
     "orders" : {
@@ -20,7 +57,8 @@
             "invalid": "Les identifiants saisies sont invalides.",
             "email": "Veuillez saisir une adresse email valide contenant un '@'.",
             "password": "Veuillez saisir un mot de passe."
-        }
+        },
+        "message": "Une erreur est survenue. Veuillez réessayer plus tard."
     },
     "users" : {
         "_name": "Utilisateurs",
@@ -71,37 +109,6 @@
                     "title": "Rôle",
                     "placeholder": "Sélectionner un rôle"
                 }
-            },
-            "errors": {
-                "firstname": {
-                    "required":"Le prénom est obligatoire",
-                    "value": "Le prénom doit contenir au moins 3 caractères"
-                },
-                "lastname": {
-                    "required": "Le nom est obligatoire",
-                    "value": "Le nom doit contenir au moins 3 caractères"
-                },
-                "email": {
-                    "required": "L'email est obligatoire",
-                    "value": "L'email doit être valide"
-                },
-                "phone": {
-                    "required": "Le téléphone est obligatoire",
-                    "value": "Le téléphone doit être contenir 10 chiffres"
-                },
-                "address": {
-                    "required": "L'adresse est obligatoire"
-                },
-                "zipcode": {
-                    "required": "Le code postal est obligatoire",
-                    "value": "Le code postal doit contenir seulement 5 chiffres"
-                },
-                "city": {
-                    "required": "La ville est obligatoire"
-                },
-                "role": {
-                    "required": "Le rôle est obligatoire"
-                }
             }
         }
     },
@@ -146,37 +153,6 @@
                 "store": {
                     "title": "Point de vente",
                     "placeholder": "Sélectionner un point de vente"
-                }
-            },
-            "errors": {
-                "firstname": {
-                    "required":"Le prénom est obligatoire",
-                    "value": "Le prénom doit contenir au moins 3 caractères"
-                },
-                "lastname": {
-                    "required": "Le nom est obligatoire",
-                    "value": "Le nom doit contenir au moins 3 caractères"
-                },
-                "email": {
-                    "required": "L'email est obligatoire",
-                    "value": "L'email doit être valide"
-                },
-                "phone": {
-                    "required": "Le téléphone est obligatoire",
-                    "value": "Le téléphone doit être contenir 10 chiffres"
-                },
-                "address": {
-                    "required": "L'adresse est obligatoire"
-                },
-                "zipcode": {
-                    "required": "Le code postal est obligatoire",
-                    "value": "Le code postal doit contenir seulement 5 chiffres"
-                },
-                "city": {
-                    "required": "La ville est obligatoire"
-                },
-                "store": {
-                    "required": "Le point de vente rattaché est obligatoire"
                 }
             }
         }
@@ -225,41 +201,6 @@
                 "contact_person_lastname": "Nom",
                 "contact_person_email": "Email",
                 "contact_person_phone": "Téléphone"
-            },
-            "errors": {
-                "name": {
-                    "required":"Le nom de l'entreprise est obligatoire",
-                    "value": "Le nom de l'entreprise doit contenir au moins 3 caractères"
-                },
-                "firstname": {
-                    "required":"Le prénom est obligatoire",
-                    "value": "Le prénom doit contenir au moins 3 caractères"
-                },
-                "lastname": {
-                    "required": "Le nom est obligatoire",
-                    "value": "Le nom doit contenir au moins 3 caractères"
-                },
-                "email": {
-                    "required": "L'email est obligatoire",
-                    "value": "L'email doit être valide"
-                },
-                "phone": {
-                    "required": "Le téléphone est obligatoire",
-                    "value": "Le téléphone doit être contenir 10 chiffres"
-                },
-                "address": {
-                    "required": "L'adresse est obligatoire"
-                },
-                "zipcode": {
-                    "required": "Le code postal est obligatoire",
-                    "value": "Le code postal doit contenir seulement 5 chiffres"
-                },
-                "city": {
-                    "required": "La ville est obligatoire"
-                },
-                "country": {
-                    "required": "Le pays est obligatoire"
-                }
             }
         }
     },
@@ -303,45 +244,46 @@
                 "contact_person_lastname": "Nom",
                 "contact_person_email": "Email",
                 "contact_person_phone": "Téléphone"
-            },
-            "errors": {
-                "name": {
-                    "required":"Le nom de l'entreprise est obligatoire",
-                    "value": "Le nom de l'entreprise doit contenir au moins 3 caractères"
-                },
-                "firstname": {
-                    "required":"Le prénom est obligatoire",
-                    "value": "Le prénom doit contenir au moins 3 caractères"
-                },
-                "lastname": {
-                    "required": "Le nom est obligatoire",
-                    "value": "Le nom doit contenir au moins 3 caractères"
-                },
-                "email": {
-                    "required": "L'email est obligatoire",
-                    "value": "L'email doit être valide"
-                },
-                "phone": {
-                    "required": "Le téléphone est obligatoire",
-                    "value": "Le téléphone doit être contenir 10 chiffres"
-                },
-                "address": {
-                    "required": "L'adresse est obligatoire"
-                },
-                "zipcode": {
-                    "required": "Le code postal est obligatoire",
-                    "value": "Le code postal doit contenir seulement 5 chiffres"
-                },
-                "city": {
-                    "required": "La ville est obligatoire"
-                },
-                "country": {
-                    "required": "Le pays est obligatoire"
-                }
             }
         }
     },
-    "stores": {},
+    "stores": {
+        "_name": "Points de vente",
+        "table": {
+            "actions": {
+                "view": "Voir",
+                "edit": "Modifier",
+                "delete": {
+                    "title":"Supprimer",
+                    "dialog": {
+                        "title": "Supprimer le point de vente",
+                        "message": "Êtes-vous sûr de vouloir supprimer le point de vente : <b>{{name}}</b> ? Cette action est irréversible.",
+                        "confirm": "Supprimer"
+                    }
+                }
+            },
+            "headers": {
+                "name": "Point de vente",
+                "address": "Adresse",
+                "customers_count": "Nombre de clients",
+                "actions": "Actions"
+            },
+            "empty": "Aucun points de vente trouvés."
+        },
+        "add": {
+            "title": "Ajouter un point de vente",
+            "button": "Ajouter",
+            "inputs": {
+                "name": "Nom du point de vente",
+                "address": "Adresse",
+                "zipcode": "Code postal",
+                "city": "Ville",
+                "phone": "Téléphone",
+                "email": "Email",
+                "siret": "SIRET"
+            }
+        }
+    },
     "global": {
         "confirmation": "Confirmation"
     }

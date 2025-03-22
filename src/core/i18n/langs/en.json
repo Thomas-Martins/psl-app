@@ -7,9 +7,46 @@
         "save": "Save",
         "add": "Add",
         "all": "All",
+        "search": "Search...",
         "errors": {
-            "required": "This field is required",
-            "value": "The value entered is invalid"
+            "add": {
+                "name": {
+                    "required": "Store name is required",
+                    "value": "Store name must contain at least 3 characters"
+                },
+                "address": {
+                    "required": "Address is required"
+                },
+                "zipcode": {
+                    "required": "Postal code is required",
+                    "value": "Postal code must contain only 5 digits"
+                },
+                "city": {
+                    "required": "City is required"
+                },
+                "country": {
+                    "required": "Country is required"
+                },
+                "phone": {
+                    "required": "Phone number is required",
+                    "value": "Phone number must contain 10 digits"
+                },
+                "email": {
+                    "required": "Email is required",
+                    "value": "Email must be valid"
+                },
+                "siret": {
+                    "required": "SIRET is required",
+                    "value": "SIRET must contain 14 digits",
+                    "unique": "SIRET already exists for another store"
+                },
+                "store": {
+                    "required": "Related store is required"
+                },
+                "role": {
+                    "required": "Role is required"
+                }
+            }
         }
     },
     "orders": {
@@ -17,10 +54,11 @@
     },
     "errors": {
         "login": {
-            "invalid": "The credentials entered are invalid.",
+            "invalid": "The entered credentials are invalid.",
             "email": "Please enter a valid email address containing an '@'.",
             "password": "Please enter a password."
-        }
+        },
+        "message": "An error occurred. Please try again later."
     },
     "users": {
         "_name": "Users",
@@ -31,76 +69,45 @@
                 "delete": {
                     "title": "Delete",
                     "dialog": {
-                        "title": "Delete User",
+                        "title": "Delete user",
                         "message": "Are you sure you want to delete <b>{{name}}</b>? This action is irreversible.",
                         "confirm": "Delete"
                     }
-                },
-                "headers": {
-                    "user": "User",
-                    "email": "Email",
-                    "phone": "Phone",
-                    "address": "Address",
-                    "role": "Role",
-                    "actions": "Actions"
-                },
-                "filter": {
-                    "role": {
-                        "all": "All Users",
-                        "admin": "Administrator",
-                        "gestionnaire": "Manager",
-                        "logisticien": "Logistician"
-                    }
-                },
-                "empty": "No user found."
+                }
             },
-            "add": {
-                "title": "Add User",
-                "button": "Add",
-                "unknown": "Unknown",
-                "inputs": {
-                    "firstname": "First Name",
-                    "lastname": "Last Name",
-                    "email": "Email",
-                    "phone": "Phone",
-                    "address": "Address",
-                    "zipcode": "Postal Code",
-                    "city": "City",
-                    "role": {
-                        "title": "Role",
-                        "placeholder": "Select a role"
-                    }
-                },
-                "errors": {
-                    "firstname": {
-                        "required": "First name is required",
-                        "value": "First name must contain at least 3 characters"
-                    },
-                    "lastname": {
-                        "required": "Last name is required",
-                        "value": "Last name must contain at least 3 characters"
-                    },
-                    "email": {
-                        "required": "Email is required",
-                        "value": "Email must be valid"
-                    },
-                    "phone": {
-                        "required": "Phone is required",
-                        "value": "Phone number must contain 10 digits"
-                    },
-                    "address": {
-                        "required": "Address is required"
-                    },
-                    "zipcode": {
-                        "required": "Postal code is required",
-                        "value": "Postal code must contain only 5 digits"
-                    },
-                    "city": {
-                        "required": "City is required"
-                    },
-                    "role": {
-                        "required": "Role is required"
-                    }
+            "headers": {
+                "user": "User",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "role": "Role",
+                "actions": "Actions"
+            },
+            "filter": {
+                "role": {
+                    "all": "All users",
+                    "admin": "Administrator",
+                    "gestionnaire": "Manager",
+                    "logisticien": "Logistician"
+                }
+            },
+            "empty": "No users found."
+        },
+        "add": {
+            "title": "Add a user",
+            "button": "Add",
+            "unknown": "Unknown",
+            "inputs": {
+                "firstname": "First name",
+                "lastname": "Last name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal code",
+                "city": "City",
+                "role": {
+                    "title": "Role",
+                    "placeholder": "Select a role"
                 }
             }
         }
@@ -114,8 +121,8 @@
                 "delete": {
                     "title": "Delete",
                     "dialog": {
-                        "title": "Delete the customer",
-                        "message": "Are you sure you want to delete the customer: <b>{{name}}</b>? This action is irreversible.",
+                        "title": "Delete customer",
+                        "message": "Are you sure you want to delete customer: <b>{{name}}</b>? This action is irreversible.",
                         "confirm": "Delete"
                     }
                 }
@@ -124,7 +131,7 @@
                 "name": "Customer",
                 "email": "Email",
                 "phone": "Phone",
-                "store": "Point of sale",
+                "store": "Store",
                 "address": "Shipping address",
                 "commands_count": "Number of orders",
                 "actions": "Actions"
@@ -136,47 +143,16 @@
             "button": "Add",
             "unknown": "Unknown",
             "inputs": {
-                "lastname": "Last Name",
-                "firstname": "First Name",
+                "lastname": "Last name",
+                "firstname": "First name",
                 "email": "Email",
                 "phone": "Phone",
                 "address": "Address",
                 "zipcode": "Postal code",
                 "city": "City",
                 "store": {
-                    "title": "Point of sale",
-                    "placeholder": "Select a point of sale"
-                }
-            },
-            "errors": {
-                "firstname": {
-                    "required": "First name is required",
-                    "value": "First name must contain at least 3 characters"
-                },
-                "lastname": {
-                    "required": "Last name is required",
-                    "value": "Last name must contain at least 3 characters"
-                },
-                "email": {
-                    "required": "Email is required",
-                    "value": "Email must be valid"
-                },
-                "phone": {
-                    "required": "Phone is required",
-                    "value": "Phone number must contain 10 digits"
-                },
-                "address": {
-                    "required": "Address is required"
-                },
-                "zipcode": {
-                    "required": "Postal code is required",
-                    "value": "Postal code must contain only 5 digits"
-                },
-                "city": {
-                    "required": "City is required"
-                },
-                "store": {
-                    "required": "The store is required"
+                    "title": "Store",
+                    "placeholder": "Select a store"
                 }
             }
         }
@@ -194,8 +170,8 @@
                 "delete": {
                     "title": "Delete",
                     "dialog": {
-                        "title": "Delete Supplier",
-                        "message": "Are you sure you want to delete the supplier: <b>{{name}}</b>? This action is irreversible.",
+                        "title": "Delete supplier",
+                        "message": "Are you sure you want to delete supplier: <b>{{name}}</b>? This action is irreversible.",
                         "confirm": "Delete"
                     }
                 }
@@ -212,54 +188,19 @@
             "title": "Add a supplier",
             "button": "Add",
             "inputs": {
-                "title": "Company Information",
-                "subtitle": "Contact Information",
-                "name": "Company Name",
+                "title": "Company information",
+                "subtitle": "Contact information",
+                "name": "Company name",
                 "email": "Email",
                 "phone": "Phone",
                 "address": "Address",
-                "zipcode": "Postal Code",
+                "zipcode": "Postal code",
                 "city": "City",
                 "country": "Country",
-                "contact_person_firstname": "First Name",
-                "contact_person_lastname": "Last Name",
+                "contact_person_firstname": "First name",
+                "contact_person_lastname": "Last name",
                 "contact_person_email": "Email",
                 "contact_person_phone": "Phone"
-            },
-            "errors": {
-                "name": {
-                    "required": "Company name is required",
-                    "value": "Company name must contain at least 3 characters"
-                },
-                "firstname": {
-                    "required": "First name is required",
-                    "value": "First name must contain at least 3 characters"
-                },
-                "lastname": {
-                    "required": "Last name is required",
-                    "value": "Last name must contain at least 3 characters"
-                },
-                "email": {
-                    "required": "Email is required",
-                    "value": "Email must be valid"
-                },
-                "phone": {
-                    "required": "Phone is required",
-                    "value": "Phone must contain 10 digits"
-                },
-                "address": {
-                    "required": "Address is required"
-                },
-                "zipcode": {
-                    "required": "Postal code is required",
-                    "value": "Postal code must contain only 5 digits"
-                },
-                "city": {
-                    "required": "City is required"
-                },
-                "country": {
-                    "required": "Country is required"
-                }
             }
         }
     },
@@ -273,7 +214,7 @@
                     "title": "Delete",
                     "dialog": {
                         "title": "Delete carrier",
-                        "message": "Are you sure you want to delete the carrier : <b>{{name}}</b>? This action is irreversible.",
+                        "message": "Are you sure you want to delete carrier: <b>{{name}}</b>? This action is irreversible.",
                         "confirm": "Delete"
                     }
                 }
@@ -290,54 +231,59 @@
             "title": "Add a carrier",
             "button": "Add",
             "inputs": {
-                "title": "Company Information",
-                "subtitle": "Contact Information",
-                "name": "Company Name",
+                "title": "Company information",
+                "subtitle": "Contact information",
+                "name": "Company name",
                 "email": "Email",
                 "phone": "Phone",
                 "address": "Address",
-                "zipcode": "Postal Code",
+                "zipcode": "Postal code",
                 "city": "City",
-                "country": "Country"
-            },
-            "errors": {
-                "name": {
-                    "required": "Company name is required",
-                    "value": "Company name should have at least 3 characters"
-                },
-                "firstname": {
-                    "required": "First name is required",
-                    "value": "First name should have at least 3 characters"
-                },
-                "lastname": {
-                    "required": "Last name is required",
-                    "value": "Last name should have at least 3 characters"
-                },
-                "email": {
-                    "required": "Email address is required",
-                    "value": "Email address should be valid"
-                },
-                "phone": {
-                    "required": "Phone number is required",
-                    "value": "Phone number should have 10 digits"
-                },
-                "address": {
-                    "required": "Address is required"
-                },
-                "zipcode": {
-                    "required": "Postal code is required",
-                    "value": "Postal code should have only 5 characters"
-                },
-                "city": {
-                    "required": "City is required"
-                },
-                "country": {
-                    "required": "Country is required"
-                }
+                "country": "Country",
+                "contact_person_firstname": "First name",
+                "contact_person_lastname": "Last name",
+                "contact_person_email": "Email",
+                "contact_person_phone": "Phone"
             }
         }
     },
-    "stores": {},
+    "stores": {
+        "_name": "Stores",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete store",
+                        "message": "Are you sure you want to delete store: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    }
+                }
+            },
+            "headers": {
+                "name": "Store",
+                "address": "Address",
+                "customers_count": "Number of customers",
+                "actions": "Actions"
+            },
+            "empty": "No stores found."
+        },
+        "add": {
+            "title": "Add a store",
+            "button": "Add",
+            "inputs": {
+                "name": "Store name",
+                "address": "Address",
+                "zipcode": "Postal code",
+                "city": "City",
+                "phone": "Phone",
+                "email": "Email",
+                "siret": "SIRET"
+            }
+        }
+    },
     "global": {
         "confirmation": "Confirmation"
     }

@@ -10,6 +10,7 @@ import SuppliersPage from "@pages/SuppliersPage.tsx";
 import CarriersPage from "@pages/CarriersPage.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
+import StoresPage from "@pages/StoresPage.tsx";
 
 export default function AppRoutes() {
     const user = useSelector((state: RootState) => state.user);
@@ -58,6 +59,7 @@ export default function AppRoutes() {
                 <Route path="clients" element={<CustomersPage />} />
                 <Route path="stocks" element={<StocksPage />} />
                 <Route path="users" element={<UsersPage />} />
+                <Route path="stores" element={<StoresPage />} />
                 <Route path="suppliers" element={<SuppliersPage />} />
                 <Route path="carriers" element={<CarriersPage />} />
 
