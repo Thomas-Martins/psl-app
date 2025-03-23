@@ -16,6 +16,7 @@ import { Action } from "@utils/Action.ts";
 import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
 import { CustomersTableListHeaders } from "@components/Intranet/Clients/CustomersTableList.headers.ts";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 interface CustomersTableListProps {
     customers: PaginatedCustomers;
@@ -35,6 +36,8 @@ export default function CustomersTableList({
 }: CustomersTableListProps) {
     const { t } = useTranslation();
     const headers = CustomersTableListHeaders(t);
+    const { setAlert } = useGlobalAlert();
+
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -66,8 +69,18 @@ export default function CustomersTableList({
         try {
             await CustomersProvider.deleteCustomer(customer.id);
             await mutate();
+            setAlert({
+                title: t("customer.table.actions.delete.success"),
+                type: "success",
+                hideIcon: false,
+            });
         } catch (e) {
             console.error(e);
+            setAlert({
+                title: t("customer.table.actions.delete.error"),
+                type: "danger",
+                hideIcon: false,
+            });
         }
     };
 

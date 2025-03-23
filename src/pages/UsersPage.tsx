@@ -11,6 +11,7 @@ import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import { UserAddModalInputs } from "@components/Intranet/Users/UserAddForm.inputs.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 const fetchUsers = async (key: string): Promise<PaginatedUsers> => {
     const params = JSON.parse(key);
@@ -31,6 +32,7 @@ const fetchUsers = async (key: string): Promise<PaginatedUsers> => {
 export default function UsersPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { setAlert } = useGlobalAlert();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -85,9 +87,21 @@ export default function UsersPage() {
     };
 
     const handleUserAddSubmit = async (formData: Record<string, string>) => {
-        await UsersProvider.createUser(formData);
-        await mutate();
-        onOpenChange();
+        try {
+            await UsersProvider.createUser(formData);
+            await mutate();
+            onOpenChange();
+            setAlert({
+                title: t("users.add.alert.success"),
+                type: "success",
+            });
+        } catch (e) {
+            console.error(e);
+            setAlert({
+                title: t("users.add.alert.error"),
+                type: "danger",
+            });
+        }
     };
 
     useEffect(() => {

@@ -12,6 +12,7 @@ import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import CustomersTableList from "@components/Intranet/Clients/CustomersTableList.tsx";
 import { CustomersAddModalInputs } from "@components/Intranet/Clients/CustomersAddForm.inputs.ts";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
     const params = JSON.parse(key);
@@ -32,6 +33,7 @@ const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
 export default function CustomersPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { setAlert } = useGlobalAlert();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -89,10 +91,16 @@ export default function CustomersPage() {
             await UsersProvider.createUser(formData);
             await mutate();
             onOpenChange();
-            //add toast notification
+            setAlert({
+                title: t("customer.add.alert.success"),
+                type: "success",
+            });
         } catch (e) {
             console.error(e);
-            //add toast notification
+            setAlert({
+                title: t("customer.add.alert.error"),
+                type: "danger",
+            });
         }
     };
 

@@ -11,6 +11,7 @@ import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import { SuppliersAddModalInputs } from "@components/Intranet/Suppliers/SuppliersAddForm.inputs.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
     const params = JSON.parse(key);
@@ -27,6 +28,8 @@ const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
 
 export default function SuppliersPage() {
     const { t } = useTranslation();
+    const { setAlert } = useGlobalAlert();
+
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [orderBy, setOrderBy] = useState("name");
@@ -77,10 +80,21 @@ export default function SuppliersPage() {
     };
 
     const handleSupplierAddSubmit = async (data: Record<string, string>) => {
-        await SuppliersProvider.createSupplier(data);
-        // Rafraîchir les données après l'ajout
-        mutate();
-        onOpenChange();
+        try {
+            await SuppliersProvider.createSupplier(data);
+            await mutate();
+            onOpenChange();
+            setAlert({
+                title: t("suppliers.add.alert.success"),
+                type: "success",
+            });
+        } catch (e) {
+            console.error(e);
+            setAlert({
+                title: t("suppliers.add.alert.error"),
+                type: "danger",
+            });
+        }
     };
 
     useEffect(() => {

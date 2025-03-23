@@ -11,6 +11,7 @@ import CarriersTableList from "@components/Intranet/Carriers/CarriersTableList.t
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import { CarriersAddFormInputs } from "@components/Intranet/Carriers/CarriersAddForm.inputs.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 const fetchCarriers = async (key: string): Promise<PaginatedCarriers> => {
     const params = JSON.parse(key);
@@ -28,6 +29,7 @@ const fetchCarriers = async (key: string): Promise<PaginatedCarriers> => {
 export default function CarriersPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { setAlert } = useGlobalAlert();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -77,10 +79,21 @@ export default function CarriersPage() {
         setOrderWay(newOrderWay);
     };
     const handleCarrierAddSubmit = async (data: Record<string, string>) => {
-        await CarriersProvider.createCarrier(data);
-
-        mutate();
-        onOpenChange();
+        try {
+            await CarriersProvider.createCarrier(data);
+            await mutate();
+            onOpenChange();
+            setAlert({
+                title: t("carriers.add.alert.success"),
+                type: "success",
+            });
+        } catch (e) {
+            console.error(e);
+            setAlert({
+                title: t("carriers.add.alert.error"),
+                type: "danger",
+            });
+        }
     };
 
     useEffect(() => {

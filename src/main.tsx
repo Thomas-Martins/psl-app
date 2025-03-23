@@ -8,15 +8,18 @@ import "./core/i18n/i18n.ts";
 import { Provider } from "react-redux";
 import { store } from "@/store/store.ts";
 import { ConfirmationModalProvider } from "@components/ui/global/GlobalConfirmationModal.tsx";
+import { GlobalAlertProvider } from "@/contexts/GlobalAlertContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <Provider store={store}>
             <BrowserRouter>
                 <HeroUIProvider>
-                    <ConfirmationModalProvider>
-                        <App />
-                    </ConfirmationModalProvider>
+                    <GlobalAlertProvider>
+                        <ConfirmationModalProvider>
+                            <App />
+                        </ConfirmationModalProvider>
+                    </GlobalAlertProvider>
                 </HeroUIProvider>
             </BrowserRouter>
         </Provider>

@@ -60,4 +60,8 @@ export const validators: {
             return i18n.t("generics.errors.add.siret.value");
         return null;
     },
+    role: (value) => {
+        if (!value) return i18n.t("generics.errors.add.role.required");
+        return null;
+    },
 };
