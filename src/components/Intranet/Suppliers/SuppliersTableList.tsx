@@ -15,6 +15,7 @@ import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import { useTranslation } from "react-i18next";
 import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 interface SuppliersTableListProps {
     suppliers: PaginatedSuppliers;
@@ -35,6 +36,8 @@ export default function SuppliersTableList({
 }: SuppliersTableListProps) {
     const { t } = useTranslation();
     const headers = SuppliersTableListHeaders(t);
+    const { setAlert } = useGlobalAlert();
+
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -66,8 +69,16 @@ export default function SuppliersTableList({
         try {
             await SuppliersProvider.deleteSupplier(supplier.id);
             await mutate();
+            setAlert({
+                title: t("suppliers.table.actions.delete.alert.title"),
+                type: "success",
+            });
         } catch (e) {
             console.error(e);
+            setAlert({
+                title: t("suppliers.table.actions.delete.alert.error"),
+                type: "danger",
+            });
         }
     };
 

@@ -14,6 +14,14 @@
                     "required":"Le nom du point de vente est obligatoire",
                     "value": "Le nom du point de vente doit contenir au moins 3 caractères"
                 },
+                "firstname": {
+                    "required": "Le prénom est obligatoire",
+                    "value": "Le prénom doit contenir au moins 3 caractères"
+                },
+                "lastname": {
+                    "required": "Le nom est obligatoire",
+                    "value": "Le nom doit contenir au moins 3 caractères"
+                },
                 "address": {
                     "required": "L'adresse est obligatoire"
                 },
@@ -72,7 +80,9 @@
                         "title": "Supprimer l'utilisateur",
                         "message": "Êtes-vous sûr de vouloir supprimer <b>{{name}}</b> ? Cette action est irréversible.",
                         "confirm": "Supprimer"
-                    }
+                    },
+                    "success": "L'utilisateur a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression de l'utilisateur."
                 }
             },
             "headers": {
@@ -97,6 +107,10 @@
             "title": "Ajouter un utilisateur",
             "button": "Ajouter",
             "unknown": "Inconnu",
+            "alert": {
+                "success": "L'utilisateur a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout de l'utilisateur."
+            },
             "inputs": {
                 "firstname": "Prénom",
                 "lastname": "Nom",
@@ -124,7 +138,9 @@
                         "title": "Supprimer le client",
                         "message": "Êtes-vous sûr de vouloir supprimer le client : <b>{{name}}</b> ? Cette action est irréversible.",
                         "confirm": "Supprimer"
-                    }
+                    },
+                    "success": "Le client a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression du client."
                 }
             },
             "headers": {
@@ -142,6 +158,10 @@
             "title": "Ajouter un client",
             "button": "Ajouter",
             "unknown": "Inconnu",
+            "alert": {
+                "success": "Le client a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout du client."
+            },
             "inputs": {
                 "lastname": "Nom",
                 "firstname": "Prénom",
@@ -173,7 +193,9 @@
                         "title": "Supprimer le fournisseur",
                         "message": "Êtes-vous sûr de vouloir supprimer le fournisseur : <b>{{name}}</b> ? Cette action est irréversible.",
                         "confirm": "Supprimer"
-                    }
+                    },
+                    "success": "Le fournisseur a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression du fournisseur."
                 }
             },
             "headers": {
@@ -187,6 +209,10 @@
         "add": {
             "title": "Ajouter un fournisseur",
             "button": "Ajouter",
+            "alert": {
+                "success": "Le fournisseur a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout du fournisseur."
+            },
             "inputs": {
                 "title": "Informations de l'entreprise",
                 "subtitle": "Informations de contact",
@@ -216,7 +242,9 @@
                         "title": "Supprimer le transporteur",
                         "message": "Êtes-vous sûr de vouloir supprimer le transporteur : <b>{{name}}</b> ? Cette action est irréversible.",
                         "confirm": "Supprimer"
-                    }
+                    },
+                    "success": "Le transporteur a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression du transporteur."
                 }
             },
             "headers": {
@@ -230,6 +258,10 @@
         "add": {
             "title": "Ajouter un transporteur",
             "button": "Ajouter",
+            "alert": {
+                "success": "Le transporteur a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout du transporteur."
+            },
             "inputs": {
                 "title": "Informations de l'entreprise",
                 "subtitle": "Informations du contact",
@@ -259,7 +291,9 @@
                         "title": "Supprimer le point de vente",
                         "message": "Êtes-vous sûr de vouloir supprimer le point de vente : <b>{{name}}</b> ? Cette action est irréversible.",
                         "confirm": "Supprimer"
-                    }
+                    },
+                    "success": "Le point de vente a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression du point de vente."
                 }
             },
             "headers": {
@@ -273,6 +307,10 @@
         "add": {
             "title": "Ajouter un point de vente",
             "button": "Ajouter",
+            "alert": {
+                "success": "Le point de vente a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout du point de vente."
+            },
             "inputs": {
                 "name": "Nom du point de vente",
                 "address": "Adresse",

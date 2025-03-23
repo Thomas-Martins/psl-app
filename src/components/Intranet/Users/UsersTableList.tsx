@@ -16,6 +16,7 @@ import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { Action } from "@utils/Action.ts";
 import { useTranslation } from "react-i18next";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 interface UsersTableListProps {
     users: PaginatedUsers;
@@ -36,6 +37,7 @@ export default function UsersTableList({
 }: UsersTableListProps) {
     const { t } = useTranslation();
     const headers = UsersTableListHeaders(t);
+    const { setAlert } = useGlobalAlert();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -69,8 +71,16 @@ export default function UsersTableList({
         try {
             await UsersProvider.deleteUser(user.id);
             await mutate();
+            setAlert({
+                title: t("users.table.actions.delete.success"),
+                type: "success",
+            });
         } catch (e) {
             console.error(e);
+            setAlert({
+                title: t("users.table.actions.delete.error"),
+                type: "danger",
+            });
         }
     };
 

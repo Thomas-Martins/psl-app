@@ -45,6 +45,14 @@
                 },
                 "role": {
                     "required": "Role is required"
+                },
+                "firstname": {
+                    "required": "First name is required",
+                    "value": "First name must contain at least 3 characters"
+                },
+                "lastname": {
+                    "required": "Last name is required",
+                    "value": "Last name must contain at least 3 characters"
                 }
             }
         }
@@ -72,7 +80,9 @@
                         "title": "Delete user",
                         "message": "Are you sure you want to delete <b>{{name}}</b>? This action is irreversible.",
                         "confirm": "Delete"
-                    }
+                    },
+                    "success": "The user was successfully deleted.",
+                    "error": "An error occurred while deleting the user."
                 }
             },
             "headers": {
@@ -109,6 +119,10 @@
                     "title": "Role",
                     "placeholder": "Select a role"
                 }
+            },
+            "alert": {
+                "success": "The user was successfully added.",
+                "error": "An error occurred while adding the user."
             }
         }
     },
@@ -124,7 +138,9 @@
                         "title": "Delete customer",
                         "message": "Are you sure you want to delete customer: <b>{{name}}</b>? This action is irreversible.",
                         "confirm": "Delete"
-                    }
+                    },
+                    "success": "The customer was successfully deleted.",
+                    "error": "An error occurred while deleting the customer."
                 }
             },
             "headers": {
@@ -154,6 +170,10 @@
                     "title": "Store",
                     "placeholder": "Select a store"
                 }
+            },
+            "alert": {
+                "success": "The customer was successfully added.",
+                "error": "An error occurred while adding the customer."
             }
         }
     },
@@ -162,127 +182,13 @@
     },
     "categories": {},
     "suppliers": {
-        "_name": "Suppliers",
-        "table": {
-            "actions": {
-                "view": "View",
-                "edit": "Edit",
-                "delete": {
-                    "title": "Delete",
-                    "dialog": {
-                        "title": "Delete supplier",
-                        "message": "Are you sure you want to delete supplier: <b>{{name}}</b>? This action is irreversible.",
-                        "confirm": "Delete"
-                    }
-                }
-            },
-            "headers": {
-                "name": "Supplier",
-                "contact": "Contact",
-                "address": "Address",
-                "actions": "Actions"
-            },
-            "empty": "No suppliers found."
-        },
-        "add": {
-            "title": "Add a supplier",
-            "button": "Add",
-            "inputs": {
-                "title": "Company information",
-                "subtitle": "Contact information",
-                "name": "Company name",
-                "email": "Email",
-                "phone": "Phone",
-                "address": "Address",
-                "zipcode": "Postal code",
-                "city": "City",
-                "country": "Country",
-                "contact_person_firstname": "First name",
-                "contact_person_lastname": "Last name",
-                "contact_person_email": "Email",
-                "contact_person_phone": "Phone"
-            }
-        }
+        "_name": "Suppliers"
     },
     "carriers": {
-        "_name": "Carriers",
-        "table": {
-            "actions": {
-                "view": "View",
-                "edit": "Edit",
-                "delete": {
-                    "title": "Delete",
-                    "dialog": {
-                        "title": "Delete carrier",
-                        "message": "Are you sure you want to delete carrier: <b>{{name}}</b>? This action is irreversible.",
-                        "confirm": "Delete"
-                    }
-                }
-            },
-            "headers": {
-                "name": "Carrier",
-                "contact": "Contact",
-                "address": "Address",
-                "actions": "Actions"
-            },
-            "empty": "No carriers found."
-        },
-        "add": {
-            "title": "Add a carrier",
-            "button": "Add",
-            "inputs": {
-                "title": "Company information",
-                "subtitle": "Contact information",
-                "name": "Company name",
-                "email": "Email",
-                "phone": "Phone",
-                "address": "Address",
-                "zipcode": "Postal code",
-                "city": "City",
-                "country": "Country",
-                "contact_person_firstname": "First name",
-                "contact_person_lastname": "Last name",
-                "contact_person_email": "Email",
-                "contact_person_phone": "Phone"
-            }
-        }
+        "_name": "Carriers"
     },
     "stores": {
-        "_name": "Stores",
-        "table": {
-            "actions": {
-                "view": "View",
-                "edit": "Edit",
-                "delete": {
-                    "title": "Delete",
-                    "dialog": {
-                        "title": "Delete store",
-                        "message": "Are you sure you want to delete store: <b>{{name}}</b>? This action is irreversible.",
-                        "confirm": "Delete"
-                    }
-                }
-            },
-            "headers": {
-                "name": "Store",
-                "address": "Address",
-                "customers_count": "Number of customers",
-                "actions": "Actions"
-            },
-            "empty": "No stores found."
-        },
-        "add": {
-            "title": "Add a store",
-            "button": "Add",
-            "inputs": {
-                "name": "Store name",
-                "address": "Address",
-                "zipcode": "Postal code",
-                "city": "City",
-                "phone": "Phone",
-                "email": "Email",
-                "siret": "SIRET"
-            }
-        }
+        "_name": "Stores"
     },
     "global": {
         "confirmation": "Confirmation"

@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 interface CarriersTableListProps {
     carriers: PaginatedCarriers;
@@ -34,6 +35,8 @@ export default function CarriersTableList({
 }: CarriersTableListProps) {
     const { t } = useTranslation();
     const headers = CarriersTableListHeaders(t);
+    const { setAlert } = useGlobalAlert();
+
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -65,8 +68,16 @@ export default function CarriersTableList({
         try {
             await CarriersProvider.deleteCarrier(carrier.id);
             await mutate();
+            setAlert({
+                type: "success",
+                title: t("carriers.table.actions.delete.success"),
+            });
         } catch (e) {
             console.error(e);
+            setAlert({
+                type: "danger",
+                title: t("carriers.table.actions.delete.error"),
+            });
         }
     };
 

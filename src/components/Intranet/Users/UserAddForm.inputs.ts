@@ -107,7 +107,7 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         label: i18n.t("users.add.inputs.role.title"),
                         required: true,
                         options: roleOptions,
-                        validators: [validators.role_id],
+                        validators: [validators.role],
                     },
                 ],
             },

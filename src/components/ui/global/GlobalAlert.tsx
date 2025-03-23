@@ -1,11 +1,15 @@
 import { Alert } from "@heroui/react";
+import { ReactNode } from "react";
+import CheckIcon from "@components/ui/icons/CheckIcon.tsx";
+import DangerIcon from "@components/ui/icons/DangerIcon.tsx";
 
 // Defines the properties for the GlobalAlert component
 interface GlobalDialogProps {
     title: string;
-    type: "danger" | "success" | "warning" | "default";
+    type: "danger" | "success" | "warning" | "default" | "primary";
     hideIcon: boolean;
     variant: "solid" | "faded" | "flat" | "bordered";
+    icon?: ReactNode;
 }
 
 /**
@@ -17,14 +21,23 @@ export default function GlobalAlert({
     type,
     hideIcon,
     variant = "solid",
+    icon,
 }: GlobalDialogProps) {
+    const getDefaultIcon = () => {
+        if (type === "success") return <CheckIcon color="white" />;
+        if (type === "danger") return <DangerIcon color="white" />;
+        return null;
+    };
+
     return (
         <Alert
             color={type}
-            className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 animate-slide-down w-auto text-white"
+            className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] animate-slide-down shadow-lg w-fit text-white"
             hideIcon={hideIcon}
+            hideIconWrapper={true}
             title={title}
             variant={variant}
+            icon={icon ?? getDefaultIcon()}
         />
     );
 }

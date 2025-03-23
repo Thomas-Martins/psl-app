@@ -11,6 +11,7 @@ import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import StoresTableList from "@components/Intranet/Stores/StoresTableList.tsx";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 const fetchStores = async (key: string): Promise<PaginatedStores> => {
     const params = JSON.parse(key);
@@ -30,6 +31,7 @@ const fetchStores = async (key: string): Promise<PaginatedStores> => {
 export default function StoresPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { setAlert } = useGlobalAlert();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -81,8 +83,16 @@ export default function StoresPage() {
         try {
             await StoresProvider.createStore(formData);
             await mutate();
+            setAlert({
+                title: t("stores.add.alert.success"),
+                type: "success",
+            });
         } catch (error) {
             console.error(error);
+            setAlert({
+                title: t("stores.add.alert.error"),
+                type: "danger",
+            });
         }
     };
 

@@ -15,6 +15,7 @@ import {
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 
 interface StoresTableListProps {
     stores: PaginatedStores;
@@ -35,6 +36,8 @@ export default function StoresTableList({
 }: StoresTableListProps) {
     const { t } = useTranslation();
     const headers = StoresTableListHeaders(t);
+    const { setAlert } = useGlobalAlert();
+
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -66,8 +69,16 @@ export default function StoresTableList({
         try {
             await StoresProvider.deleteStore(store.id);
             await mutate();
+            setAlert({
+                title: t("stores.table.actions.delete.success"),
+                type: "success",
+            });
         } catch (error) {
             console.error(error);
+            setAlert({
+                title: t("stores.table.actions.delete.error"),
+                type: "danger",
+            });
         }
     };
 
