@@ -7,6 +7,7 @@ export interface Store {
     phone: string;
     email: string;
     customers_count: number;
+    image_url: string;
 }
 
 export interface PaginatedStores {

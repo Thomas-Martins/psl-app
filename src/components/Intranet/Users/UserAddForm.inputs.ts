@@ -19,6 +19,18 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                 visible: true,
                 elements: [
                     {
+                        name: "image",
+                        type: "file",
+                        label: "Ajouter une image de profil",
+                        required: true,
+                    },
+                ],
+            },
+            {
+                type: "form-row",
+                visible: true,
+                elements: [
+                    {
                         name: "lastname",
                         type: "text",
                         placeholder: i18n.t("users.add.inputs.lastname"),

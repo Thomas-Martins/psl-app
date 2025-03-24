@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Button,
     Form,
@@ -14,12 +14,17 @@ import {
 import { FieldDefinition, isFormRow, isFormTitle } from "@/types/FormTypes";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
+import UploadFileIcon from "@/components/ui/icons/UploadFileIcon";
+
+// Définition des types pour les valeurs du formulaire
+type FormDataValue = string | File | null;
+type FormData = Record<string, FormDataValue>;
 
 interface AddFormModalProps {
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
     fields: FieldDefinition[];
-    onSubmit: (data: Record<string, string>) => Promise<void> | void;
+    onSubmit: (data: FormData) => Promise<void> | void;
     title?: string;
 }
 
@@ -31,27 +36,35 @@ export default function AddFormModal({
     title = i18n.t("generics.add"),
 }: AddFormModalProps) {
     const { t } = useTranslation();
-    const [formData, setFormData] = useState<Record<string, string>>({});
+    const [formData, setFormData] = useState<FormData>({});
     const [errors, setErrors] = useState<Record<string, string>>({});
+    // État pour stocker les URLs de preview pour chaque input file
+    const [previewImages, setPreviewImages] = useState<Record<string, string>>(
+        {},
+    );
+
+    // Utilisation d'un ref pour chaque input file, indexé par le nom du champ
+    const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
     useEffect(() => {
         if (isOpen) {
-            const initialData: Record<string, string> = {};
+            const initialData: FormData = {};
             fields.forEach((field) => {
                 if (isFormRow(field)) {
                     field.elements.forEach((el) => {
-                        initialData[el.name] = "";
+                        initialData[el.name] = el.type === "file" ? null : "";
                     });
                 } else if (!isFormTitle(field)) {
-                    initialData[field.name] = "";
+                    initialData[field.name] = field.type === "file" ? null : "";
                 }
             });
             setFormData(initialData);
             setErrors({});
+            setPreviewImages({});
         }
     }, [isOpen, fields]);
 
-    const handleInputChange = (name: string, value: string) => {
+    const handleInputChange = (name: string, value: FormDataValue) => {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
@@ -66,14 +79,15 @@ export default function AddFormModal({
             if (isFormRow(field)) {
                 field.elements.forEach((el) => {
                     const value = formData[el.name];
-                    if (el.required && !value) {
+                    // Pour les champs non de type file, vérifier s'ils sont requis
+                    if (el.required && el.type !== "file" && !value) {
                         valid = false;
                         newErrors[el.name] =
                             el.errorMessage || t("generics.errors.required");
                     }
                     if (el.validators) {
                         for (const validator of el.validators) {
-                            const errorMsg = validator(value);
+                            const errorMsg = validator(value as string);
                             if (errorMsg) {
                                 valid = false;
                                 newErrors[el.name] = errorMsg;
@@ -84,14 +98,15 @@ export default function AddFormModal({
                 });
             } else if (!isFormTitle(field)) {
                 const value = formData[field.name];
-                if (field.required && !value) {
+                // Pour les champs non de type file, vérifier s'ils sont requis
+                if (field.required && field.type !== "file" && !value) {
                     valid = false;
                     newErrors[field.name] =
                         field.errorMessage || t("generics.errors.required");
                 }
                 if (field.validators) {
                     for (const validator of field.validators) {
-                        const errorMsg = validator(value);
+                        const errorMsg = validator(value as string);
                         if (errorMsg) {
                             valid = false;
                             newErrors[field.name] = errorMsg;
@@ -117,6 +132,60 @@ export default function AddFormModal({
             }
         }
     };
+
+    const renderCustomFileInput = (
+        name: string,
+        label: string,
+        errorMessage?: string,
+    ) => (
+        <div className="flex flex-row items-center gap-4">
+            <div
+                className="w-[100px] h-[100px] bg-black rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors duration-200"
+                onClick={() => fileInputRefs.current[name]?.click()}
+            >
+                {previewImages[name] ? (
+                    <img
+                        src={previewImages[name]}
+                        alt="Preview"
+                        className="object-cover w-full h-full"
+                    />
+                ) : (
+                    <UploadFileIcon color="white" />
+                )}
+                <input
+                    type="file"
+                    name={name}
+                    accept=".jpeg, .jpg, .png"
+                    className="hidden"
+                    ref={(ref) => {
+                        fileInputRefs.current[name] = ref;
+                    }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const file =
+                            e.target.files && e.target.files[0]
+                                ? e.target.files[0]
+                                : null;
+                        handleInputChange(name, file);
+                        if (file) {
+                            setPreviewImages((prev) => ({
+                                ...prev,
+                                [name]: URL.createObjectURL(file),
+                            }));
+                        }
+                    }}
+                />
+            </div>
+            <div>
+                <label className="font-medium">{label}</label>
+                <p className="text-xs text-gray-500">
+                    Seul les formats .jpeg, .jpg et .png sont pris en charge.
+                </p>
+                {errorMessage && (
+                    <p className="text-xs text-red-500 mt-1">{errorMessage}</p>
+                )}
+            </div>
+        </div>
+    );
 
     return (
         <Modal
@@ -214,6 +283,16 @@ export default function AddFormModal({
                                                                     ),
                                                                 ) ?? null}
                                                             </Select>
+                                                        ) : el.type ===
+                                                          "file" ? (
+                                                            renderCustomFileInput(
+                                                                el.name,
+                                                                el.label,
+                                                                errors[
+                                                                    el.name
+                                                                ] ||
+                                                                    el.errorMessage,
+                                                            )
                                                         ) : (
                                                             <Input
                                                                 label={el.label}
@@ -233,9 +312,10 @@ export default function AddFormModal({
                                                                     el.errorMessage
                                                                 }
                                                                 value={
-                                                                    formData[
+                                                                    (formData[
                                                                         el.name
-                                                                    ] || ""
+                                                                    ] as string) ||
+                                                                    ""
                                                                 }
                                                                 onChange={(e) =>
                                                                     handleInputChange(
@@ -287,11 +367,18 @@ export default function AddFormModal({
                                                         ),
                                                     ) ?? null}
                                                 </Select>
+                                            ) : field.type === "file" ? (
+                                                renderCustomFileInput(
+                                                    field.name,
+                                                    field.label,
+                                                    errors[field.name] ||
+                                                        field.errorMessage,
+                                                )
                                             ) : (
                                                 <Input
                                                     label={field.label}
-                                                    labelPlacement="outside"
                                                     name={field.name}
+                                                    labelPlacement="outside"
                                                     placeholder={
                                                         field.placeholder
                                                     }
@@ -302,8 +389,9 @@ export default function AddFormModal({
                                                         field.errorMessage
                                                     }
                                                     value={
-                                                        formData[field.name] ||
-                                                        ""
+                                                        (formData[
+                                                            field.name
+                                                        ] as string) || ""
                                                     }
                                                     onChange={(e) =>
                                                         handleInputChange(

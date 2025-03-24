@@ -5,6 +5,18 @@ import i18n from "i18next";
 export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
     return [
         {
+            type: "form-row",
+            visible: true,
+            elements: [
+                {
+                    name: "image",
+                    type: "file",
+                    label: "Ajouter une image de profil",
+                    required: true,
+                },
+            ],
+        },
+        {
             type: "form-title",
             visible: true,
             title: i18n.t("carriers.add.inputs.title"),

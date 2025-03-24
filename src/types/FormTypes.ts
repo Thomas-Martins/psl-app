@@ -27,6 +27,9 @@ export type FieldDefinition =
     | FormRowDefinition
     | FormTitleDefinition;
 
+export type FormDataValue = string | File | null;
+export type FormData = Record<string, FormDataValue>;
+
 export function isFormRow(field: FieldDefinition): field is FormRowDefinition {
     return field.type === "form-row";
 }

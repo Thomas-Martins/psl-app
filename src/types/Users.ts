@@ -9,6 +9,7 @@ export interface User {
     zipcode: string;
     city: string;
     identity: string;
+    image_url: string;
 }
 
 export interface PaginatedUsers {

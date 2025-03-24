@@ -10,6 +10,18 @@ export const StoresAddModalInputs = async (): Promise<FieldDefinition[]> => {
                 visible: true,
                 elements: [
                     {
+                        name: "image",
+                        type: "file",
+                        label: "Ajouter une image de profil",
+                        required: true,
+                    },
+                ],
+            },
+            {
+                type: "form-row",
+                visible: true,
+                elements: [
+                    {
                         name: "name",
                         type: "text",
                         placeholder: i18n.t("stores.add.inputs.name"),

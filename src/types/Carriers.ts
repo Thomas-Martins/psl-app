@@ -10,6 +10,7 @@ export interface Carrier {
     contact_person_firstname: string;
     contact_person_lastname: string;
     contact_person_phone: string;
+    image_url: string;
 }
 
 export interface PaginatedCarriers {
