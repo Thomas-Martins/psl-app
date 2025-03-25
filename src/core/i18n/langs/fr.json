@@ -122,7 +122,8 @@
                 "role": {
                     "title": "Rôle",
                     "placeholder": "Sélectionner un rôle"
-                }
+                },
+                "image": "Ajouter une image de profil"
             }
         }
     },
@@ -226,7 +227,8 @@
                 "contact_person_firstname": "Prénom",
                 "contact_person_lastname": "Nom",
                 "contact_person_email": "Email",
-                "contact_person_phone": "Téléphone"
+                "contact_person_phone": "Téléphone",
+                "image": "Ajouter un logo"
             }
         }
     },
@@ -275,7 +277,8 @@
                 "contact_person_firstname": "Prénom",
                 "contact_person_lastname": "Nom",
                 "contact_person_email": "Email",
-                "contact_person_phone": "Téléphone"
+                "contact_person_phone": "Téléphone",
+                "image": "Ajouter un logo"
             }
         }
     },
@@ -318,7 +321,8 @@
                 "city": "Ville",
                 "phone": "Téléphone",
                 "email": "Email",
-                "siret": "SIRET"
+                "siret": "SIRET",
+                "image": "Ajouter un logo"
             }
         }
     },

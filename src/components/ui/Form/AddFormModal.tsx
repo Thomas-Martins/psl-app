@@ -11,20 +11,22 @@ import {
     Select,
     SelectItem,
 } from "@heroui/react";
-import { FieldDefinition, isFormRow, isFormTitle } from "@/types/FormTypes";
+import {
+    FieldDefinition,
+    FormDataValue,
+    FormValues,
+    isFormRow,
+    isFormTitle,
+} from "@/types/FormTypes";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import UploadFileIcon from "@/components/ui/icons/UploadFileIcon";
-
-// Définition des types pour les valeurs du formulaire
-type FormDataValue = string | File | null;
-type FormData = Record<string, FormDataValue>;
 
 interface AddFormModalProps {
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
     fields: FieldDefinition[];
-    onSubmit: (data: FormData) => Promise<void> | void;
+    onSubmit: (data: FormValues) => Promise<void> | void;
     title?: string;
 }
 
@@ -36,19 +38,17 @@ export default function AddFormModal({
     title = i18n.t("generics.add"),
 }: AddFormModalProps) {
     const { t } = useTranslation();
-    const [formData, setFormData] = useState<FormData>({});
+    const [formData, setFormData] = useState<FormValues>({});
     const [errors, setErrors] = useState<Record<string, string>>({});
-    // État pour stocker les URLs de preview pour chaque input file
     const [previewImages, setPreviewImages] = useState<Record<string, string>>(
         {},
     );
 
-    // Utilisation d'un ref pour chaque input file, indexé par le nom du champ
     const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
     useEffect(() => {
         if (isOpen) {
-            const initialData: FormData = {};
+            const initialData: FormValues = {};
             fields.forEach((field) => {
                 if (isFormRow(field)) {
                     field.elements.forEach((el) => {
@@ -79,15 +79,18 @@ export default function AddFormModal({
             if (isFormRow(field)) {
                 field.elements.forEach((el) => {
                     const value = formData[el.name];
-                    // Pour les champs non de type file, vérifier s'ils sont requis
-                    if (el.required && el.type !== "file" && !value) {
+                    if (
+                        el.required &&
+                        ((el.type !== "file" && !value) ||
+                            (el.type === "file" && value === null))
+                    ) {
                         valid = false;
                         newErrors[el.name] =
                             el.errorMessage || t("generics.errors.required");
                     }
                     if (el.validators) {
                         for (const validator of el.validators) {
-                            const errorMsg = validator(value as string);
+                            const errorMsg = validator(value);
                             if (errorMsg) {
                                 valid = false;
                                 newErrors[el.name] = errorMsg;
@@ -98,7 +101,6 @@ export default function AddFormModal({
                 });
             } else if (!isFormTitle(field)) {
                 const value = formData[field.name];
-                // Pour les champs non de type file, vérifier s'ils sont requis
                 if (field.required && field.type !== "file" && !value) {
                     valid = false;
                     newErrors[field.name] =
@@ -106,7 +108,7 @@ export default function AddFormModal({
                 }
                 if (field.validators) {
                     for (const validator of field.validators) {
-                        const errorMsg = validator(value as string);
+                        const errorMsg = validator(value);
                         if (errorMsg) {
                             valid = false;
                             newErrors[field.name] = errorMsg;
@@ -121,7 +123,9 @@ export default function AddFormModal({
         return valid;
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (
+        e: React.FormEvent<HTMLFormElement>,
+    ): Promise<void> => {
         e.preventDefault();
         if (validate()) {
             try {

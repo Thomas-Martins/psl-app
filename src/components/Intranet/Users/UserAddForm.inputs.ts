@@ -1,7 +1,7 @@
+import { FieldDefinition, FormDataValue } from "@/types/FormTypes.ts";
 import RolesProvider from "@core/api/Providers/RolesProvider.ts";
 import { roleName } from "@utils/utils.ts";
 import { validators } from "@/utils/InputForm.validators.ts";
-import { FieldDefinition } from "@/types/FormTypes.ts";
 import i18n from "i18next";
 
 export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
@@ -21,8 +21,18 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     {
                         name: "image",
                         type: "file",
-                        label: "Ajouter une image de profil",
-                        required: true,
+                        label: i18n.t("users.add.inputs.image"),
+                        validators: [
+                            (file: FormDataValue) => {
+                                if (
+                                    file instanceof File &&
+                                    file.size > 2048 * 1024
+                                ) {
+                                    return "L'image ne doit pas dépasser 2 Mo";
+                                }
+                                return null;
+                            },
+                        ],
                     },
                 ],
             },
@@ -36,7 +46,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         placeholder: i18n.t("users.add.inputs.lastname"),
                         label: i18n.t("users.add.inputs.lastname"),
                         required: true,
-                        validators: [validators.lastname],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.lastname(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                     {
                         name: "firstname",
@@ -44,7 +59,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         placeholder: i18n.t("users.add.inputs.firstname"),
                         label: i18n.t("users.add.inputs.firstname"),
                         required: true,
-                        validators: [validators.firstname],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.firstname(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                 ],
             },
@@ -58,7 +78,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         placeholder: "example@mail.com",
                         label: i18n.t("users.add.inputs.email"),
                         required: true,
-                        validators: [validators.email],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.email(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                     {
                         name: "phone",
@@ -66,7 +91,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         placeholder: "0601020304",
                         label: i18n.t("users.add.inputs.phone"),
                         required: true,
-                        validators: [validators.phone],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.phone(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                 ],
             },
@@ -80,7 +110,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         placeholder: i18n.t("users.add.inputs.address"),
                         label: i18n.t("users.add.inputs.address"),
                         required: true,
-                        validators: [validators.address],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.address(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                 ],
             },
@@ -94,7 +129,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         placeholder: "75000",
                         label: i18n.t("users.add.inputs.zipcode"),
                         required: true,
-                        validators: [validators.zipcode],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.zipcode(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                     {
                         name: "city",
@@ -102,7 +142,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         placeholder: "Paris",
                         label: i18n.t("users.add.inputs.city"),
                         required: true,
-                        validators: [validators.city],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.city(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                 ],
             },
@@ -119,7 +164,12 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                         label: i18n.t("users.add.inputs.role.title"),
                         required: true,
                         options: roleOptions,
-                        validators: [validators.role],
+                        validators: [
+                            (value: FormDataValue) =>
+                                validators.role(
+                                    typeof value === "string" ? value : "",
+                                ),
+                        ],
                     },
                 ],
             },

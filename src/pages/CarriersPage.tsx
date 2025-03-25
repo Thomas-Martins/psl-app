@@ -5,7 +5,7 @@ import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { FieldDefinition, type FormData } from "@/types/FormTypes.ts";
+import { FieldDefinition, FormValues } from "@/types/FormTypes.ts";
 import useSWR from "swr";
 import CarriersTableList from "@components/Intranet/Carriers/CarriersTableList.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
@@ -78,7 +78,7 @@ export default function CarriersPage() {
         setOrderBy(newOrderBy);
         setOrderWay(newOrderWay);
     };
-    const handleCarrierAddSubmit = async (data: FormData) => {
+    const handleCarrierAddSubmit = async (data: FormValues): Promise<void> => {
         const payload = new FormData();
 
         Object.keys(data).forEach((key) => {

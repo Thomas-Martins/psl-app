@@ -3,7 +3,7 @@ import StoresProvider from "@core/api/Providers/StoresProvider.ts";
 import { useTranslation } from "react-i18next";
 import { Button, useDisclosure } from "@heroui/react";
 import { useEffect, useState } from "react";
-import type { FormData } from "@/types/FormTypes.ts";
+import type { FormValues } from "@/types/FormTypes.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import useSWR from "swr";
 import { StoresAddModalInputs } from "@components/Intranet/Stores/StoresAddForm.inputs.ts";
@@ -80,7 +80,7 @@ export default function StoresPage() {
         setOrderWay(orderWay);
     };
 
-    const handleStoresAddSubmit = async (data: FormData) => {
+    const handleStoresAddSubmit = async (data: FormValues): Promise<void> => {
         const payload = new FormData();
 
         Object.keys(data).forEach((key) => {
