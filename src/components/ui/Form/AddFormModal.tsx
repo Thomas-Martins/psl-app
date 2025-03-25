@@ -101,7 +101,11 @@ export default function AddFormModal({
                 });
             } else if (!isFormTitle(field)) {
                 const value = formData[field.name];
-                if (field.required && field.type !== "file" && !value) {
+                if (
+                    field.required &&
+                    ((field.type !== "file" && !value) ||
+                        (field.type === "file" && value === null))
+                ) {
                     valid = false;
                     newErrors[field.name] =
                         field.errorMessage || t("generics.errors.required");
