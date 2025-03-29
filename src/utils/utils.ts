@@ -1,24 +1,22 @@
-export const roleName = (role: string) => {
-    switch (role) {
-        case "admin":
-            return "Administrateur";
-        case "gestionnaire":
-            return "Gestionnaire";
-        case "logisticien":
-            return "Logisticien";
-    }
+import { Role } from "@/types/Role.ts";
+
+const roleNames: Record<Role, string> = {
+    [Role.ADMIN]: "Administrateur",
+    [Role.GESTIONNAIRE]: "Gestionnaire",
+    [Role.LOGISTICIEN]: "Logisticien",
+    [Role.CLIENT]: "Client",
 };
 
-export const chipRoleColor = (role: string) => {
-    switch (role) {
-        case "admin":
-            return "bg-primary-400";
-        case "gestionnaire":
-            return "bg-violet";
-        case "logisticien":
-            return "bg-light-100";
-    }
+export const roleName = (role: Role): string => roleNames[role];
+
+const roleColors: Record<Role, string> = {
+    [Role.ADMIN]: "bg-primary-400",
+    [Role.GESTIONNAIRE]: "bg-violet",
+    [Role.LOGISTICIEN]: "bg-light-100",
+    [Role.CLIENT]: "",
 };
+
+export const chipRoleColor = (role: Role): string => roleColors[role];
 
 export const InitialsLetter = (firstname: string, lastname: string) => {
     return firstname.charAt(0) + lastname.charAt(0);

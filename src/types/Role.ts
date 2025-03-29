@@ -1,4 +1,6 @@
-export interface Role {
-    id: number;
-    name: string;
+export enum Role {
+    ADMIN = "admin",
+    GESTIONNAIRE = "gestionnaire",
+    LOGISTICIEN = "logisticien",
+    CLIENT = "client",
 }

@@ -11,6 +11,7 @@ import LogoutIcon from "@components/ui/icons/LogoutIcon.tsx";
 import { useNavigate } from "react-router";
 import { userSlice } from "@store/userSlice.ts";
 import RoleChip from "@components/ui/global/RoleChip.tsx";
+import { Role } from "@/types/Role.ts";
 
 export default function UserAccountActivator() {
     const user = useSelector((state: RootState) => state.user);
@@ -29,7 +30,7 @@ export default function UserAccountActivator() {
                         <p className="text-white">
                             {user.firstname + " " + user.lastname}
                         </p>
-                        <RoleChip role={user.role} />
+                        <RoleChip role={user.role as Role} />
                     </div>
                     <Avatar
                         isBordered
