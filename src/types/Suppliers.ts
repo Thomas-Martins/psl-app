@@ -11,6 +11,7 @@ export interface Supplier {
     contact_person_lastname: string;
     contact_person_phone: string;
     country: string;
+    image_url: string;
 }
 
 export interface PaginatedSuppliers {

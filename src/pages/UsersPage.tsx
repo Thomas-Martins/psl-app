@@ -9,6 +9,7 @@ import UsersTableList from "@components/Intranet/Users/UsersTableList.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import { UserAddModalInputs } from "@components/Intranet/Users/UserAddForm.inputs.ts";
+import type { FormValues } from "@/types/FormTypes.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
@@ -86,9 +87,20 @@ export default function UsersPage() {
         setOrderWay(newOrderWay);
     };
 
-    const handleUserAddSubmit = async (formData: Record<string, string>) => {
+    const handleUserAddSubmit = async (data: FormValues): Promise<void> => {
+        const payload = new FormData();
+
+        Object.keys(data).forEach((key) => {
+            const value = data[key];
+            if (value instanceof File) {
+                payload.append(key, value);
+            } else if (value !== null) {
+                payload.append(key, value);
+            }
+        });
+
         try {
-            await UsersProvider.createUser(formData);
+            await UsersProvider.createUser(payload);
             await mutate();
             onOpenChange();
             setAlert({

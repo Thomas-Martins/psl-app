@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import SuppliersTableList from "@components/Intranet/Suppliers/SuppliersTableList.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
+import type { FormValues } from "@/types/FormTypes.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import { SuppliersAddModalInputs } from "@components/Intranet/Suppliers/SuppliersAddForm.inputs.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
@@ -79,9 +80,20 @@ export default function SuppliersPage() {
         setOrderWay(newOrderWay);
     };
 
-    const handleSupplierAddSubmit = async (data: Record<string, string>) => {
+    const handleSupplierAddSubmit = async (data: FormValues): Promise<void> => {
+        const payload = new FormData();
+
+        Object.keys(data).forEach((key) => {
+            const value = data[key];
+            if (value instanceof File) {
+                payload.append(key, value);
+            } else if (value !== null) {
+                payload.append(key, value);
+            }
+        });
+
         try {
-            await SuppliersProvider.createSupplier(data);
+            await SuppliersProvider.createSupplier(payload);
             await mutate();
             onOpenChange();
             setAlert({

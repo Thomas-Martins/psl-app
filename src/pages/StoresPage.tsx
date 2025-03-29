@@ -3,6 +3,7 @@ import StoresProvider from "@core/api/Providers/StoresProvider.ts";
 import { useTranslation } from "react-i18next";
 import { Button, useDisclosure } from "@heroui/react";
 import { useEffect, useState } from "react";
+import type { FormValues } from "@/types/FormTypes.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import useSWR from "swr";
 import { StoresAddModalInputs } from "@components/Intranet/Stores/StoresAddForm.inputs.ts";
@@ -79,9 +80,20 @@ export default function StoresPage() {
         setOrderWay(orderWay);
     };
 
-    const handleStoresAddSubmit = async (formData: Record<string, string>) => {
+    const handleStoresAddSubmit = async (data: FormValues): Promise<void> => {
+        const payload = new FormData();
+
+        Object.keys(data).forEach((key) => {
+            const value = data[key];
+            if (value instanceof File) {
+                payload.append(key, value);
+            } else if (value !== null) {
+                payload.append(key, value);
+            }
+        });
+
         try {
-            await StoresProvider.createStore(formData);
+            await StoresProvider.createStore(payload);
             await mutate();
             setAlert({
                 title: t("stores.add.alert.success"),

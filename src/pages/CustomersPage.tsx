@@ -3,7 +3,7 @@ import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
 import { useTranslation } from "react-i18next";
 import { Button, useDisclosure } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { FieldDefinition } from "@/types/FormTypes.ts";
+import { FieldDefinition, FormValues } from "@/types/FormTypes.ts";
 import useSWR from "swr";
 import SearchInput from "@components/tools/SearchInput.tsx";
 import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
@@ -84,8 +84,8 @@ export default function CustomersPage() {
     };
 
     const handleCustomerAddSubmit = async (
-        formData: Record<string, string>,
-    ) => {
+        formData: FormValues,
+    ): Promise<void> => {
         try {
             formData.role_id = "4";
             await UsersProvider.createUser(formData);

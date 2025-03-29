@@ -19,3 +19,7 @@ export const chipRoleColor = (role: string) => {
             return "bg-light-100";
     }
 };
+
+export const InitialsLetter = (firstname: string, lastname: string) => {
+    return firstname.charAt(0) + lastname.charAt(0);
+};

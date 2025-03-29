@@ -1,9 +1,31 @@
-import { FieldDefinition } from "@/types/FormTypes.ts";
+import { FieldDefinition, FormDataValue } from "@/types/FormTypes.ts";
 import { validators } from "@/utils/InputForm.validators.ts";
 import i18n from "i18next";
 
 export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
     return [
+        {
+            type: "form-row",
+            visible: true,
+            elements: [
+                {
+                    name: "image",
+                    type: "file",
+                    label: i18n.t("carriers.add.inputs.image"),
+                    validators: [
+                        (file: FormDataValue) => {
+                            if (
+                                file instanceof File &&
+                                file.size > 2048 * 1024
+                            ) {
+                                return "L'image ne doit pas dépasser 2 Mo";
+                            }
+                            return null;
+                        },
+                    ],
+                },
+            ],
+        },
         {
             type: "form-title",
             visible: true,
@@ -19,7 +41,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: i18n.t("carriers.add.inputs.name"),
                     label: i18n.t("carriers.add.inputs.name"),
                     required: true,
-                    validators: [validators.name],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.name(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
             ],
         },
@@ -33,7 +60,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "example@mail.com",
                     label: i18n.t("carriers.add.inputs.email"),
                     required: true,
-                    validators: [validators.email],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.email(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
                 {
                     name: "phone",
@@ -41,7 +73,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "0601020304",
                     label: i18n.t("carriers.add.inputs.phone"),
                     required: true,
-                    validators: [validators.phone],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.phone(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
             ],
         },
@@ -55,7 +92,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: i18n.t("carriers.add.inputs.address"),
                     label: i18n.t("carriers.add.inputs.address"),
                     required: true,
-                    validators: [validators.address],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.address(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
             ],
         },
@@ -69,7 +111,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "75000",
                     label: i18n.t("carriers.add.inputs.zipcode"),
                     required: true,
-                    validators: [validators.zipcode],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.zipcode(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
                 {
                     name: "city",
@@ -77,7 +124,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "Paris",
                     label: i18n.t("carriers.add.inputs.city"),
                     required: true,
-                    validators: [validators.city],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.city(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
             ],
         },
@@ -100,7 +152,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                         "carriers.add.inputs.contact_person_lastname",
                     ),
                     required: true,
-                    validators: [validators.lastname],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.lastname(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
                 {
                     name: "contact_person_firstname",
@@ -112,7 +169,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                         "carriers.add.inputs.contact_person_firstname",
                     ),
                     required: true,
-                    validators: [validators.firstname],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.firstname(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
             ],
         },
@@ -126,7 +188,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "example@mail.com",
                     label: i18n.t("carriers.add.inputs.contact_person_email"),
                     required: true,
-                    validators: [validators.email],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.email(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
                 {
                     name: "contact_person_phone",
@@ -134,7 +201,12 @@ export const CarriersAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "0601020304",
                     label: i18n.t("carriers.add.inputs.contact_person_phone"),
                     required: true,
-                    validators: [validators.phone],
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.phone(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
             ],
         },

@@ -14,6 +14,14 @@
                     "required": "Store name is required",
                     "value": "Store name must contain at least 3 characters"
                 },
+                "firstname": {
+                    "required": "First name is required",
+                    "value": "First name must contain at least 3 characters"
+                },
+                "lastname": {
+                    "required": "Last name is required",
+                    "value": "Last name must contain at least 3 characters"
+                },
                 "address": {
                     "required": "Address is required"
                 },
@@ -45,14 +53,6 @@
                 },
                 "role": {
                     "required": "Role is required"
-                },
-                "firstname": {
-                    "required": "First name is required",
-                    "value": "First name must contain at least 3 characters"
-                },
-                "lastname": {
-                    "required": "Last name is required",
-                    "value": "Last name must contain at least 3 characters"
                 }
             }
         }
@@ -118,7 +118,8 @@
                 "role": {
                     "title": "Role",
                     "placeholder": "Select a role"
-                }
+                },
+                "image": "Add a profile image"
             },
             "alert": {
                 "success": "The user was successfully added.",
@@ -182,13 +183,148 @@
     },
     "categories": {},
     "suppliers": {
-        "_name": "Suppliers"
+        "_name": "Suppliers",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete supplier",
+                        "message": "Are you sure you want to delete the supplier: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    },
+                    "success": "The supplier was successfully deleted.",
+                    "error": "An error occurred while deleting the supplier."
+                }
+            },
+            "headers": {
+                "name": "Supplier",
+                "contact": "Contact",
+                "address": "Address",
+                "actions": "Actions"
+            },
+            "empty": "No suppliers found."
+        },
+        "add": {
+            "title": "Add a supplier",
+            "button": "Add",
+            "alert": {
+                "success": "The supplier was successfully added.",
+                "error": "An error occurred while adding the supplier."
+            },
+            "inputs": {
+                "title": "Company Information",
+                "subtitle": "Contact Information",
+                "name": "Company Name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal Code",
+                "city": "City",
+                "country": "Country",
+                "contact_person_firstname": "First Name",
+                "contact_person_lastname": "Last Name",
+                "contact_person_email": "Email",
+                "contact_person_phone": "Phone",
+                "image": "Add a logo"
+            }
+        }
     },
     "carriers": {
-        "_name": "Carriers"
+        "_name": "Carriers",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete carrier",
+                        "message": "Are you sure you want to delete the carrier: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    },
+                    "success": "The carrier was successfully deleted.",
+                    "error": "An error occurred while deleting the carrier."
+                }
+            },
+            "headers": {
+                "name": "Carrier",
+                "contact": "Contact",
+                "address": "Address",
+                "actions": "Actions"
+            },
+            "empty": "No carriers found."
+        },
+        "add": {
+            "title": "Add a carrier",
+            "button": "Add",
+            "alert": {
+                "success": "The carrier was successfully added.",
+                "error": "An error occurred while adding the carrier."
+            },
+            "inputs": {
+                "title": "Company Information",
+                "subtitle": "Contact Information",
+                "name": "Company Name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal Code",
+                "city": "City",
+                "country": "Country",
+                "contact_person_firstname": "First Name",
+                "contact_person_lastname": "Last Name",
+                "contact_person_email": "Email",
+                "contact_person_phone": "Phone",
+                "image": "Add a logo"
+            }
+        }
     },
     "stores": {
-        "_name": "Stores"
+        "_name": "Stores",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete store",
+                        "message": "Are you sure you want to delete the store: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    },
+                    "success": "The store was successfully deleted.",
+                    "error": "An error occurred while deleting the store."
+                }
+            },
+            "headers": {
+                "name": "Store",
+                "address": "Address",
+                "customers_count": "Number of customers",
+                "actions": "Actions"
+            },
+            "empty": "No stores found."
+        },
+        "add": {
+            "title": "Add a store",
+            "button": "Add",
+            "alert": {
+                "success": "The store was successfully added.",
+                "error": "An error occurred while adding the store."
+            },
+            "inputs": {
+                "name": "Store Name",
+                "address": "Address",
+                "zipcode": "Postal Code",
+                "city": "City",
+                "phone": "Phone",
+                "email": "Email",
+                "siret": "SIRET",
+                "image": "Add a logo"
+            }
+        }
     },
     "global": {
         "confirmation": "Confirmation"

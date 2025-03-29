@@ -6,7 +6,7 @@ export interface InputField {
     errorMessage?: string;
     required?: boolean;
     options?: { label: string; value: number }[];
-    validators?: ((value: string) => string | null)[];
+    validators?: ((value: FormDataValue) => string | null)[];
 }
 
 export interface FormRowDefinition {
@@ -26,6 +26,9 @@ export type FieldDefinition =
     | InputField
     | FormRowDefinition
     | FormTitleDefinition;
+
+export type FormDataValue = string | File | null;
+export type FormValues = Record<string, FormDataValue>;
 
 export function isFormRow(field: FieldDefinition): field is FormRowDefinition {
     return field.type === "form-row";

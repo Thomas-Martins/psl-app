@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+    Avatar,
     CircularProgress,
     Table,
     TableBody,
@@ -17,6 +18,7 @@ import { Action } from "@utils/Action.ts";
 import { useTranslation } from "react-i18next";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { InitialsLetter } from "@utils/utils.ts";
 
 interface UsersTableListProps {
     users: PaginatedUsers;
@@ -124,9 +126,21 @@ export default function UsersTableList({
                 >
                     {(user: User) => (
                         <TableRow key={user.id}>
-                            <TableCell>{user.identity}</TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>{user.phone}</TableCell>
+                            <TableCell className="flex flex-row items-center gap-2">
+                                <Avatar
+                                    src={user.image_url}
+                                    name={InitialsLetter(
+                                        user.firstname,
+                                        user.lastname,
+                                    )}
+                                />
+                                <div>
+                                    <h3 className="text-md">{user.identity}</h3>
+                                    <p className="text-sm text-light-400">
+                                        {user.email} - {user.phone}
+                                    </p>
+                                </div>
+                            </TableCell>
                             <TableCell>
                                 <RoleChip role={user.role} />
                             </TableCell>
