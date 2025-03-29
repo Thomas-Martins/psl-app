@@ -13,6 +13,8 @@ import { FieldDefinition } from "@/types/FormTypes.ts";
 import { SuppliersAddModalInputs } from "@components/Intranet/Suppliers/SuppliersAddForm.inputs.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useSort } from "@utils/hook/useSort.ts";
+import { usePagination } from "@utils/hook/usePagination.ts";
 
 const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
     const params = JSON.parse(key);
@@ -30,11 +32,10 @@ const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
 export default function SuppliersPage() {
     const { t } = useTranslation();
     const { setAlert } = useGlobalAlert();
+    const { orderBy, orderWay, handleSortChange } = useSort("name", "ASC");
+    const { currentPage, limit, handlePageChange, handleLimitChange } =
+        usePagination(1, 10);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const [orderBy, setOrderBy] = useState("name");
-    const [orderWay, setOrderWay] = useState<"ASC" | "DESC">("ASC");
     const [inputs, setInputs] = useState<FieldDefinition[]>([]);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [search, setSearch] = useState<string | null>(null);
@@ -56,29 +57,6 @@ export default function SuppliersPage() {
     } = useSWR<PaginatedSuppliers>(swrKey, fetchSuppliers, {
         keepPreviousData: true,
     });
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const handleLimitChange = (newLimit: number | "all") => {
-        const effectiveLimit =
-            newLimit === "all"
-                ? suppliers
-                    ? Number(suppliers.total)
-                    : 10
-                : newLimit;
-        setLimit(effectiveLimit);
-        setCurrentPage(1);
-    };
-
-    const handleSortChange = (
-        newOrderBy: string,
-        newOrderWay: "ASC" | "DESC",
-    ) => {
-        setOrderBy(newOrderBy);
-        setOrderWay(newOrderWay);
-    };
 
     const handleSupplierAddSubmit = async (data: FormValues): Promise<void> => {
         const payload = new FormData();
@@ -154,7 +132,12 @@ export default function SuppliersPage() {
                 totalPages={suppliers?.last_page || 1}
                 totalItems={suppliers?.total || 0}
                 itemsPerPage={limit}
-                onLimitChange={handleLimitChange}
+                onLimitChange={(newLimit) =>
+                    handleLimitChange(
+                        newLimit,
+                        suppliers ? Number(suppliers.total) : 10,
+                    )
+                }
             />
             <AddFormModal
                 title={t("suppliers.add.title")}

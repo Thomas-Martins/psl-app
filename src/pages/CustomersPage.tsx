@@ -13,6 +13,8 @@ import CustomersTableList from "@components/Intranet/Clients/CustomersTableList.
 import { CustomersAddModalInputs } from "@components/Intranet/Clients/CustomersAddForm.inputs.ts";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useSort } from "@utils/hook/useSort.ts";
+import { usePagination } from "@utils/hook/usePagination.ts";
 
 const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
     const params = JSON.parse(key);
@@ -34,14 +36,13 @@ export default function CustomersPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { setAlert } = useGlobalAlert();
+    const { orderBy, orderWay, handleSortChange } = useSort("identity", "ASC");
+    const { currentPage, limit, handlePageChange, handleLimitChange } =
+        usePagination(1, 10);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const [orderBy, setOrderBy] = useState("identity");
-    const [orderWay, setOrderWay] = useState<"ASC" | "DESC">("ASC");
     const [search, setSearch] = useState<string | null>(null);
-
     const [inputs, setInputs] = useState<FieldDefinition[]>([]);
+
     const swrKey = JSON.stringify({
         key: "customers",
         page: currentPage,
@@ -59,29 +60,6 @@ export default function CustomersPage() {
     } = useSWR<PaginatedCustomers>(swrKey, fetchCustomers, {
         keepPreviousData: true,
     });
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const handleLimitChange = (newLimit: number | "all") => {
-        const effectiveLimit =
-            newLimit === "all"
-                ? customers
-                    ? Number(customers.total)
-                    : 10
-                : newLimit;
-        setLimit(effectiveLimit);
-        setCurrentPage(1);
-    };
-
-    const handleSortChange = (
-        newOrderBy: string,
-        newOrderWay: "ASC" | "DESC",
-    ) => {
-        setOrderBy(newOrderBy);
-        setOrderWay(newOrderWay);
-    };
 
     const handleCustomerAddSubmit = async (
         formData: FormValues,
@@ -157,7 +135,12 @@ export default function CustomersPage() {
                 totalPages={customers?.last_page || 1}
                 totalItems={customers?.total || 0}
                 itemsPerPage={limit}
-                onLimitChange={handleLimitChange}
+                onLimitChange={(newLimit) =>
+                    handleLimitChange(
+                        newLimit,
+                        customers ? Number(customers.total) : 10,
+                    )
+                }
             />
 
             <AddFormModal
