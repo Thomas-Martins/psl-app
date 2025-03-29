@@ -13,6 +13,8 @@ import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import StoresTableList from "@components/Intranet/Stores/StoresTableList.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useSort } from "@utils/hook/useSort.ts";
+import { usePagination } from "@utils/hook/usePagination.ts";
 
 const fetchStores = async (key: string): Promise<PaginatedStores> => {
     const params = JSON.parse(key);
@@ -33,13 +35,11 @@ export default function StoresPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { setAlert } = useGlobalAlert();
+    const { orderBy, orderWay, handleSortChange } = useSort("name", "ASC");
+    const { currentPage, limit, handlePageChange, handleLimitChange } =
+        usePagination(1, 10);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const [orderBy, setOrderBy] = useState("name");
-    const [orderWay, setOrderWay] = useState<"ASC" | "DESC">("ASC");
     const [search, setSearch] = useState<string | null>(null);
-
     const [inputs, setInputs] = useState<FieldDefinition[]>([]);
 
     const swrKey = JSON.stringify({
@@ -59,26 +59,6 @@ export default function StoresPage() {
     } = useSWR<PaginatedStores>(swrKey, fetchStores, {
         keepPreviousData: true,
     });
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const handleLimitChange = (newLimit: number | "all") => {
-        const effectiveLimit =
-            newLimit === "all"
-                ? stores
-                    ? Number(stores.total)
-                    : 10
-                : newLimit;
-        setLimit(effectiveLimit);
-        setCurrentPage(1);
-    };
-
-    const handleSortChange = (orderBy: string, orderWay: "ASC" | "DESC") => {
-        setOrderBy(orderBy);
-        setOrderWay(orderWay);
-    };
 
     const handleStoresAddSubmit = async (data: FormValues): Promise<void> => {
         const payload = new FormData();
@@ -161,7 +141,12 @@ export default function StoresPage() {
                 totalPages={stores?.last_page || 1}
                 totalItems={stores?.total || 0}
                 itemsPerPage={limit}
-                onLimitChange={handleLimitChange}
+                onLimitChange={(newLimit) =>
+                    handleLimitChange(
+                        newLimit,
+                        stores ? Number(stores.total) : 10,
+                    )
+                }
             />
 
             <AddFormModal
