@@ -11,11 +11,12 @@ import CarriersPage from "@pages/CarriersPage.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import StoresPage from "@pages/StoresPage.tsx";
+import { Role } from "@/types/Role.ts";
 
 export default function AppRoutes() {
     const user = useSelector((state: RootState) => state.user);
 
-    const isAuthenticated = Boolean(user && user.role && user.role !== "");
+    const isAuthenticated = Boolean(user && user.role);
 
     return (
         <Routes>
@@ -23,7 +24,7 @@ export default function AppRoutes() {
                 path="/login"
                 element={
                     isAuthenticated ? (
-                        user?.role === "client" ? (
+                        user?.role === Role.CLIENT ? (
                             <Navigate to="/shop" />
                         ) : (
                             <Navigate to="/commands" />
@@ -37,7 +38,7 @@ export default function AppRoutes() {
             <Route
                 path="/shop"
                 element={
-                    user?.role === "client" ? (
+                    user?.role === Role.CLIENT ? (
                         <ShopLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -48,7 +49,7 @@ export default function AppRoutes() {
             <Route
                 path="/*"
                 element={
-                    isAuthenticated && user?.role !== "client" ? (
+                    isAuthenticated && user?.role !== Role.CLIENT ? (
                         <IntranetLayout />
                     ) : (
                         <Navigate to="/login" />

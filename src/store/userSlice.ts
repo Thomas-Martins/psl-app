@@ -1,5 +1,6 @@
 // src/store/userSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Role } from "@/types/Role.ts";
 
 interface UserState {
     id: string;
@@ -10,7 +11,7 @@ interface UserState {
     address: string;
     zipcode: string;
     city: string;
-    role: string;
+    role: Role | null;
 }
 
 const initialState: UserState = {
@@ -22,7 +23,7 @@ const initialState: UserState = {
     address: "",
     zipcode: "",
     city: "",
-    role: "",
+    role: null,
 };
 
 export const userSlice = createSlice({
@@ -39,7 +40,7 @@ export const userSlice = createSlice({
             address: "",
             zipcode: "",
             city: "",
-            role: "",
+            role: null,
         }),
     },
 });

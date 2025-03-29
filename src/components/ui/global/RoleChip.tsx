@@ -1,8 +1,9 @@
 import { Chip } from "@heroui/react";
+import { Role } from "@/types/Role.ts";
 import { chipRoleColor, roleName } from "@utils/utils.ts";
 
 interface RoleChipProps {
-    role: string;
+    role: Role;
 }
 export default function RoleChip({ role }: RoleChipProps) {
     return (

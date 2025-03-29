@@ -1,13 +1,19 @@
 import { FieldDefinition, FormDataValue } from "@/types/FormTypes.ts";
 import RolesProvider from "@core/api/Providers/RolesProvider.ts";
 import { roleName } from "@utils/utils.ts";
+import { Role } from "@/types/Role.ts";
 import { validators } from "@/utils/InputForm.validators.ts";
 import i18n from "i18next";
+
+export interface RoleData {
+    id: number;
+    name: Role;
+}
 
 export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
     try {
         const response = await RolesProvider.getRoles();
-        const rolesData = response.data as { id: number; name: string }[];
+        const rolesData = response.data as RoleData[];
         const roleOptions = rolesData.map((role) => ({
             label: roleName(role.name) ?? i18n.t("users.add.unknown"),
             value: role.id,
