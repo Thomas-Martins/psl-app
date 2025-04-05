@@ -11,8 +11,8 @@
         "errors": {
             "add": {
                 "name": {
-                    "required": "Store name is required",
-                    "value": "Store name must contain at least 3 characters"
+                    "required": "Name is required",
+                    "value": "Name must contain at least 3 characters"
                 },
                 "firstname": {
                     "required": "First name is required",
@@ -42,8 +42,16 @@
                     "value": "SIRET must contain 14 digits",
                     "unique": "SIRET already exists for another store"
                 },
-                "store": { "required": "Related store is required" },
-                "role": { "required": "Role is required" }
+                "store": {
+                    "required": "Related store is required"
+                },
+                "role": {
+                    "required": "Role is required"
+                },
+                "stock": {
+                    "required": "Quantity is required",
+                    "value": "Quantity must be a positive number"
+                }
             }
         }
     },

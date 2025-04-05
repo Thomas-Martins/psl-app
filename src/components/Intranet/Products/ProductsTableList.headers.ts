@@ -9,20 +9,20 @@ export const ProductsTableListHeaders = (t: TFunction) => [
     {
         key: "reference",
         label: t("products.table.headers.reference"),
-        sortable: false,
+        sortable: true,
     },
     {
         key: "location",
         label: t("products.table.headers.location"),
-        sortable: false,
+        sortable: true,
     },
     {
-        key: "quantité",
+        key: "stock",
         label: t("products.table.headers.stock"),
         sortable: false,
     },
     {
-        key: "prix",
+        key: "price",
         label: t("products.table.headers.price"),
         sortable: false,
     },

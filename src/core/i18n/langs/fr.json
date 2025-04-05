@@ -11,8 +11,8 @@
         "errors": {
             "add": {
                 "name": {
-                    "required":"Le nom du point de vente est obligatoire",
-                    "value": "Le nom du point de vente doit contenir au moins 3 caractères"
+                    "required":"Le nom est obligatoire",
+                    "value": "Le nom doit contenir au moins 3 caractères"
                 },
                 "firstname": {
                     "required": "Le prénom est obligatoire",
@@ -53,6 +53,10 @@
                 },
                 "role": {
                     "required": "Le rôle est obligatoire"
+                },
+                "stock": {
+                    "required": "La quantité est obligatoire",
+                    "value": "La quantité doit être un nombre entier positif"
                 }
             }
         }

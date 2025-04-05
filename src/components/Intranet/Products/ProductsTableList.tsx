@@ -183,7 +183,7 @@ export default function ProductsTableList({
                                         },
                                         {
                                             label: t(
-                                                "carriers.table.actions.edit",
+                                                "products.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
@@ -194,7 +194,7 @@ export default function ProductsTableList({
                                         },
                                         {
                                             label: t(
-                                                "carriers.table.actions.delete.title",
+                                                "products.table.actions.delete.title",
                                             ),
                                             variant: "danger",
                                             onClick: Action.create(async () => {

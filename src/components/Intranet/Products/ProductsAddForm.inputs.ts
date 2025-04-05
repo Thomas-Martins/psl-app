@@ -112,10 +112,16 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
                 },
                 {
                     name: "stock",
-                    type: "text",
+                    type: "number",
                     placeholder: i18n.t("products.add.inputs.stock"),
                     label: i18n.t("products.add.inputs.stock"),
                     required: true,
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.stock(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
             ],
         },
@@ -129,7 +135,6 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "REF-XXXX-XXXX",
                     label: i18n.t("products.add.inputs.reference"),
                     required: true,
-                    options: suppliersOptions,
                 },
                 {
                     name: "location",
