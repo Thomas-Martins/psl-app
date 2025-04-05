@@ -51,6 +51,18 @@
                 "stock": {
                     "required": "Quantity is required",
                     "value": "Quantity must be a positive number"
+                },
+                "price": {
+                    "required": "Unit price is required",
+                    "value": "Unit price must be a positive number"
+                },
+                "reference": {
+                    "required": "Reference is required",
+                    "value": "Reference must be in the format 'REF-1234-1234'"
+                },
+                "location": {
+                    "required": "Location is required",
+                    "value": "Location must be in the format 'AO1-E01'"
                 }
             }
         }

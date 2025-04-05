@@ -135,6 +135,12 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "REF-XXXX-XXXX",
                     label: i18n.t("products.add.inputs.reference"),
                     required: true,
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.reference(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
                 {
                     name: "location",
@@ -142,6 +148,12 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "A12-E15",
                     label: i18n.t("products.add.inputs.location"),
                     required: true,
+                    validators: [
+                        (value: FormDataValue) =>
+                            validators.location(
+                                typeof value === "string" ? value : "",
+                            ),
+                    ],
                 },
                 {
                     name: "price",
@@ -149,6 +161,21 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
                     placeholder: "Prix",
                     label: i18n.t("products.add.inputs.price"),
                     required: true,
+                    validators: [
+                        (value: FormDataValue) => {
+                            if (!value)
+                                return i18n.t(
+                                    "generics.errors.add.price.required",
+                                );
+                            if (typeof value !== "string") return null;
+                            const priceRegex = /^\d+(\.\d{1,2})?$/;
+                            if (!priceRegex.test(value))
+                                return i18n.t(
+                                    "generics.errors.add.price.value",
+                                );
+                            return null;
+                        },
+                    ],
                 },
             ],
         },

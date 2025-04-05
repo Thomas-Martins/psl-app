@@ -57,6 +57,18 @@
                 "stock": {
                     "required": "La quantité est obligatoire",
                     "value": "La quantité doit être un nombre entier positif"
+                },
+                "price": {
+                    "required": "Le prix est obligatoire",
+                    "value": "Le prix doit être un nombre positif"
+                },
+                "reference": {
+                    "required": "La référence est obligatoire",
+                    "value": "La référence doit être dans le format suivant : 'REF-1234-1234'"
+                },
+                "location": {
+                    "required": "L'emplacement est obligatoire",
+                    "value": "L'emplacement doit être dans le format suivant : 'A01-E01'"
                 }
             }
         }
