@@ -84,16 +84,16 @@ export default function PaginateFooter({
                     selectedKeys={[selectedLimit]}
                     onSelectionChange={handleSelectChange}
                 >
-                    <SelectItem key="10" value="10">
+                    <SelectItem key="10" data-value="10">
                         10
                     </SelectItem>
-                    <SelectItem key="50" value="50">
+                    <SelectItem key="50" data-value="50">
                         50
                     </SelectItem>
-                    <SelectItem key="100" value="100">
+                    <SelectItem key="100" data-value="100">
                         100
                     </SelectItem>
-                    <SelectItem key="all" value="all">
+                    <SelectItem key="all" data-value="all">
                         {t("generics.all")}
                     </SelectItem>
                 </Select>

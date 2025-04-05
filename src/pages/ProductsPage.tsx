@@ -1,23 +1,23 @@
-import { PaginatedCarriers } from "@/types/Carriers.ts";
-import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
-import { Button, useDisclosure } from "@heroui/react";
-import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
-import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
-import { FieldDefinition, FormValues } from "@/types/FormTypes.ts";
-import useSWR from "swr";
-import CarriersTableList from "@components/Intranet/Carriers/CarriersTableList.tsx";
-import PaginateFooter from "@components/tools/PaginateFooter.tsx";
-import { CarriersAddFormInputs } from "@components/Intranet/Carriers/CarriersAddForm.inputs.ts";
-import SearchInput from "@components/tools/SearchInput.tsx";
+import { Button, useDisclosure } from "@heroui/react";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
+import { PaginatedProducts } from "@/types/Products.ts";
+import ProductsProvider from "@core/api/Providers/ProductsProvider.ts";
+import { useEffect, useState } from "react";
+import { FieldDefinition, FormValues } from "@/types/FormTypes.ts";
+import useSWR from "swr";
+import { ProductsAddFormInputs } from "@components/Intranet/Products/ProductsAddForm.inputs.ts";
+import SearchInput from "@components/tools/SearchInput.tsx";
+import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
+import PaginateFooter from "@components/tools/PaginateFooter.tsx";
+import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
+import ProductsTableList from "@components/Intranet/Products/ProductsTableList.tsx";
 
-const fetchCarriers = async (key: string): Promise<PaginatedCarriers> => {
+const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
     const params = JSON.parse(key);
-    const response = await CarriersProvider.getCarriers({
+    const response = await ProductsProvider.getProducts({
         paginate: true,
         page: params.page,
         limit: params.limit,
@@ -27,8 +27,7 @@ const fetchCarriers = async (key: string): Promise<PaginatedCarriers> => {
     });
     return response.data;
 };
-
-export default function CarriersPage() {
+export default function ProductsPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { setAlert } = useGlobalAlert();
@@ -40,7 +39,7 @@ export default function CarriersPage() {
     const [search, setSearch] = useState<string | null>(null);
 
     const swrKey = JSON.stringify({
-        key: "carriers",
+        key: "products",
         page: currentPage,
         limit,
         orderBy,
@@ -49,15 +48,15 @@ export default function CarriersPage() {
     });
 
     const {
-        data: carriers,
+        data: products,
         error,
         isLoading,
         mutate,
-    } = useSWR<PaginatedCarriers>(swrKey, fetchCarriers, {
+    } = useSWR<PaginatedProducts>(swrKey, fetchProducts, {
         keepPreviousData: true,
     });
 
-    const handleCarrierAddSubmit = async (data: FormValues): Promise<void> => {
+    const handleProductsAddSubmit = async (data: FormValues): Promise<void> => {
         const payload = new FormData();
 
         Object.keys(data).forEach((key) => {
@@ -70,17 +69,17 @@ export default function CarriersPage() {
         });
 
         try {
-            await CarriersProvider.createCarrier(payload);
+            await ProductsProvider.createProduct(payload);
             await mutate();
             onOpenChange();
             setAlert({
-                title: t("carriers.add.alert.success"),
+                title: t("products.add.alert.success"),
                 type: "success",
             });
         } catch (e) {
             console.error(e);
             setAlert({
-                title: t("carriers.add.alert.error"),
+                title: t("products.add.alert.error"),
                 type: "danger",
             });
         }
@@ -88,12 +87,13 @@ export default function CarriersPage() {
 
     useEffect(() => {
         (async () => {
-            const fields = await CarriersAddFormInputs();
+            const fields = await ProductsAddFormInputs();
             setInputs(fields);
         })();
     }, []);
 
     if (error) return <div>{t("error.message")}</div>;
+
     return (
         <div className="space-y-5">
             <div className="flex items-center justify-between">
@@ -109,9 +109,9 @@ export default function CarriersPage() {
                 </Button>
             </div>
 
-            <CarriersTableList
-                carriers={
-                    carriers || {
+            <ProductsTableList
+                products={
+                    products || {
                         current_page: 1,
                         data: [],
                         per_page: 10,
@@ -127,25 +127,25 @@ export default function CarriersPage() {
             />
 
             <PaginateFooter
-                totalPages={carriers?.last_page || 1}
+                totalPages={products?.last_page || 1}
                 currentPage={currentPage}
                 handlePageChange={handlePageChange}
                 itemsPerPage={limit}
-                totalItems={carriers?.total || 0}
+                totalItems={products?.total || 0}
                 onLimitChange={(newLimit) =>
                     handleLimitChange(
                         newLimit,
-                        carriers ? Number(carriers.total) : 10,
+                        products ? Number(products.total) : 10,
                     )
                 }
             />
 
             <AddFormModal
-                title={t("carriers.add.title")}
+                title={t("products.add.title")}
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 fields={inputs}
-                onSubmit={handleCarrierAddSubmit}
+                onSubmit={handleProductsAddSubmit}
             />
         </div>
     );

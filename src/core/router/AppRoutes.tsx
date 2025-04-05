@@ -4,7 +4,7 @@ import ShopLayout from "@layouts/ShopLayout/ShopLayout.tsx";
 import IntranetLayout from "@layouts/IntranetLayout/IntranetLayout.tsx";
 import CommandsPage from "@pages/CommandsPage.tsx";
 import CustomersPage from "@pages/CustomersPage.tsx";
-import StocksPage from "@pages/StocksPage.tsx";
+import ProductsPage from "@pages/ProductsPage.tsx";
 import UsersPage from "@pages/UsersPage.tsx";
 import SuppliersPage from "@pages/SuppliersPage.tsx";
 import CarriersPage from "@pages/CarriersPage.tsx";
@@ -58,7 +58,7 @@ export default function AppRoutes() {
             >
                 <Route path="commands" element={<CommandsPage />} />
                 <Route path="clients" element={<CustomersPage />} />
-                <Route path="stocks" element={<StocksPage />} />
+                <Route path="stocks" element={<ProductsPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="stores" element={<StoresPage />} />
                 <Route path="suppliers" element={<SuppliersPage />} />

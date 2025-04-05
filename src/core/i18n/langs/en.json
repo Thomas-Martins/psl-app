@@ -22,19 +22,13 @@
                     "required": "Last name is required",
                     "value": "Last name must contain at least 3 characters"
                 },
-                "address": {
-                    "required": "Address is required"
-                },
+                "address": { "required": "Address is required" },
                 "zipcode": {
                     "required": "Postal code is required",
                     "value": "Postal code must contain only 5 digits"
                 },
-                "city": {
-                    "required": "City is required"
-                },
-                "country": {
-                    "required": "Country is required"
-                },
+                "city": { "required": "City is required" },
+                "country": { "required": "Country is required" },
                 "phone": {
                     "required": "Phone number is required",
                     "value": "Phone number must contain 10 digits"
@@ -48,18 +42,12 @@
                     "value": "SIRET must contain 14 digits",
                     "unique": "SIRET already exists for another store"
                 },
-                "store": {
-                    "required": "Related store is required"
-                },
-                "role": {
-                    "required": "Role is required"
-                }
+                "store": { "required": "Related store is required" },
+                "role": { "required": "Role is required" }
             }
         }
     },
-    "orders": {
-        "_name": "Orders"
-    },
+    "orders": { "_name": "Orders" },
     "errors": {
         "login": {
             "invalid": "The entered credentials are invalid.",
@@ -107,6 +95,10 @@
             "title": "Add a user",
             "button": "Add",
             "unknown": "Unknown",
+            "alert": {
+                "success": "The user was successfully added.",
+                "error": "An error occurred while adding the user."
+            },
             "inputs": {
                 "firstname": "First name",
                 "lastname": "Last name",
@@ -115,15 +107,8 @@
                 "address": "Address",
                 "zipcode": "Postal code",
                 "city": "City",
-                "role": {
-                    "title": "Role",
-                    "placeholder": "Select a role"
-                },
+                "role": { "title": "Role", "placeholder": "Select a role" },
                 "image": "Add a profile image"
-            },
-            "alert": {
-                "success": "The user was successfully added.",
-                "error": "An error occurred while adding the user."
             }
         }
     },
@@ -159,6 +144,10 @@
             "title": "Add a customer",
             "button": "Add",
             "unknown": "Unknown",
+            "alert": {
+                "success": "The customer was successfully added.",
+                "error": "An error occurred while adding the customer."
+            },
             "inputs": {
                 "lastname": "Last name",
                 "firstname": "First name",
@@ -167,19 +156,63 @@
                 "address": "Address",
                 "zipcode": "Postal code",
                 "city": "City",
-                "store": {
-                    "title": "Store",
-                    "placeholder": "Select a store"
-                }
-            },
-            "alert": {
-                "success": "The customer was successfully added.",
-                "error": "An error occurred while adding the customer."
+                "store": { "title": "Store", "placeholder": "Select a store" }
             }
         }
     },
     "products": {
-        "_name": "Inventory"
+        "_name": "Inventory",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete product",
+                        "message": "Are you sure you want to delete the product: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    },
+                    "success": "The product was successfully deleted.",
+                    "error": "An error occurred while deleting the product."
+                }
+            },
+            "headers": {
+                "name": "Product",
+                "reference": "Reference",
+                "location": "Location",
+                "stock": "Quantity",
+                "price": "Price",
+                "actions": "Actions"
+            },
+            "empty": "No products found."
+        },
+        "add": {
+            "title": "Add a product",
+            "button": "Add",
+            "unknown": "Unknown",
+            "alert": {
+                "success": "The product was successfully added.",
+                "error": "An error occurred while adding the product."
+            },
+            "inputs": {
+                "name": "Name",
+                "description": "Description",
+                "reference": "Reference",
+                "location": "Location",
+                "stock": "Quantity",
+                "price": "Unit price",
+                "category": {
+                    "title": "Category",
+                    "placeholder": "Select category"
+                },
+                "supplier": {
+                    "title": "Supplier",
+                    "placeholder": "Select supplier"
+                },
+                "image": "Add a product image"
+            }
+        }
     },
     "categories": {},
     "suppliers": {
@@ -326,7 +359,5 @@
             }
         }
     },
-    "global": {
-        "confirmation": "Confirmation"
-    }
+    "global": { "confirmation": "Confirmation" }
 }

@@ -1,9 +1,13 @@
-import { Customer, PaginatedCustomers } from "@/types/Customers.ts";
+import { PaginatedProducts, Product } from "@/types/Products.ts";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { ProductsTableListHeaders } from "@components/Intranet/Products/ProductsTableList.headers.ts";
+import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
+import ProductsProvider from "@core/api/Providers/ProductsProvider.ts";
 import {
     CircularProgress,
+    Image,
     Table,
     TableBody,
     TableCell,
@@ -13,28 +17,27 @@ import {
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
-import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
-import { CustomersTableListHeaders } from "@components/Intranet/Clients/CustomersTableList.headers.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
 
-interface CustomersTableListProps {
-    customers: PaginatedCustomers;
+interface ProductsTableListProps {
+    products: PaginatedProducts;
     onSortChange: (newOrderBy: string, newOrderWay: "ASC" | "DESC") => void;
     orderBy: string;
     orderWay: "ASC" | "DESC";
     isLoading: boolean;
-    mutate: () => Promise<PaginatedCustomers | undefined>;
+    mutate: () => Promise<PaginatedProducts | undefined>;
 }
-export default function CustomersTableList({
-    customers,
+
+export default function ProductsTableList({
+    products,
     onSortChange,
     orderBy,
     orderWay,
     isLoading,
     mutate,
-}: CustomersTableListProps) {
+}: ProductsTableListProps) {
     const { t } = useTranslation();
-    const headers = CustomersTableListHeaders(t);
+    const headers = ProductsTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
@@ -64,40 +67,31 @@ export default function CustomersTableList({
         onSortChange(newOrderBy, newOrderWay);
     };
 
-    const handleDeleteCustomer = async (customer: Customer) => {
+    const handleDeleteProduct = async (product: Product) => {
         try {
-            await CustomersProvider.deleteCustomer(customer.id);
+            await ProductsProvider.deleteProduct(product.id);
             await mutate();
             setAlert({
-                title: t("customer.table.actions.delete.success"),
                 type: "success",
-                hideIcon: false,
+                title: t("products.table.actions.delete.success"),
             });
-        } catch (e) {
-            console.error(e);
+        } catch (error) {
+            console.error(error);
             setAlert({
-                title: t("customer.table.actions.delete.error"),
                 type: "danger",
-                hideIcon: false,
+                title: t("products.table.actions.delete.error"),
             });
         }
     };
 
     const loadingState =
-        isLoading || customers.data.length === 0 ? "loading" : "idle";
-
-    useEffect(() => {
-        setSortDescriptor({
-            column: orderBy,
-            direction: orderWay === "ASC" ? "ascending" : "descending",
-        });
-    }, [orderBy, orderWay]);
+        isLoading || products.data.length === 0 ? "loading" : "idle";
 
     return (
         <div>
             <Table
                 removeWrapper
-                aria-label="suppliers-table-list"
+                aria-label="products-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
             >
@@ -112,7 +106,7 @@ export default function CustomersTableList({
                     ))}
                 </TableHeader>
                 <TableBody
-                    items={customers.data}
+                    items={products.data}
                     loadingContent={
                         <CircularProgress
                             aria-label="loader"
@@ -121,85 +115,106 @@ export default function CustomersTableList({
                     }
                     loadingState={loadingState}
                 >
-                    {customers.data.map((customer) => (
-                        <TableRow key={customer.id}>
-                            <TableCell>
-                                <h3 className="text-md">
-                                    {customer.lastname +
-                                        " " +
-                                        customer.firstname}
-                                </h3>
-                                <p className="text-sm text-light-400">
-                                    {customer.email} - {customer.phone}
-                                </p>
+                    {products.data.map((product) => (
+                        <TableRow
+                            key={product.id}
+                            className={"hover:bg-light-50 cursor-pointer"}
+                        >
+                            <TableCell width="60%">
+                                <div className={"flex gap-4"}>
+                                    {product.image_url ? (
+                                        <Image
+                                            src={product.image_url}
+                                            width={80}
+                                            height={80}
+                                            className={"object-cover"}
+                                        />
+                                    ) : (
+                                        <div
+                                            className={
+                                                "bg-light-200 min-h-20 min-w-20 rounded-lg flex justify-center items-center"
+                                            }
+                                        >
+                                            <ImageIcon
+                                                color={"white"}
+                                                size={30}
+                                            />
+                                        </div>
+                                    )}
+                                    <div>
+                                        <h3 className="text-md">
+                                            {product.name}
+                                            {" - "}
+                                            <span>{product.category.name}</span>
+                                        </h3>
+                                        <p className="text-sm text-light-400">
+                                            {product.description}
+                                        </p>
+                                    </div>
+                                </div>
                             </TableCell>
                             <TableCell>
-                                <h3 className="text-md">
-                                    {customer.store.name}
-                                </h3>
+                                <h3 className="text-md">{product.reference}</h3>
                             </TableCell>
                             <TableCell>
-                                <h3 className="text-md">{customer.address}</h3>
-                                <p className="text-sm text-light-400">
-                                    {customer.zipcode}, {customer.city}
-                                </p>
+                                <h3 className="text-md">{product.location}</h3>
                             </TableCell>
                             <TableCell>
-                                <p>{customer.commands_count}</p>
+                                <h3 className="text-md">{product.stock}</h3>
+                            </TableCell>
+                            <TableCell>
+                                <h3 className="text-md">{product.price} €</h3>
                             </TableCell>
                             <TableCell>
                                 <ThreeDotMenu
                                     actions={[
                                         {
                                             label: t(
-                                                "customer.table.actions.view",
+                                                "products.table.actions.view",
                                             ),
                                             variant: "default",
                                             onClick: async () => {
                                                 const { data } =
-                                                    await CustomersProvider.getCustomer(
-                                                        customer.id,
+                                                    await ProductsProvider.getProduct(
+                                                        product.id,
                                                     );
                                                 console.log("Voir", data);
                                             },
                                         },
                                         {
                                             label: t(
-                                                "customer.table.actions.edit",
+                                                "carriers.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
                                                 console.log(
                                                     "Modifier",
-                                                    customer.id,
+                                                    product.id,
                                                 ),
                                         },
                                         {
                                             label: t(
-                                                "customer.table.actions.delete.title",
+                                                "carriers.table.actions.delete.title",
                                             ),
                                             variant: "danger",
                                             onClick: Action.create(async () => {
-                                                await handleDeleteCustomer(
-                                                    customer,
+                                                await handleDeleteProduct(
+                                                    product,
                                                 );
                                             })
                                                 .confirm(
                                                     t(
-                                                        "customer.table.actions.delete.dialog.title",
+                                                        "products.table.actions.delete.dialog.title",
                                                     ),
                                                     t(
-                                                        "customer.table.actions.delete.dialog.message",
+                                                        "products.table.actions.delete.dialog.message",
                                                         {
-                                                            name:
-                                                                customer.firstname +
-                                                                " " +
-                                                                customer.lastname,
+                                                            name: product.name,
                                                         },
                                                     ),
                                                     "danger",
                                                     t(
-                                                        "customer.table.actions.delete.dialog.confirm",
+                                                        "products.table.actions.delete.dialog.confirm",
                                                     ),
                                                     t("generics.cancel"),
                                                 )

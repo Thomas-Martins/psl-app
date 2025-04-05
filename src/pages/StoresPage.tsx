@@ -68,7 +68,7 @@ export default function StoresPage() {
             if (value instanceof File) {
                 payload.append(key, value);
             } else if (value !== null) {
-                payload.append(key, value);
+                payload.append(key, value.toString());
             }
         });
 
