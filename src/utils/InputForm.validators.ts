@@ -7,7 +7,7 @@ export const validators: {
     name: (value) => {
         if (!value) return i18n.t("generics.errors.add.name.required");
         if (typeof value !== "string") return null;
-        if (value.length < 3) return i18n.t("generics.errors.name.value");
+        if (value.length < 3) return i18n.t("generics.errors.add.name.value");
         return null;
     },
     firstname: (value) => {
@@ -74,6 +74,30 @@ export const validators: {
     role: (value) => {
         if (!value) return i18n.t("generics.errors.add.role.required");
         if (typeof value !== "string") return null;
+        return null;
+    },
+    stock: (value) => {
+        if (!value) return i18n.t("generics.errors.add.stock.required");
+        const numberRegex = /^[0-9]+$/;
+        if (typeof value !== "string") return null;
+        if (!numberRegex.test(value))
+            return i18n.t("generics.errors.add.stock.value");
+        return null;
+    },
+    reference: (value) => {
+        if (!value) return i18n.t("generics.errors.add.reference.required");
+        const referenceRegex = /^REF-[0-9]{4}-[0-9]{4}$/;
+        if (typeof value !== "string") return null;
+        if (!referenceRegex.test(value))
+            return i18n.t("generics.errors.add.reference.value");
+        return null;
+    },
+    location: (value) => {
+        if (!value) return i18n.t("generics.errors.add.location.required");
+        const locationRegex = /^A[0-9]{2}-E[0-9]{2}$/;
+        if (typeof value !== "string") return null;
+        if (!locationRegex.test(value))
+            return i18n.t("generics.errors.add.location.value");
         return null;
     },
 };

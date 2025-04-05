@@ -30,7 +30,7 @@ export default function ToggleLanguage() {
                 onChange={(event) => handleChange(event.target.value)}
             >
                 {languages.map((lang) => (
-                    <SelectItem key={lang} value={lang}>
+                    <SelectItem key={lang} data-value={lang}>
                         {lang.toUpperCase()}
                     </SelectItem>
                 ))}

@@ -15,7 +15,6 @@ export interface FormRowDefinition {
     elements: InputField[];
 }
 
-// Nouveau type pour un titre de formulaire
 export interface FormTitleDefinition {
     type: "form-title";
     visible: boolean;
@@ -27,7 +26,7 @@ export type FieldDefinition =
     | FormRowDefinition
     | FormTitleDefinition;
 
-export type FormDataValue = string | File | null;
+export type FormDataValue = string | File | number | null;
 export type FormValues = Record<string, FormDataValue>;
 
 export function isFormRow(field: FieldDefinition): field is FormRowDefinition {

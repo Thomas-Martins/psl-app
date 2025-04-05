@@ -11,8 +11,8 @@
         "errors": {
             "add": {
                 "name": {
-                    "required":"Le nom du point de vente est obligatoire",
-                    "value": "Le nom du point de vente doit contenir au moins 3 caractères"
+                    "required":"Le nom est obligatoire",
+                    "value": "Le nom doit contenir au moins 3 caractères"
                 },
                 "firstname": {
                     "required": "Le prénom est obligatoire",
@@ -53,6 +53,22 @@
                 },
                 "role": {
                     "required": "Le rôle est obligatoire"
+                },
+                "stock": {
+                    "required": "La quantité est obligatoire",
+                    "value": "La quantité doit être un nombre entier positif"
+                },
+                "price": {
+                    "required": "Le prix est obligatoire",
+                    "value": "Le prix doit être un nombre positif"
+                },
+                "reference": {
+                    "required": "La référence est obligatoire",
+                    "value": "La référence doit être dans le format suivant : 'REF-1234-1234'"
+                },
+                "location": {
+                    "required": "L'emplacement est obligatoire",
+                    "value": "L'emplacement doit être dans le format suivant : 'A01-E01'"
                 }
             }
         }
@@ -179,7 +195,58 @@
         }
     },
     "products" : {
-        "_name": "Stocks"
+        "_name": "Stocks",
+        "table": {
+            "actions": {
+                "view": "Voir",
+                "edit": "Modifier",
+                "delete": {
+                    "title":"Supprimer",
+                    "dialog": {
+                        "title": "Supprimer le produit",
+                        "message": "Êtes-vous sûr de vouloir supprimer le produit : <b>{{name}}</b> ? Cette action est irréversible.",
+                        "confirm": "Supprimer"
+                    },
+                    "success": "Le produit a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression du produit."
+                }
+            },
+            "headers": {
+                "name": "Produit",
+                "reference": "Référence",
+                "location": "Emplacement",
+                "stock": "Quantité",
+                "price": "Prix",
+                "actions": "Actions"
+            },
+            "empty": "Aucun produits trouvés."
+        },
+        "add": {
+            "title": "Ajouter un produit",
+            "button": "Ajouter",
+            "unknown": "Inconnu",
+            "alert": {
+                "success": "Le produit a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout du produit."
+            },
+            "inputs": {
+                "name": "Nom",
+                "description": "Description",
+                "reference": "Référence",
+                "location": "Emplacement",
+                "stock": "Quantités",
+                "price": "Prix unitaire",
+                "category": {
+                    "title": "Catégorie",
+                    "placeholder": "Sélectionner la catégorie"
+                },
+                "supplier": {
+                    "title": "Fournisseur",
+                    "placeholder": "Sélectionner le fournisseur"
+                },
+                "image": "Ajouter une image produit"
+            }
+        }
     },
     "categories" : {},
     "suppliers" : {
