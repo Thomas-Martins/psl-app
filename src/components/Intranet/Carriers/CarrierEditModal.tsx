@@ -12,6 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useTranslation } from "react-i18next";
+import { validators } from "@utils/InputForm.validators";
 
 interface CarrierEditModalProps {
     isOpen: boolean;
@@ -28,6 +29,7 @@ export default function CarrierEditModal({
     const { t } = useTranslation();
     const { setAlert } = useGlobalAlert();
     const effectiveIsOpen = Boolean(carrierId) || isOpen;
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -41,6 +43,8 @@ export default function CarrierEditModal({
         contact_person_email: "",
         contact_person_phone: "",
     });
+
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const init = useCallback(() => {
         setFormData({
@@ -57,34 +61,78 @@ export default function CarrierEditModal({
             contact_person_email: state.carrier.contact_person_email || "",
             contact_person_phone: state.carrier.contact_person_phone || "",
         });
-    }, [state.carrier]);
+    }, [state?.carrier]);
 
     useEffect(() => {
-        if (state.carrier) {
+        if (state?.carrier) {
             init();
         }
-    }, [state.carrier, init]);
+    }, [state?.carrier, init]);
+
+    const fieldValidatorMapping: Record<string, string> = {
+        name: "name",
+        email: "email",
+        phone: "phone",
+        address: "address",
+        zipcode: "zipcode",
+        city: "city",
+        contact_person_firstname: "firstname",
+        contact_person_lastname: "lastname",
+        contact_person_email: "email",
+        contact_person_phone: "phone",
+    };
 
     const handleChange = (field: keyof typeof formData, value: string) => {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
+        const validatorKey = fieldValidatorMapping[field];
+        if (validatorKey && validators[validatorKey]) {
+            const error = validators[validatorKey](value);
+            setErrors((prev) => ({
+                ...prev,
+                [field]: error || "",
+            }));
+        }
+    };
+
+    const validateForm = () => {
+        const newErrors: Record<string, string> = {};
+        Object.keys(formData).forEach((field) => {
+            const validatorKey = fieldValidatorMapping[field];
+            if (validatorKey && validators[validatorKey]) {
+                const error = validators[validatorKey](
+                    formData[field as keyof typeof formData],
+                );
+                if (error) {
+                    newErrors[field] = error;
+                }
+            }
+        });
+        console.log("Erreurs après validation globale :", newErrors);
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = async () => {
+        if (!validateForm()) return;
         try {
+            setIsSubmitting(true);
             await CarriersProvider.updateCarrier(state.carrier.id, formData);
             setAlert({
                 type: "success",
                 title: t("carriers.edit.alert.success"),
             });
             navigate(`/carriers/${carrierId}`);
-        } catch {
+        } catch (error) {
+            console.error("Error updating carrier:", error);
             setAlert({
                 type: "danger",
                 title: t("carriers.edit.alert.error"),
             });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -118,6 +166,8 @@ export default function CarrierEditModal({
                                     onChange={(e) =>
                                         handleChange("name", e.target.value)
                                     }
+                                    errorMessage={errors.name}
+                                    isInvalid={!!errors.name}
                                 />
                                 <div className="flex space-x-4">
                                     <Input
@@ -129,6 +179,8 @@ export default function CarrierEditModal({
                                                 e.target.value,
                                             )
                                         }
+                                        errorMessage={errors.email}
+                                        isInvalid={!!errors.email}
                                     />
                                     <Input
                                         label={t("carriers.add.inputs.phone")}
@@ -139,6 +191,8 @@ export default function CarrierEditModal({
                                                 e.target.value,
                                             )
                                         }
+                                        errorMessage={errors.phone}
+                                        isInvalid={!!errors.phone}
                                     />
                                 </div>
                                 <Input
@@ -147,6 +201,8 @@ export default function CarrierEditModal({
                                     onChange={(e) =>
                                         handleChange("address", e.target.value)
                                     }
+                                    errorMessage={errors.address}
+                                    isInvalid={!!errors.address}
                                 />
                                 <div className="flex space-x-4">
                                     <Input
@@ -158,6 +214,8 @@ export default function CarrierEditModal({
                                                 e.target.value,
                                             )
                                         }
+                                        errorMessage={errors.zipcode}
+                                        isInvalid={!!errors.zipcode}
                                     />
                                     <Input
                                         label={t("carriers.add.inputs.city")}
@@ -165,6 +223,8 @@ export default function CarrierEditModal({
                                         onChange={(e) =>
                                             handleChange("city", e.target.value)
                                         }
+                                        errorMessage={errors.city}
+                                        isInvalid={!!errors.city}
                                     />
                                 </div>
                                 <h3 className="underline font-medium">
@@ -182,6 +242,12 @@ export default function CarrierEditModal({
                                                 e.target.value,
                                             )
                                         }
+                                        errorMessage={
+                                            errors.contact_person_lastname
+                                        }
+                                        isInvalid={
+                                            !!errors.contact_person_lastname
+                                        }
                                     />
                                     <Input
                                         label={t(
@@ -195,6 +261,12 @@ export default function CarrierEditModal({
                                                 "contact_person_firstname",
                                                 e.target.value,
                                             )
+                                        }
+                                        errorMessage={
+                                            errors.contact_person_firstname
+                                        }
+                                        isInvalid={
+                                            !!errors.contact_person_firstname
                                         }
                                     />
                                 </div>
@@ -210,6 +282,12 @@ export default function CarrierEditModal({
                                                 e.target.value,
                                             )
                                         }
+                                        errorMessage={
+                                            errors.contact_person_email
+                                        }
+                                        isInvalid={
+                                            !!errors.contact_person_email
+                                        }
                                     />
                                     <Input
                                         label={t(
@@ -221,6 +299,12 @@ export default function CarrierEditModal({
                                                 "contact_person_phone",
                                                 e.target.value,
                                             )
+                                        }
+                                        errorMessage={
+                                            errors.contact_person_phone
+                                        }
+                                        isInvalid={
+                                            !!errors.contact_person_phone
                                         }
                                     />
                                 </div>
@@ -237,7 +321,12 @@ export default function CarrierEditModal({
                             >
                                 {t("generics.cancel")}
                             </Button>
-                            <Button color="primary" onPress={handleSubmit}>
+                            <Button
+                                color="primary"
+                                onPress={handleSubmit}
+                                isDisabled={isSubmitting}
+                                isLoading={isSubmitting}
+                            >
                                 {t("generics.save")}
                             </Button>
                         </ModalFooter>
