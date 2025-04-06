@@ -12,10 +12,11 @@ import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import { CarriersTableListHeaders } from "@components/Intranet/Carriers/CarriersTableList.headers.ts";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { Key, useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useNavigate } from "react-router";
 
 interface CarriersTableListProps {
     carriers: PaginatedCarriers;
@@ -36,11 +37,16 @@ export default function CarriersTableList({
     const { t } = useTranslation();
     const headers = CarriersTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
+    const navigate = useNavigate();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
+
+    const handleRowAction = (key: Key) => {
+        navigate(`/carriers/${key}`);
+    };
 
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
@@ -91,6 +97,7 @@ export default function CarriersTableList({
                 aria-label="suppliers-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
+                onRowAction={handleRowAction}
             >
                 <TableHeader>
                     {headers.map((header) => (
@@ -113,7 +120,10 @@ export default function CarriersTableList({
                     loadingState={loadingState}
                 >
                     {carriers.data.map((carrier) => (
-                        <TableRow key={carrier.id}>
+                        <TableRow
+                            key={carrier.id}
+                            className="hover:bg-light-50"
+                        >
                             <TableCell>
                                 <h3 className="text-md">{carrier.name}</h3>
                                 <p className="text-sm text-light-400">

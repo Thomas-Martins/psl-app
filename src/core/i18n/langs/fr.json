@@ -4,7 +4,9 @@
         "password": "Mot de passe",
         "login_btn": "Se connecter",
         "cancel": "Annuler",
+        "close": "Fermer",
         "save": "Enregistrer",
+        "edit": "Modifier",
         "add": "Ajouter",
         "all": "Tous",
         "search": "Rechercher...",
@@ -341,11 +343,19 @@
                 "zipcode": "Code postal",
                 "city": "Ville",
                 "country": "Pays",
+                "contact_person_identity": "Nom, prénom",
                 "contact_person_firstname": "Prénom",
                 "contact_person_lastname": "Nom",
                 "contact_person_email": "Email",
                 "contact_person_phone": "Téléphone",
                 "image": "Ajouter un logo"
+            }
+        },
+        "edit": {
+            "title": "Modifier le transporteur",
+            "alert" : {
+                "success": "Le transporteur a été modifié avec succès.",
+                "error": "Une erreur est survenue lors de la modification du transporteur."
             }
         }
     },

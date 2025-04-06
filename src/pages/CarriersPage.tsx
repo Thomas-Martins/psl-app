@@ -14,6 +14,7 @@ import SearchInput from "@components/tools/SearchInput.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
+import { Outlet } from "react-router";
 
 const fetchCarriers = async (key: string): Promise<PaginatedCarriers> => {
     const params = JSON.parse(key);
@@ -147,6 +148,8 @@ export default function CarriersPage() {
                 fields={inputs}
                 onSubmit={handleCarrierAddSubmit}
             />
+
+            <Outlet />
         </div>
     );
 }
