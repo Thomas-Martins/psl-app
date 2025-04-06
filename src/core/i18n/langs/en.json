@@ -4,7 +4,9 @@
         "password": "Password",
         "login_btn": "Log In",
         "cancel": "Cancel",
+        "close": "Close",
         "save": "Save",
+        "edit": "Edit",
         "add": "Add",
         "all": "All",
         "search": "Search...",
@@ -327,11 +329,19 @@
                 "zipcode": "Postal Code",
                 "city": "City",
                 "country": "Country",
+                "contact_person_identity": "Lastname, Firstname",
                 "contact_person_firstname": "First Name",
                 "contact_person_lastname": "Last Name",
                 "contact_person_email": "Email",
                 "contact_person_phone": "Phone",
                 "image": "Add a logo"
+            }
+        },
+        "edit": {
+            "title": "Update carrier",
+            "alert" : {
+                "success": "The carrier was successfully modified.",
+                "error": "An error occurred while modifying the carrier."
             }
         }
     },
