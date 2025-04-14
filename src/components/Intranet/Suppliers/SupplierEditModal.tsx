@@ -47,6 +47,7 @@ export default function SupplierEditModal({
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const init = useCallback(() => {
+        if (!state?.supplier) return;
         setFormData({
             name: state.supplier.name || "",
             email: state.supplier.email || "",
@@ -117,6 +118,13 @@ export default function SupplierEditModal({
 
     const handleSubmit = async () => {
         if (!validateForm()) return;
+        if (!state?.supplier?.id) {
+            setAlert({
+                type: "danger",
+                title: t("suppliers.edit.alert.error"),
+            });
+            return;
+        }
         try {
             setIsSubmitting(true);
             await SuppliersProvider.updateSupplier(state.supplier.id, formData);
@@ -129,7 +137,7 @@ export default function SupplierEditModal({
             console.error("Error updating supplier:", error);
             setAlert({
                 type: "danger",
-                title: t("supplier.edit.alert.error"),
+                title: t("suppliers.edit.alert.error"),
             });
         } finally {
             setIsSubmitting(false);

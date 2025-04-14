@@ -98,11 +98,13 @@ export default function SupplierInfoModal({
                             <p>{supplier?.email}</p>
                             <p>{supplier?.phone}</p>
                             <p>
-                                {supplier?.address +
-                                    ", " +
-                                    supplier?.zipcode +
-                                    ", " +
-                                    supplier?.city}
+                                {[
+                                    supplier?.address,
+                                    supplier?.zipcode,
+                                    supplier?.city,
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
                             </p>
                         </div>
                     </div>
@@ -123,9 +125,12 @@ export default function SupplierInfoModal({
                         </div>
                         <div className="space-y-2">
                             <p>
-                                {supplier?.contact_person_firstname +
-                                    " " +
-                                    supplier?.contact_person_lastname}
+                                {[
+                                    supplier?.contact_person_firstname,
+                                    supplier?.contact_person_lastname,
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
                             </p>
                             <p>{supplier?.contact_person_email}</p>
                             <p>{supplier?.contact_person_phone}</p>
