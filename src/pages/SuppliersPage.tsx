@@ -15,6 +15,7 @@ import SearchInput from "@components/tools/SearchInput.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
+import { Outlet, useLocation } from "react-router";
 
 const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
     const params = JSON.parse(key);
@@ -40,6 +41,8 @@ export default function SuppliersPage() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [search, setSearch] = useState<string | null>(null);
 
+    const location = useLocation();
+
     const swrKey = JSON.stringify({
         key: "suppliers",
         page: currentPage,
@@ -57,6 +60,12 @@ export default function SuppliersPage() {
     } = useSWR<PaginatedSuppliers>(swrKey, fetchSuppliers, {
         keepPreviousData: true,
     });
+
+    useEffect(() => {
+        if (location.pathname === "/suppliers") {
+            mutate();
+        }
+    }, [location.pathname, mutate]);
 
     const handleSupplierAddSubmit = async (data: FormValues): Promise<void> => {
         const payload = new FormData();
@@ -146,6 +155,8 @@ export default function SuppliersPage() {
                 fields={inputs}
                 onSubmit={handleSupplierAddSubmit}
             />
+
+            <Outlet />
         </div>
     );
 }

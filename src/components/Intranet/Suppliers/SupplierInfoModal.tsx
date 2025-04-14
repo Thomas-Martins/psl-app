@@ -8,127 +8,127 @@ import {
 } from "@heroui/react";
 import { useNavigate, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
-import { Carrier } from "@/types/Carriers.ts";
-import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useTranslation } from "react-i18next";
+import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
+import { Supplier } from "@/types/Suppliers.ts";
 
-interface CarrierInfoModalProps {
+interface SupplierInfoModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }
 
-export default function CarrierInfoModal({
+export default function SupplierInfoModal({
     isOpen,
     onOpenChange,
-}: CarrierInfoModalProps) {
-    const { carrierId } = useParams<{ carrierId: string }>();
+}: SupplierInfoModalProps) {
+    const { supplierId } = useParams<{ supplierId: string }>();
     const { setAlert } = useGlobalAlert();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const effectiveIsOpen = Boolean(carrierId) || isOpen;
+    const effectiveIsOpen = Boolean(supplierId) || isOpen;
 
-    const [carrier, setCarrier] = useState<Carrier | null>(null);
+    const [supplier, setSupplier] = useState<Supplier | null>(null);
 
-    const fetchCarrier = useCallback(async () => {
-        if (!carrierId) return;
-        const id = parseInt(carrierId, 10);
+    const fetchSupplier = useCallback(async () => {
+        if (!supplierId) return;
+        const id = parseInt(supplierId, 10);
         if (isNaN(id)) {
-            console.error("carrierId is not a valid number:", carrierId);
-            navigate("/carriers");
+            console.error("supplierId is not a valid number:", supplierId);
+            navigate("/suppliers");
             setAlert({
                 type: "danger",
-                title: t("carriers.errors.get_carrier"),
+                title: t("suppliers.errors.get_supplier"),
             });
             return;
         }
         try {
-            const response = await CarriersProvider.getCarrier(id);
-            setCarrier(response.data);
+            const response = await SuppliersProvider.getSupplier(id);
+            setSupplier(response.data);
         } catch (error) {
-            console.error("Error fetching carrier:", error);
-            navigate("/carriers");
+            console.error("Error fetching supplier:", error);
+            navigate("/suppliers");
             setAlert({
                 type: "danger",
-                title: t("carriers.errors.get_carrier"),
+                title: t("suppliers.errors.get_supplier"),
             });
         }
-    }, [carrierId, navigate, setAlert, t]);
+    }, [supplierId, navigate, setAlert, t]);
 
     const handleModalOpenChange = (open: boolean) => {
         if (!open) {
-            navigate("/carriers");
+            navigate("/suppliers");
         }
         onOpenChange(open);
     };
 
     const handleEditClick = () => {
-        if (carrierId) {
-            navigate(`/carriers/${carrierId}/edit`, {
-                state: { carrier: carrier },
+        if (supplierId) {
+            navigate(`/suppliers/${supplierId}/edit`, {
+                state: { supplier: supplier },
             });
         }
     };
 
     useEffect(() => {
-        if (carrierId) {
+        if (supplierId) {
             (async () => {
-                await fetchCarrier();
+                await fetchSupplier();
             })();
         }
-    }, [carrierId, fetchCarrier]);
+    }, [supplierId, fetchSupplier]);
 
     return (
         <Modal isOpen={effectiveIsOpen} onOpenChange={handleModalOpenChange}>
             <ModalContent>
                 <ModalHeader className="flex flex-row items-center gap-3">
-                    <h2>{carrier?.name}</h2>
+                    <h2>{supplier?.name}</h2>
                 </ModalHeader>
                 <ModalBody>
                     <h3 className="underline font-medium">
-                        {t("carriers.add.inputs.title")}
+                        {t("suppliers.add.inputs.title")}
                     </h3>
                     <div className="text-light-500 text-sm flex flex-row gap-8">
                         <div className="space-y-2">
-                            <p> {t("carriers.add.inputs.email")}:</p>
-                            <p> {t("carriers.add.inputs.phone")}:</p>
-                            <p> {t("carriers.add.inputs.address")}:</p>
+                            <p> {t("suppliers.add.inputs.email")}:</p>
+                            <p> {t("suppliers.add.inputs.phone")}:</p>
+                            <p> {t("suppliers.add.inputs.address")}:</p>
                         </div>
                         <div className="space-y-2">
-                            <p>{carrier?.email}</p>
-                            <p>{carrier?.phone}</p>
+                            <p>{supplier?.email}</p>
+                            <p>{supplier?.phone}</p>
                             <p>
-                                {carrier?.address +
+                                {supplier?.address +
                                     ", " +
-                                    carrier?.zipcode +
+                                    supplier?.zipcode +
                                     ", " +
-                                    carrier?.city}
+                                    supplier?.city}
                             </p>
                         </div>
                     </div>
                     <h3 className="underline font-medium">
-                        {t("carriers.add.inputs.subtitle")}
+                        {t("suppliers.add.inputs.subtitle")}
                     </h3>
                     <div className="text-light-500 text-sm flex flex-row gap-8">
                         <div className="space-y-2">
                             <p>
                                 {" "}
                                 {t(
-                                    "carriers.add.inputs.contact_person_identity",
+                                    "suppliers.add.inputs.contact_person_identity",
                                 )}
                                 :
                             </p>
-                            <p> {t("carriers.add.inputs.email")}:</p>
-                            <p> {t("carriers.add.inputs.phone")}:</p>
+                            <p> {t("suppliers.add.inputs.email")}:</p>
+                            <p> {t("suppliers.add.inputs.phone")}:</p>
                         </div>
                         <div className="space-y-2">
                             <p>
-                                {carrier?.contact_person_firstname +
+                                {supplier?.contact_person_firstname +
                                     " " +
-                                    carrier?.contact_person_lastname}
+                                    supplier?.contact_person_lastname}
                             </p>
-                            <p>{carrier?.contact_person_email}</p>
-                            <p>{carrier?.contact_person_phone}</p>
+                            <p>{supplier?.contact_person_email}</p>
+                            <p>{supplier?.contact_person_phone}</p>
                         </div>
                     </div>
                 </ModalBody>

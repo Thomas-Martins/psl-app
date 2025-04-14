@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Key, useState } from "react";
 import { PaginatedSuppliers, Supplier } from "@/types/Suppliers.ts";
 import { SuppliersTableListHeaders } from "@components/Intranet/Suppliers/SuppliersTableList.headers.ts";
 import {
@@ -16,6 +16,7 @@ import { Action } from "@utils/Action.ts";
 import { useTranslation } from "react-i18next";
 import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useNavigate } from "react-router";
 
 interface SuppliersTableListProps {
     suppliers: PaginatedSuppliers;
@@ -37,6 +38,7 @@ export default function SuppliersTableList({
     const { t } = useTranslation();
     const headers = SuppliersTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
+    const navigate = useNavigate();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -63,6 +65,10 @@ export default function SuppliersTableList({
                 : String(newDescriptor.column);
         const newOrderWay = newDirection === "ascending" ? "ASC" : "DESC";
         onSortChange(newOrderBy, newOrderWay);
+    };
+
+    const handleRowAction = (key: Key) => {
+        navigate(`/suppliers/${key}`);
     };
 
     const handleDeleteSupplier = async (supplier: Supplier) => {
@@ -92,6 +98,7 @@ export default function SuppliersTableList({
                 aria-label="suppliers-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
+                onRowAction={handleRowAction}
             >
                 <TableHeader>
                     {headers.map((header) => (
@@ -114,7 +121,10 @@ export default function SuppliersTableList({
                     loadingState={loadingState}
                 >
                     {suppliers.data.map((supplier) => (
-                        <TableRow key={supplier.id}>
+                        <TableRow
+                            key={supplier.id}
+                            className="hover:bg-light-50 cursor-pointer"
+                        >
                             <TableCell>
                                 <h3 className="text-md">{supplier.name}</h3>
                                 <p className="text-sm text-light-400">

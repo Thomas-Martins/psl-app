@@ -14,7 +14,7 @@ import SearchInput from "@components/tools/SearchInput.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 const fetchCarriers = async (key: string): Promise<PaginatedCarriers> => {
     const params = JSON.parse(key);
@@ -40,6 +40,8 @@ export default function CarriersPage() {
     const [inputs, setInputs] = useState<FieldDefinition[]>([]);
     const [search, setSearch] = useState<string | null>(null);
 
+    const location = useLocation();
+
     const swrKey = JSON.stringify({
         key: "carriers",
         page: currentPage,
@@ -57,6 +59,12 @@ export default function CarriersPage() {
     } = useSWR<PaginatedCarriers>(swrKey, fetchCarriers, {
         keepPreviousData: true,
     });
+
+    useEffect(() => {
+        if (location.pathname === "/carriers") {
+            mutate();
+        }
+    }, [location.pathname, mutate]);
 
     const handleCarrierAddSubmit = async (data: FormValues): Promise<void> => {
         const payload = new FormData();

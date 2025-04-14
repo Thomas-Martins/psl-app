@@ -197,7 +197,7 @@
         }
     },
     "products" : {
-        "_name": "Stocks",
+        "_name": "Produits",
         "table": {
             "actions": {
                 "view": "Voir",
@@ -293,12 +293,23 @@
                 "zipcode": "Code postal",
                 "city": "Ville",
                 "country": "Pays",
+                "contact_person_identity": "Nom, prénom",
                 "contact_person_firstname": "Prénom",
                 "contact_person_lastname": "Nom",
                 "contact_person_email": "Email",
                 "contact_person_phone": "Téléphone",
                 "image": "Ajouter un logo"
             }
+        },
+        "edit": {
+            "title": "Modifier le fournisseur",
+            "alert" : {
+                "success": "Le fournisseur a été modifié avec succès.",
+                "error": "Une erreur est survenue lors de la modification du fournisseur."
+            }
+        },
+        "errors": {
+            "get_supplier": "Erreur lors de la récupération du fournisseur."
         }
     },
     "carriers": {
@@ -357,6 +368,9 @@
                 "success": "Le transporteur a été modifié avec succès.",
                 "error": "Une erreur est survenue lors de la modification du transporteur."
             }
+        },
+        "errors": {
+            "get_carrier": "Erreur lors de la récupération du transporteur."
         }
     },
     "stores": {
