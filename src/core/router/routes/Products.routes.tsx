@@ -3,7 +3,7 @@ import ProductsPage from "@pages/ProductsPage.tsx";
 
 export const productsRoutes: RouteConfig[] = [
     {
-        path: "stocks",
+        path: "products",
         element: <ProductsPage />,
     },
 ];

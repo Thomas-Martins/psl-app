@@ -183,7 +183,7 @@
         }
     },
     "products": {
-        "_name": "Inventory",
+        "_name": "Products",
         "table": {
             "actions": {
                 "view": "View",
@@ -279,12 +279,23 @@
                 "zipcode": "Postal Code",
                 "city": "City",
                 "country": "Country",
+                "contact_person_identity": "Lastname, firstname",
                 "contact_person_firstname": "First Name",
                 "contact_person_lastname": "Last Name",
                 "contact_person_email": "Email",
                 "contact_person_phone": "Phone",
                 "image": "Add a logo"
             }
+        },
+        "edit": {
+            "title": "Update supplier",
+            "alert" : {
+                "success": "The supplier was successfully modified.",
+                "error": "An error occurred while modifying the supplier."
+            }
+        },
+        "errors": {
+            "get_supplier": "Error while fetching supplier data."
         }
     },
     "carriers": {
@@ -343,6 +354,9 @@
                 "success": "The carrier was successfully modified.",
                 "error": "An error occurred while modifying the carrier."
             }
+        },
+        "errors": {
+            "get_carrier": "Error while fetching carrier data."
         }
     },
     "stores": {

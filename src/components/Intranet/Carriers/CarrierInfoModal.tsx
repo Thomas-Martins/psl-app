@@ -38,7 +38,7 @@ export default function CarrierInfoModal({
             navigate("/carriers");
             setAlert({
                 type: "danger",
-                title: "Erreur lors de la récupération du transporteur",
+                title: t("carriers.errors.get_carrier"),
             });
             return;
         }
@@ -50,10 +50,10 @@ export default function CarrierInfoModal({
             navigate("/carriers");
             setAlert({
                 type: "danger",
-                title: "Erreur lors de la récupération du transporteur",
+                title: t("carriers.errors.get_carrier"),
             });
         }
-    }, [carrierId, navigate, setAlert]);
+    }, [carrierId, navigate, setAlert, t]);
 
     const handleModalOpenChange = (open: boolean) => {
         if (!open) {

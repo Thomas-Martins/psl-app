@@ -56,7 +56,7 @@ export default function NavbarIntranet() {
         },
         {
             label: t("products._name"),
-            url: "/stocks",
+            url: "/products",
             visible: user.role === "admin" || user.role === "gestionnaire",
         },
         {
