@@ -198,6 +198,7 @@
     },
     "products" : {
         "_name": "Produits",
+        "_name_all": "Tous les produits",
         "table": {
             "actions": {
                 "view": "Voir",
@@ -248,9 +249,19 @@
                 },
                 "image": "Ajouter une image produit"
             }
+        },
+        "shop": {
+            "filters": {
+                "_name": "Filtres",
+                "button": "Appliquer les filtres"
+            },
+            "price": "Prix"
         }
     },
-    "categories" : {},
+    "categories" : {
+        "_name": "Catégories",
+        "_name_all": "Toutes les catégories"
+    },
     "suppliers" : {
         "_name": "Fournisseurs",
         "table": {

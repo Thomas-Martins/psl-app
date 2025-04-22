@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface PaginateFooterProps {
+    values: string[];
     totalPages: number;
     currentPage: number;
     handlePageChange: (page: number) => void;
@@ -12,6 +13,7 @@ interface PaginateFooterProps {
 }
 
 export default function PaginateFooter({
+    values,
     totalPages,
     currentPage,
     handlePageChange,
@@ -84,18 +86,16 @@ export default function PaginateFooter({
                     selectedKeys={[selectedLimit]}
                     onSelectionChange={handleSelectChange}
                 >
-                    <SelectItem key="10" data-value="10">
-                        10
-                    </SelectItem>
-                    <SelectItem key="50" data-value="50">
-                        50
-                    </SelectItem>
-                    <SelectItem key="100" data-value="100">
-                        100
-                    </SelectItem>
-                    <SelectItem key="all" data-value="all">
-                        {t("generics.all")}
-                    </SelectItem>
+                    <>
+                        {values.map((value) => (
+                            <SelectItem key={value} data-value={value}>
+                                {value}
+                            </SelectItem>
+                        ))}
+                        <SelectItem key="all" data-value="all">
+                            {t("generics.all")}
+                        </SelectItem>
+                    </>
                 </Select>
                 <span className="text-sm whitespace-nowrap">
                     {itemsPerPage > totalItems ? totalItems : itemsPerPage} sur{" "}

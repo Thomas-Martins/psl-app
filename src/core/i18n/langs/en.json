@@ -184,6 +184,7 @@
     },
     "products": {
         "_name": "Products",
+        "_name_all": "All products",
         "table": {
             "actions": {
                 "view": "View",
@@ -234,9 +235,19 @@
                 },
                 "image": "Add a product image"
             }
+        },
+        "shop": {
+            "filters": {
+                "_name": "Filters",
+                "button": "Apply filters"
+            },
+            "price": "Price"
         }
     },
-    "categories": {},
+    "categories" : {
+        "_name": "Categories",
+        "_name_all": "All categories"
+    },
     "suppliers": {
         "_name": "Suppliers",
         "table": {

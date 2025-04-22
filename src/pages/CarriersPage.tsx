@@ -106,7 +106,7 @@ export default function CarriersPage() {
     return (
         <div className="space-y-5">
             <div className="flex items-center justify-between">
-                <SearchInput setSearch={setSearch} />
+                <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
                 <Button
                     aria-label="add"
                     color="primary"
@@ -136,6 +136,7 @@ export default function CarriersPage() {
             />
 
             <PaginateFooter
+                values={["10", "50", "100"]}
                 totalPages={carriers?.last_page || 1}
                 currentPage={currentPage}
                 handlePageChange={handlePageChange}

@@ -97,7 +97,7 @@ export default function ProductsPage() {
     return (
         <div className="space-y-5">
             <div className="flex items-center justify-between">
-                <SearchInput setSearch={setSearch} />
+                <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
                 <Button
                     aria-label="add"
                     color="primary"
@@ -127,6 +127,7 @@ export default function ProductsPage() {
             />
 
             <PaginateFooter
+                values={["10", "50", "100"]}
                 totalPages={products?.last_page || 1}
                 currentPage={currentPage}
                 handlePageChange={handlePageChange}

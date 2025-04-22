@@ -97,7 +97,7 @@ export default function CustomersPage() {
         <div className="space-y-5">
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-5 w-full">
-                    <SearchInput setSearch={setSearch} />
+                    <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
                 </div>
                 <div>
                     <Button
@@ -130,6 +130,7 @@ export default function CustomersPage() {
             />
 
             <PaginateFooter
+                values={["10", "50", "100"]}
                 currentPage={currentPage}
                 handlePageChange={handlePageChange}
                 totalPages={customers?.last_page || 1}

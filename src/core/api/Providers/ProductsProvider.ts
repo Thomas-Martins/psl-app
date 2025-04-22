@@ -3,8 +3,17 @@
 import api from "../api.ts";
 
 class ProductsProvider {
-    static getProducts(query = {}) {
-        return api.get("/products", { params: query });
+    static getProducts(params: any) {
+        const flatParams = {
+            ...params,
+            ...(params.categories && {
+                categories: Array.isArray(params.categories)
+                    ? params.categories.join(",")
+                    : params.categories,
+            }),
+        };
+
+        return api.get("/products", { params: flatParams });
     }
 
     static getProduct(id: number) {

@@ -15,6 +15,7 @@ import { storesRoutes } from "./routes/Stores.routes";
 import { suppliersRoutes } from "./routes/Suppliers.routes";
 import { carriersRoutes } from "./routes/Carriers.routes";
 import { RouteConfig } from "@core/router/RouteConfig.ts";
+import { shopProductsRoutes } from "@core/router/routes/shop/ShopProducts.routes.tsx";
 
 function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
     return routeConfigs.map((route, index) => (
@@ -40,6 +41,8 @@ export default function AppRoutes() {
         ...carriersRoutes(isOpen, onOpenChange),
     ];
 
+    const shopRoutes: RouteConfig[] = [...shopProductsRoutes];
+
     return (
         <Routes>
             <Route
@@ -57,7 +60,7 @@ export default function AppRoutes() {
                 }
             />
             <Route
-                path="/shop"
+                path="/shop/*"
                 element={
                     user?.role === Role.CLIENT ? (
                         <ShopLayout />
@@ -65,7 +68,10 @@ export default function AppRoutes() {
                         <Navigate to="/login" />
                     )
                 }
-            />
+            >
+                {renderRoutes(shopRoutes)}
+                <Route index element={<Navigate to="products" />} />
+            </Route>
             <Route
                 path="/*"
                 element={
