@@ -3,7 +3,7 @@
 import api from "../api.ts";
 
 class ProductsProvider {
-    static getProducts(params: any) {
+    static getProducts(params: GetProductsParams) {
         const flatParams = {
             ...params,
             ...(params.categories && {
@@ -34,3 +34,14 @@ class ProductsProvider {
 }
 
 export default ProductsProvider;
+
+interface GetProductsParams {
+    paginate: boolean;
+    page: number;
+    limit: number;
+    orderBy: string;
+    orderWay: "ASC" | "DESC";
+    search?: string;
+    categories?: string[];
+    priceRange?: [number, number];
+}
