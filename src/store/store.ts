@@ -3,15 +3,17 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // utilise le localStorage
 import userReducer from "./userSlice";
+import cartReducer from "@store/cartSlice.ts";
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["user"],
+    whitelist: ["user", "cart"],
 };
 
 const rootReducer = combineReducers({
     user: userReducer,
+    cart: cartReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

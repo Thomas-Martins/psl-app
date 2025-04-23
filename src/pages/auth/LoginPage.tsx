@@ -42,7 +42,7 @@ export default function LoginPage() {
                     {/*logo*/}
                     <div className="h-6">
                         <img
-                            src="/logos/PslSolutions.svg"
+                            src="/src/assets/logos/PslSolutions.svg"
                             alt="psl-solutions-logo"
                         />
                     </div>

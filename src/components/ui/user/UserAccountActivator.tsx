@@ -13,7 +13,13 @@ import { userSlice } from "@store/userSlice.ts";
 import RoleChip from "@components/ui/global/RoleChip.tsx";
 import { Role } from "@/types/Role.ts";
 
-export default function UserAccountActivator() {
+interface UserAccountActivatorProps {
+    customer?: boolean;
+}
+
+export default function UserAccountActivator({
+    customer = false,
+}: UserAccountActivatorProps) {
     const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -26,12 +32,14 @@ export default function UserAccountActivator() {
         <Dropdown placement="bottom-end">
             <DropdownTrigger>
                 <div className="flex flex-row items-center gap-6 cursor-pointer">
-                    <div>
-                        <p className="text-white">
-                            {user.firstname + " " + user.lastname}
-                        </p>
-                        <RoleChip role={user.role as Role} />
-                    </div>
+                    {!customer && (
+                        <div>
+                            <p className="text-white">
+                                {user.firstname + " " + user.lastname}
+                            </p>
+                            <RoleChip role={user.role as Role} />
+                        </div>
+                    )}
                     <Avatar
                         isBordered
                         as="button"

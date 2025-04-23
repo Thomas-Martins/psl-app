@@ -132,7 +132,7 @@ export default function UsersPage() {
                             {t("users.table.filter.role.logisticien")}
                         </SelectItem>
                     </Select>
-                    <SearchInput setSearch={setSearch} />
+                    <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
                 </div>
                 <div>
                     <Button
@@ -165,6 +165,7 @@ export default function UsersPage() {
             />
 
             <PaginateFooter
+                values={["10", "50", "100"]}
                 currentPage={currentPage}
                 handlePageChange={handlePageChange}
                 totalPages={users?.last_page || 1}

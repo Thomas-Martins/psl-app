@@ -3,8 +3,17 @@
 import api from "../api.ts";
 
 class ProductsProvider {
-    static getProducts(query = {}) {
-        return api.get("/products", { params: query });
+    static getProducts(params: GetProductsParams) {
+        const flatParams = {
+            ...params,
+            ...(params.categories && {
+                categories: Array.isArray(params.categories)
+                    ? params.categories.join(",")
+                    : params.categories,
+            }),
+        };
+
+        return api.get("/products", { params: flatParams });
     }
 
     static getProduct(id: number) {
@@ -25,3 +34,14 @@ class ProductsProvider {
 }
 
 export default ProductsProvider;
+
+interface GetProductsParams {
+    paginate: boolean;
+    page: number;
+    limit: number;
+    orderBy: string;
+    orderWay: "ASC" | "DESC";
+    search?: string;
+    categories?: string[];
+    priceRange?: [number, number];
+}

@@ -15,6 +15,10 @@ import { storesRoutes } from "./routes/Stores.routes";
 import { suppliersRoutes } from "./routes/Suppliers.routes";
 import { carriersRoutes } from "./routes/Carriers.routes";
 import { RouteConfig } from "@core/router/RouteConfig.ts";
+import { shopProductsRoutes } from "@core/router/routes/shop/ShopProducts.routes.tsx";
+import CartLayout from "@layouts/ShopLayout/CartLayout.tsx";
+import { cartRoutes } from "@core/router/routes/shop/Cart.routes.tsx";
+import CartVerification from "@components/Shop/cart/CartVerification.tsx";
 
 function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
     return routeConfigs.map((route, index) => (
@@ -29,7 +33,6 @@ export default function AppRoutes() {
     const { isOpen, onOpenChange } = useDisclosure();
     const isAuthenticated = Boolean(user && user.role);
 
-    // Combiner toutes les routes protégées
     const protectedRoutes: RouteConfig[] = [
         ...commandsRoutes,
         ...customersRoutes,
@@ -38,6 +41,11 @@ export default function AppRoutes() {
         ...storesRoutes,
         ...suppliersRoutes(isOpen, onOpenChange),
         ...carriersRoutes(isOpen, onOpenChange),
+    ];
+
+    const shopRoutes: RouteConfig[] = [
+        ...shopProductsRoutes(isOpen, onOpenChange),
+        ...cartRoutes,
     ];
 
     return (
@@ -57,7 +65,7 @@ export default function AppRoutes() {
                 }
             />
             <Route
-                path="/shop"
+                path="/shop/*"
                 element={
                     user?.role === Role.CLIENT ? (
                         <ShopLayout />
@@ -65,7 +73,23 @@ export default function AppRoutes() {
                         <Navigate to="/login" />
                     )
                 }
-            />
+            >
+                {renderRoutes(shopRoutes)}
+                <Route index element={<Navigate to="products" />} />
+            </Route>
+            <Route
+                path="/cart/*"
+                element={
+                    user?.role === Role.CLIENT ? (
+                        <CartLayout />
+                    ) : (
+                        <Navigate to="/login" />
+                    )
+                }
+            >
+                <Route index element={<CartVerification />} />
+                {renderRoutes(shopRoutes)}
+            </Route>
             <Route
                 path="/*"
                 element={

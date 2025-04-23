@@ -5,11 +5,15 @@ import i18n from "@core/i18n/i18n.ts";
 
 interface SearchInputProps {
     setSearch: (search: string) => void;
+    classNames?: string;
 }
-export default function SearchInput({ setSearch }: SearchInputProps) {
+export default function SearchInput({
+    setSearch,
+    classNames = "",
+}: SearchInputProps) {
     return (
         <Input
-            className="w-1/4"
+            className={classNames}
             placeholder={i18n.t("generics.search")}
             radius="lg"
             type="text"
