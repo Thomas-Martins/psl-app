@@ -211,7 +211,7 @@
                 },
                 "location": {
                     "required": "Location is required",
-                    "value": "Location must be in the format 'AO1-E01'"
+                    "value": "Location must be in the format 'A01-E01'"
                 }
             }
         }

@@ -143,7 +143,7 @@
     },
     "errors" : {
         "login": {
-            "invalid": "Les identifiants saisies sont invalides.",
+            "invalid": "Les identifiants saisis sont invalides.",
             "email": "Veuillez saisir une adresse email valide contenant un '@'.",
             "password": "Veuillez saisir un mot de passe."
         },
@@ -189,7 +189,7 @@
                 },
                 "phone": {
                     "required": "Le téléphone est obligatoire",
-                    "value": "Le téléphone doit être contenir 10 chiffres"
+                    "value": "Le téléphone doit contenir 10 chiffres"
                 },
                 "email": {
                     "required": "L'email est obligatoire",
