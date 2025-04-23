@@ -12,6 +12,7 @@ import {
     ProductFilters,
     ProductFiltersContext,
 } from "@/contexts/ProductFiltersContext";
+import { Outlet } from "react-router";
 
 const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
     const params = JSON.parse(key);
@@ -87,6 +88,7 @@ export default function ShopProductsPages() {
                     }
                 />
             </div>
+            <Outlet />
         </ProductFiltersContext.Provider>
     );
 }

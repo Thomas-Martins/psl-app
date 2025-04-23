@@ -1,4 +1,154 @@
 {
+    "carriers": {
+        "_name": "Transporteurs",
+        "table": {
+            "actions": {
+                "view": "Voir",
+                "edit": "Modifier",
+                "delete": {
+                    "title":"Supprimer",
+                    "dialog": {
+                        "title": "Supprimer le transporteur",
+                        "message": "Êtes-vous sûr de vouloir supprimer le transporteur : <b>{{name}}</b> ? Cette action est irréversible.",
+                        "confirm": "Supprimer"
+                    },
+                    "success": "Le transporteur a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression du transporteur."
+                }
+            },
+            "headers": {
+                "name": "Transporteur",
+                "contact": "Contact",
+                "address": "Adresse",
+                "actions": "Actions"
+            },
+            "empty": "Aucun transporteurs trouvés."
+        },
+        "add": {
+            "title": "Ajouter un transporteur",
+            "button": "Ajouter",
+            "alert": {
+                "success": "Le transporteur a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout du transporteur."
+            },
+            "inputs": {
+                "title": "Informations de l'entreprise",
+                "subtitle": "Informations du contact",
+                "name": "Nom de l'entreprise",
+                "email": "Email",
+                "phone": "Téléphone",
+                "address": "Adresse",
+                "zipcode": "Code postal",
+                "city": "Ville",
+                "country": "Pays",
+                "contact_person_identity": "Nom, prénom",
+                "contact_person_firstname": "Prénom",
+                "contact_person_lastname": "Nom",
+                "contact_person_email": "Email",
+                "contact_person_phone": "Téléphone",
+                "image": "Ajouter un logo"
+            }
+        },
+        "edit": {
+            "title": "Modifier le transporteur",
+            "alert" : {
+                "success": "Le transporteur a été modifié avec succès.",
+                "error": "Une erreur est survenue lors de la modification du transporteur."
+            }
+        },
+        "errors": {
+            "get_carrier": "Erreur lors de la récupération du transporteur."
+        }
+    },
+    "cart": {
+        "_name": "Panier",
+        "empty": "Votre panier est vide.",
+        "total_ttc": "Total TTC",
+        "total_ht": "Total HT",
+        "tva": "TVA",
+        "validate_cart" : "Valider le panier",
+        "remove": {
+            "title":"Supprimer",
+            "dialog": {
+                "title": "Supprimer le produit",
+                "message": "Êtes-vous sûr de vouloir supprimer le produit : <b>{{name}}</b> ? Cette action est irréversible.",
+                "confirm": "Supprimer"
+            },
+            "success": "Le produit a été supprimé avec succès.",
+            "error": "Une erreur est survenue lors de la suppression du produit."
+        },
+        "add" : {
+            "label":"Ajouter au panier",
+            "back": {
+                "title": "Retour à la liste des produits",
+                "button": "Retour"
+            },
+            "quantity": "Quantité"
+        }
+    },
+    "categories" : {
+        "_name": "Catégories",
+        "_name_all": "Toutes les catégories"
+    },
+    "customer" : {
+        "_name": "Client",
+        "table": {
+            "actions": {
+                "view": "Voir",
+                "edit": "Modifier",
+                "delete": {
+                    "title":"Supprimer",
+                    "dialog": {
+                        "title": "Supprimer le client",
+                        "message": "Êtes-vous sûr de vouloir supprimer le client : <b>{{name}}</b> ? Cette action est irréversible.",
+                        "confirm": "Supprimer"
+                    },
+                    "success": "Le client a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression du client."
+                }
+            },
+            "headers": {
+                "name": "Client",
+                "email": "Email",
+                "phone": "Téléphone",
+                "store": "Point de vente",
+                "address": "Adresse de livraison",
+                "commands_count": "Nb de commandes",
+                "actions": "Actions"
+            },
+            "empty": "Aucun clients trouvés."
+        },
+        "add": {
+            "title": "Ajouter un client",
+            "button": "Ajouter",
+            "unknown": "Inconnu",
+            "alert": {
+                "success": "Le client a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout du client."
+            },
+            "inputs": {
+                "lastname": "Nom",
+                "firstname": "Prénom",
+                "email": "Email",
+                "phone": "Téléphone",
+                "address": "Adresse",
+                "zipcode": "Code postal",
+                "city": "Ville",
+                "store": {
+                    "title": "Point de vente",
+                    "placeholder": "Sélectionner un point de vente"
+                }
+            }
+        }
+    },
+    "errors" : {
+        "login": {
+            "invalid": "Les identifiants saisies sont invalides.",
+            "email": "Veuillez saisir une adresse email valide contenant un '@'.",
+            "password": "Veuillez saisir un mot de passe."
+        },
+        "message": "Une erreur est survenue. Veuillez réessayer plus tard."
+    },
     "generics" : {
         "email": "Email",
         "password": "Mot de passe",
@@ -75,126 +225,11 @@
             }
         }
     },
+    "global": {
+        "confirmation": "Confirmation"
+    },
     "orders" : {
         "_name": "Commandes"
-    },
-    "errors" : {
-        "login": {
-            "invalid": "Les identifiants saisies sont invalides.",
-            "email": "Veuillez saisir une adresse email valide contenant un '@'.",
-            "password": "Veuillez saisir un mot de passe."
-        },
-        "message": "Une erreur est survenue. Veuillez réessayer plus tard."
-    },
-    "users" : {
-        "_name": "Utilisateurs",
-        "table": {
-            "actions": {
-                "view": "Voir",
-                "edit": "Modifier",
-                "delete": {
-                    "title":"Supprimer",
-                    "dialog": {
-                        "title": "Supprimer l'utilisateur",
-                        "message": "Êtes-vous sûr de vouloir supprimer <b>{{name}}</b> ? Cette action est irréversible.",
-                        "confirm": "Supprimer"
-                    },
-                    "success": "L'utilisateur a été supprimé avec succès.",
-                    "error": "Une erreur est survenue lors de la suppression de l'utilisateur."
-                }
-            },
-            "headers": {
-                "user": "Utilisateur",
-                "email": "Email",
-                "phone": "Téléphone",
-                "address": "Adresse",
-                "role": "Rôle",
-                "actions": "Actions"
-            },
-            "filter": {
-                "role": {
-                    "all" : "Tous les utilisateurs",
-                    "admin": "Administrateur",
-                    "gestionnaire": "Gestionnaire",
-                    "logisticien": "Logisticien"
-                }
-            },
-            "empty": "Aucun utilisateur trouvé."
-        },
-        "add": {
-            "title": "Ajouter un utilisateur",
-            "button": "Ajouter",
-            "unknown": "Inconnu",
-            "alert": {
-                "success": "L'utilisateur a été ajouté avec succès.",
-                "error": "Une erreur est survenue lors de l'ajout de l'utilisateur."
-            },
-            "inputs": {
-                "firstname": "Prénom",
-                "lastname": "Nom",
-                "email": "Email",
-                "phone": "Téléphone",
-                "address": "Adresse",
-                "zipcode": "Code postal",
-                "city": "Ville",
-                "role": {
-                    "title": "Rôle",
-                    "placeholder": "Sélectionner un rôle"
-                },
-                "image": "Ajouter une image de profil"
-            }
-        }
-    },
-    "customer" : {
-        "_name": "Client",
-        "table": {
-            "actions": {
-                "view": "Voir",
-                "edit": "Modifier",
-                "delete": {
-                    "title":"Supprimer",
-                    "dialog": {
-                        "title": "Supprimer le client",
-                        "message": "Êtes-vous sûr de vouloir supprimer le client : <b>{{name}}</b> ? Cette action est irréversible.",
-                        "confirm": "Supprimer"
-                    },
-                    "success": "Le client a été supprimé avec succès.",
-                    "error": "Une erreur est survenue lors de la suppression du client."
-                }
-            },
-            "headers": {
-                "name": "Client",
-                "email": "Email",
-                "phone": "Téléphone",
-                "store": "Point de vente",
-                "address": "Adresse de livraison",
-                "commands_count": "Nb de commandes",
-                "actions": "Actions"
-            },
-            "empty": "Aucun clients trouvés."
-        },
-        "add": {
-            "title": "Ajouter un client",
-            "button": "Ajouter",
-            "unknown": "Inconnu",
-            "alert": {
-                "success": "Le client a été ajouté avec succès.",
-                "error": "Une erreur est survenue lors de l'ajout du client."
-            },
-            "inputs": {
-                "lastname": "Nom",
-                "firstname": "Prénom",
-                "email": "Email",
-                "phone": "Téléphone",
-                "address": "Adresse",
-                "zipcode": "Code postal",
-                "city": "Ville",
-                "store": {
-                    "title": "Point de vente",
-                    "placeholder": "Sélectionner un point de vente"
-                }
-            }
-        }
     },
     "products" : {
         "_name": "Produits",
@@ -258,10 +293,6 @@
             "price": "Prix"
         }
     },
-    "categories" : {
-        "_name": "Catégories",
-        "_name_all": "Toutes les catégories"
-    },
     "suppliers" : {
         "_name": "Fournisseurs",
         "table": {
@@ -323,67 +354,6 @@
             "get_supplier": "Erreur lors de la récupération du fournisseur."
         }
     },
-    "carriers": {
-        "_name": "Transporteurs",
-        "table": {
-            "actions": {
-                "view": "Voir",
-                "edit": "Modifier",
-                "delete": {
-                    "title":"Supprimer",
-                    "dialog": {
-                        "title": "Supprimer le transporteur",
-                        "message": "Êtes-vous sûr de vouloir supprimer le transporteur : <b>{{name}}</b> ? Cette action est irréversible.",
-                        "confirm": "Supprimer"
-                    },
-                    "success": "Le transporteur a été supprimé avec succès.",
-                    "error": "Une erreur est survenue lors de la suppression du transporteur."
-                }
-            },
-            "headers": {
-                "name": "Transporteur",
-                "contact": "Contact",
-                "address": "Adresse",
-                "actions": "Actions"
-            },
-            "empty": "Aucun transporteurs trouvés."
-        },
-        "add": {
-            "title": "Ajouter un transporteur",
-            "button": "Ajouter",
-            "alert": {
-                "success": "Le transporteur a été ajouté avec succès.",
-                "error": "Une erreur est survenue lors de l'ajout du transporteur."
-            },
-            "inputs": {
-                "title": "Informations de l'entreprise",
-                "subtitle": "Informations du contact",
-                "name": "Nom de l'entreprise",
-                "email": "Email",
-                "phone": "Téléphone",
-                "address": "Adresse",
-                "zipcode": "Code postal",
-                "city": "Ville",
-                "country": "Pays",
-                "contact_person_identity": "Nom, prénom",
-                "contact_person_firstname": "Prénom",
-                "contact_person_lastname": "Nom",
-                "contact_person_email": "Email",
-                "contact_person_phone": "Téléphone",
-                "image": "Ajouter un logo"
-            }
-        },
-        "edit": {
-            "title": "Modifier le transporteur",
-            "alert" : {
-                "success": "Le transporteur a été modifié avec succès.",
-                "error": "Une erreur est survenue lors de la modification du transporteur."
-            }
-        },
-        "errors": {
-            "get_carrier": "Erreur lors de la récupération du transporteur."
-        }
-    },
     "stores": {
         "_name": "Points de vente",
         "table": {
@@ -428,7 +398,63 @@
             }
         }
     },
-    "global": {
-        "confirmation": "Confirmation"
+    "users" : {
+        "_name": "Utilisateurs",
+        "table": {
+            "actions": {
+                "view": "Voir",
+                "edit": "Modifier",
+                "delete": {
+                    "title":"Supprimer",
+                    "dialog": {
+                        "title": "Supprimer l'utilisateur",
+                        "message": "Êtes-vous sûr de vouloir supprimer <b>{{name}}</b> ? Cette action est irréversible.",
+                        "confirm": "Supprimer"
+                    },
+                    "success": "L'utilisateur a été supprimé avec succès.",
+                    "error": "Une erreur est survenue lors de la suppression de l'utilisateur."
+                }
+            },
+            "headers": {
+                "user": "Utilisateur",
+                "email": "Email",
+                "phone": "Téléphone",
+                "address": "Adresse",
+                "role": "Rôle",
+                "actions": "Actions"
+            },
+            "filter": {
+                "role": {
+                    "all" : "Tous les utilisateurs",
+                    "admin": "Administrateur",
+                    "gestionnaire": "Gestionnaire",
+                    "logisticien": "Logisticien"
+                }
+            },
+            "empty": "Aucun utilisateur trouvé."
+        },
+        "add": {
+            "title": "Ajouter un utilisateur",
+            "button": "Ajouter",
+            "unknown": "Inconnu",
+            "alert": {
+                "success": "L'utilisateur a été ajouté avec succès.",
+                "error": "Une erreur est survenue lors de l'ajout de l'utilisateur."
+            },
+            "inputs": {
+                "firstname": "Prénom",
+                "lastname": "Nom",
+                "email": "Email",
+                "phone": "Téléphone",
+                "address": "Adresse",
+                "zipcode": "Code postal",
+                "city": "Ville",
+                "role": {
+                    "title": "Rôle",
+                    "placeholder": "Sélectionner un rôle"
+                },
+                "image": "Ajouter une image de profil"
+            }
+        }
     }
 }

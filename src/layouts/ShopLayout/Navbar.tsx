@@ -15,6 +15,7 @@ import UserAccountActivator from "@components/ui/user/UserAccountActivator.tsx";
 import { useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import ToggleLanguage from "@components/tools/ToggleLanguage.tsx";
+import Cart from "@components/ui/global/Cart.tsx";
 
 interface LogoProps {
     className?: string;
@@ -105,6 +106,7 @@ export default function NavbarShop() {
                         as="div"
                         justify="end"
                     >
+                        <Cart />
                         <UserAccountActivator customer={true} />
                         <ToggleLanguage />
                     </NavbarContent>

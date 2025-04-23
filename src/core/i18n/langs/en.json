@@ -1,4 +1,151 @@
 {
+    "carriers": {
+        "_name": "Carriers",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete carrier",
+                        "message": "Are you sure you want to delete the carrier: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    },
+                    "success": "The carrier was successfully deleted.",
+                    "error": "An error occurred while deleting the carrier."
+                }
+            },
+            "headers": {
+                "name": "Carrier",
+                "contact": "Contact",
+                "address": "Address",
+                "actions": "Actions"
+            },
+            "empty": "No carriers found."
+        },
+        "add": {
+            "title": "Add a carrier",
+            "button": "Add",
+            "alert": {
+                "success": "The carrier was successfully added.",
+                "error": "An error occurred while adding the carrier."
+            },
+            "inputs": {
+                "title": "Company Information",
+                "subtitle": "Contact Information",
+                "name": "Company Name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal Code",
+                "city": "City",
+                "country": "Country",
+                "contact_person_identity": "Lastname, Firstname",
+                "contact_person_firstname": "First Name",
+                "contact_person_lastname": "Last Name",
+                "contact_person_email": "Email",
+                "contact_person_phone": "Phone",
+                "image": "Add a logo"
+            }
+        },
+        "edit": {
+            "title": "Update carrier",
+            "alert" : {
+                "success": "The carrier was successfully modified.",
+                "error": "An error occurred while modifying the carrier."
+            }
+        },
+        "errors": {
+            "get_carrier": "Error while fetching carrier data."
+        }
+    },
+    "cart": {
+        "_name": "Cart",
+        "empty": "Your cart is empty.",
+        "total_ttc": "Total (incl. tax)",
+        "total_ht": "Total (excl. tax)",
+        "tva": "VAT",
+        "validate_cart": "Validate cart",
+        "remove": {
+            "title": "Remove",
+            "dialog": {
+                "title": "Remove product",
+                "message": "Are you sure you want to remove the product: <b>{{name}}</b>? This action is irreversible.",
+                "confirm": "Remove"
+            },
+            "success": "The product was successfully removed.",
+            "error": "An error occurred while removing the product."
+        },
+        "add": {
+            "label": "Add to cart",
+            "back": {
+                "title": "Back to product list",
+                "button": "Back"
+            },
+            "quantity": "Quantity"
+        }
+    },
+    "categories" : {
+        "_name": "Categories",
+        "_name_all": "All categories"
+    },
+    "customer": {
+        "_name": "Customer",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete customer",
+                        "message": "Are you sure you want to delete customer: <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    },
+                    "success": "The customer was successfully deleted.",
+                    "error": "An error occurred while deleting the customer."
+                }
+            },
+            "headers": {
+                "name": "Customer",
+                "email": "Email",
+                "phone": "Phone",
+                "store": "Store",
+                "address": "Shipping address",
+                "commands_count": "Number of orders",
+                "actions": "Actions"
+            },
+            "empty": "No customers found."
+        },
+        "add": {
+            "title": "Add a customer",
+            "button": "Add",
+            "unknown": "Unknown",
+            "alert": {
+                "success": "The customer was successfully added.",
+                "error": "An error occurred while adding the customer."
+            },
+            "inputs": {
+                "lastname": "Last name",
+                "firstname": "First name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal code",
+                "city": "City",
+                "store": { "title": "Store", "placeholder": "Select a store" }
+            }
+        }
+    },
+    "errors": {
+        "login": {
+            "invalid": "The entered credentials are invalid.",
+            "email": "Please enter a valid email address containing an '@'.",
+            "password": "Please enter a password."
+        },
+        "message": "An error occurred. Please try again later."
+    },
     "generics": {
         "email": "Email",
         "password": "Password",
@@ -69,119 +216,8 @@
             }
         }
     },
+    "global": { "confirmation": "Confirmation" },
     "orders": { "_name": "Orders" },
-    "errors": {
-        "login": {
-            "invalid": "The entered credentials are invalid.",
-            "email": "Please enter a valid email address containing an '@'.",
-            "password": "Please enter a password."
-        },
-        "message": "An error occurred. Please try again later."
-    },
-    "users": {
-        "_name": "Users",
-        "table": {
-            "actions": {
-                "view": "View",
-                "edit": "Edit",
-                "delete": {
-                    "title": "Delete",
-                    "dialog": {
-                        "title": "Delete user",
-                        "message": "Are you sure you want to delete <b>{{name}}</b>? This action is irreversible.",
-                        "confirm": "Delete"
-                    },
-                    "success": "The user was successfully deleted.",
-                    "error": "An error occurred while deleting the user."
-                }
-            },
-            "headers": {
-                "user": "User",
-                "email": "Email",
-                "phone": "Phone",
-                "address": "Address",
-                "role": "Role",
-                "actions": "Actions"
-            },
-            "filter": {
-                "role": {
-                    "all": "All users",
-                    "admin": "Administrator",
-                    "gestionnaire": "Manager",
-                    "logisticien": "Logistician"
-                }
-            },
-            "empty": "No users found."
-        },
-        "add": {
-            "title": "Add a user",
-            "button": "Add",
-            "unknown": "Unknown",
-            "alert": {
-                "success": "The user was successfully added.",
-                "error": "An error occurred while adding the user."
-            },
-            "inputs": {
-                "firstname": "First name",
-                "lastname": "Last name",
-                "email": "Email",
-                "phone": "Phone",
-                "address": "Address",
-                "zipcode": "Postal code",
-                "city": "City",
-                "role": { "title": "Role", "placeholder": "Select a role" },
-                "image": "Add a profile image"
-            }
-        }
-    },
-    "customer": {
-        "_name": "Customer",
-        "table": {
-            "actions": {
-                "view": "View",
-                "edit": "Edit",
-                "delete": {
-                    "title": "Delete",
-                    "dialog": {
-                        "title": "Delete customer",
-                        "message": "Are you sure you want to delete customer: <b>{{name}}</b>? This action is irreversible.",
-                        "confirm": "Delete"
-                    },
-                    "success": "The customer was successfully deleted.",
-                    "error": "An error occurred while deleting the customer."
-                }
-            },
-            "headers": {
-                "name": "Customer",
-                "email": "Email",
-                "phone": "Phone",
-                "store": "Store",
-                "address": "Shipping address",
-                "commands_count": "Number of orders",
-                "actions": "Actions"
-            },
-            "empty": "No customers found."
-        },
-        "add": {
-            "title": "Add a customer",
-            "button": "Add",
-            "unknown": "Unknown",
-            "alert": {
-                "success": "The customer was successfully added.",
-                "error": "An error occurred while adding the customer."
-            },
-            "inputs": {
-                "lastname": "Last name",
-                "firstname": "First name",
-                "email": "Email",
-                "phone": "Phone",
-                "address": "Address",
-                "zipcode": "Postal code",
-                "city": "City",
-                "store": { "title": "Store", "placeholder": "Select a store" }
-            }
-        }
-    },
     "products": {
         "_name": "Products",
         "_name_all": "All products",
@@ -244,10 +280,6 @@
             "price": "Price"
         }
     },
-    "categories" : {
-        "_name": "Categories",
-        "_name_all": "All categories"
-    },
     "suppliers": {
         "_name": "Suppliers",
         "table": {
@@ -309,67 +341,6 @@
             "get_supplier": "Error while fetching supplier data."
         }
     },
-    "carriers": {
-        "_name": "Carriers",
-        "table": {
-            "actions": {
-                "view": "View",
-                "edit": "Edit",
-                "delete": {
-                    "title": "Delete",
-                    "dialog": {
-                        "title": "Delete carrier",
-                        "message": "Are you sure you want to delete the carrier: <b>{{name}}</b>? This action is irreversible.",
-                        "confirm": "Delete"
-                    },
-                    "success": "The carrier was successfully deleted.",
-                    "error": "An error occurred while deleting the carrier."
-                }
-            },
-            "headers": {
-                "name": "Carrier",
-                "contact": "Contact",
-                "address": "Address",
-                "actions": "Actions"
-            },
-            "empty": "No carriers found."
-        },
-        "add": {
-            "title": "Add a carrier",
-            "button": "Add",
-            "alert": {
-                "success": "The carrier was successfully added.",
-                "error": "An error occurred while adding the carrier."
-            },
-            "inputs": {
-                "title": "Company Information",
-                "subtitle": "Contact Information",
-                "name": "Company Name",
-                "email": "Email",
-                "phone": "Phone",
-                "address": "Address",
-                "zipcode": "Postal Code",
-                "city": "City",
-                "country": "Country",
-                "contact_person_identity": "Lastname, Firstname",
-                "contact_person_firstname": "First Name",
-                "contact_person_lastname": "Last Name",
-                "contact_person_email": "Email",
-                "contact_person_phone": "Phone",
-                "image": "Add a logo"
-            }
-        },
-        "edit": {
-            "title": "Update carrier",
-            "alert" : {
-                "success": "The carrier was successfully modified.",
-                "error": "An error occurred while modifying the carrier."
-            }
-        },
-        "errors": {
-            "get_carrier": "Error while fetching carrier data."
-        }
-    },
     "stores": {
         "_name": "Stores",
         "table": {
@@ -414,5 +385,60 @@
             }
         }
     },
-    "global": { "confirmation": "Confirmation" }
+    "users": {
+        "_name": "Users",
+        "table": {
+            "actions": {
+                "view": "View",
+                "edit": "Edit",
+                "delete": {
+                    "title": "Delete",
+                    "dialog": {
+                        "title": "Delete user",
+                        "message": "Are you sure you want to delete <b>{{name}}</b>? This action is irreversible.",
+                        "confirm": "Delete"
+                    },
+                    "success": "The user was successfully deleted.",
+                    "error": "An error occurred while deleting the user."
+                }
+            },
+            "headers": {
+                "user": "User",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "role": "Role",
+                "actions": "Actions"
+            },
+            "filter": {
+                "role": {
+                    "all": "All users",
+                    "admin": "Administrator",
+                    "gestionnaire": "Manager",
+                    "logisticien": "Logistician"
+                }
+            },
+            "empty": "No users found."
+        },
+        "add": {
+            "title": "Add a user",
+            "button": "Add",
+            "unknown": "Unknown",
+            "alert": {
+                "success": "The user was successfully added.",
+                "error": "An error occurred while adding the user."
+            },
+            "inputs": {
+                "firstname": "First name",
+                "lastname": "Last name",
+                "email": "Email",
+                "phone": "Phone",
+                "address": "Address",
+                "zipcode": "Postal code",
+                "city": "City",
+                "role": { "title": "Role", "placeholder": "Select a role" },
+                "image": "Add a profile image"
+            }
+        }
+    }
 }
