@@ -6,7 +6,7 @@ class UsersProvider {
         return api.get("/users", { params: query });
     }
 
-    static getUser(id: number) {
+    static getUser(id: string) {
         return api.get(`/users/${id}`);
     }
 
@@ -14,7 +14,11 @@ class UsersProvider {
         return api.post("/users", payload);
     }
 
-    static deleteUser(id: number) {
+    static updateUser(id: string, payload: object) {
+        return api.put(`/users/${id}`, payload);
+    }
+
+    static deleteUser(id: string) {
         return api.delete(`/users/${id}`);
     }
 

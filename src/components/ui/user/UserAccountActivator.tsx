@@ -12,6 +12,7 @@ import { useNavigate } from "react-router";
 import { userSlice } from "@store/userSlice.ts";
 import RoleChip from "@components/ui/global/RoleChip.tsx";
 import { Role } from "@/types/Role.ts";
+import { useTranslation } from "react-i18next";
 
 interface UserAccountActivatorProps {
     customer?: boolean;
@@ -20,6 +21,7 @@ interface UserAccountActivatorProps {
 export default function UserAccountActivator({
     customer = false,
 }: UserAccountActivatorProps) {
+    const { t } = useTranslation();
     const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -41,18 +43,25 @@ export default function UserAccountActivator({
                         </div>
                     )}
                     <Avatar
-                        isBordered
-                        as="button"
                         className="transition-transform"
-                        color="secondary"
-                        name="Jason Hughes"
-                        size="sm"
-                        src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                        name={user.firstname}
+                        size="md"
+                        src={user.image_url}
                     />
                 </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="solid">
-                <DropdownItem key="settings">Mon compte</DropdownItem>
+                <DropdownItem key="settings">
+                    {t("global.links.my_account")}
+                </DropdownItem>
+                {customer ? (
+                    <DropdownItem
+                        key="orders"
+                        onPress={() => navigate("/orders")}
+                    >
+                        {t("global.links.my_orders")}
+                    </DropdownItem>
+                ) : null}
                 <DropdownItem
                     key="logout"
                     color="danger"
@@ -60,7 +69,7 @@ export default function UserAccountActivator({
                     className="flex flex-row text-black"
                     startContent={<LogoutIcon size={15} />}
                 >
-                    Déconnexion
+                    {t("global.links.logout")}
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
