@@ -24,23 +24,30 @@ export default function UserAccountActivator({
     customer = false,
 }: UserAccountActivatorProps) {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const user = useSelector((state: RootState) => state.user);
     const cartItems = useSelector((state: RootState) => state.cart.items);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
 
-    console.log("panier", cartItems);
-
-    const handleLogout = () => {
-        console.log("Panier", cartItems);
-
-        CartsProvider.createCart({
-            products: cartItems,
-        });
-        dispatch(clearUser());
-        dispatch(clearCart());
-        navigate("/login");
+    const handleLogout = async () => {
+        try {
+            if (cartItems.length > 0) {
+                await CartsProvider.createCart({
+                    products: cartItems,
+                });
+            } else {
+                await CartsProvider.deleteCart(Number(user.id));
+            }
+        } catch (error) {
+            console.error("Erreur lors de la sauvegarde du panier :", error);
+        } finally {
+            dispatch(clearUser());
+            dispatch(clearCart());
+            navigate("/login");
+        }
     };
+
     return (
         <Dropdown placement="bottom-end">
             <DropdownTrigger>
