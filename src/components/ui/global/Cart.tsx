@@ -14,7 +14,7 @@ import {
 } from "@heroui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import CartDetail from "@components/Shop/cart/CartDetail.tsx";
+import CartDetail from "@components/Shop/Cart/CartDetail.tsx";
 
 export default function Cart() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();

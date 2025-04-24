@@ -1,5 +1,5 @@
-import CartVerification from "@components/Shop/cart/CartVerification.tsx";
-import CartConfirmation from "@components/Shop/cart/CartConfirmation.tsx";
+import CartVerification from "@components/Shop/Cart/CartVerification.tsx";
+import CartConfirmation from "@components/Shop/Cart/CartConfirmation.tsx";
 
 export const cartRoutes = [
     {

@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import ProductCard from "@components/Shop/products/ProductCard.tsx";
 import { PaginatedProducts } from "@/types/Products.ts";
+import ProductCard from "@components/Shop/Products/ProductCard.tsx";
 
 interface ProductsGridProps {
     products: PaginatedProducts | undefined;

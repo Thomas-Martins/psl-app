@@ -44,4 +44,5 @@ interface GetProductsParams {
     search?: string;
     categories?: string[];
     priceRange?: [number, number];
+    categoryId?: string;
 }

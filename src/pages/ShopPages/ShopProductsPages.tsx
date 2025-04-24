@@ -3,11 +3,11 @@ import { PaginatedProducts } from "@/types/Products.ts";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import useSWR from "swr";
-import ProductsGrid from "@components/Shop/products/ProductsGrid.tsx";
+import ProductsGrid from "@components/Shop/Products/ProductsGrid.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import { useEffect, useMemo, useState } from "react";
 import { useShopLayout } from "@utils/hook/useShopLayoutContext.ts";
-import ProductsAsideMenu from "@components/Shop/products/ProductsAsideMenu.tsx";
+import ProductsAsideMenu from "@components/Shop/Products/ProductsAsideMenu.tsx";
 import {
     ProductFilters,
     ProductFiltersContext,
