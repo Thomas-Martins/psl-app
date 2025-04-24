@@ -51,7 +51,7 @@
         },
         "edit": {
             "title": "Update carrier",
-            "alert" : {
+            "alert": {
                 "success": "The carrier was successfully modified.",
                 "error": "An error occurred while modifying the carrier."
             }
@@ -62,11 +62,14 @@
     },
     "cart": {
         "_name": "Cart",
+        "your_cart": "Your cart",
         "empty": "Your cart is empty.",
         "total_ttc": "Total (incl. tax)",
         "total_ht": "Total (excl. tax)",
         "tva": "VAT",
         "validate_cart": "Validate cart",
+        "validate_command": "Validate order",
+        "info_confirmation": "Confirmation of delivery information",
         "remove": {
             "title": "Remove",
             "dialog": {
@@ -86,7 +89,7 @@
             "quantity": "Quantity"
         }
     },
-    "categories" : {
+    "categories": {
         "_name": "Categories",
         "_name_all": "All categories"
     },
@@ -216,8 +219,61 @@
             }
         }
     },
-    "global": { "confirmation": "Confirmation" },
-    "orders": { "_name": "Orders" },
+    "global": {
+        "confirmation": "Confirmation",
+        "links": {
+            "my_account": "My account",
+            "my_orders": "My orders",
+            "logout": "logout"
+        }
+    },
+    "orders": {
+        "_name": "Orders",
+        "my_orders": "All my orders",
+        "confirmation": {
+            "title": "Thank you for your order n°{{reference}}",
+            "emailing": "You will receive a confirmation email at <b>{{email}}</b> in the next few minutes.",
+            "info": "Your order will be processed as soon as possible and you will be informed of its progress.",
+            "detail": "To view your order details",
+            "link": "click here",
+            "contact": {
+                "title": "For any additional information or other requests, ",
+                "link": "please contact customer service."
+            }
+        },
+        "details": {
+            "title": "Order details",
+            "delivery": {
+                "title": "Delivery to the following address:",
+                "no_store": "No store"
+            },
+            "more": "More details",
+            "products": {
+                "headers": {
+                    "product": "Product",
+                    "quantity": "Quantity",
+                    "price": "Price excl. tax"
+                },
+                "count": "Number of products"
+            }
+        },
+        "download": {
+            "title": "Download invoice",
+            "button": "Download"
+        },
+        "empty": "You don't have any orders.",
+        "status": {
+            "title": "Order status",
+            "pending": "Order validated",
+            "processing": "In preparation",
+            "confirmed": "Ready to ship",
+            "shipped": "Shipped",
+            "cancelled": "Cancelled"
+        },
+        "title": "Order n°{{reference}}",
+        "total_ttc": "Total (incl. tax)",
+        "total_ht": "Total (excl. tax)"
+    },
     "products": {
         "_name": "Products",
         "_name_all": "All products",
@@ -332,7 +388,7 @@
         },
         "edit": {
             "title": "Update supplier",
-            "alert" : {
+            "alert": {
                 "success": "The supplier was successfully modified.",
                 "error": "An error occurred while modifying the supplier."
             }

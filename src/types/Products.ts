@@ -11,6 +11,7 @@ export interface Product {
     price: number;
     stock: number;
     image_url: string;
+    quantity?: number;
 }
 
 export interface PaginatedProducts {

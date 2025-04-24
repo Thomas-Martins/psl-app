@@ -19,6 +19,8 @@ import { shopProductsRoutes } from "@core/router/routes/shop/ShopProducts.routes
 import CartLayout from "@layouts/ShopLayout/CartLayout.tsx";
 import { cartRoutes } from "@core/router/routes/shop/Cart.routes.tsx";
 import CartVerification from "@components/Shop/cart/CartVerification.tsx";
+import { orderRoutes } from "@core/router/routes/shop/Order.routes.tsx";
+import OrdersPage from "@pages/ShopPages/OrdersPage.tsx";
 
 function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
     return routeConfigs.map((route, index) => (
@@ -30,8 +32,12 @@ function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
 
 export default function AppRoutes() {
     const user = useSelector((state: RootState) => state.user);
+    const cartItems = useSelector((s: RootState) => s.cart.items);
     const { isOpen, onOpenChange } = useDisclosure();
     const isAuthenticated = Boolean(user && user.role);
+
+    const isCartConfirmation =
+        location.pathname.startsWith("/cart/confirmation");
 
     const protectedRoutes: RouteConfig[] = [
         ...commandsRoutes,
@@ -46,6 +52,7 @@ export default function AppRoutes() {
     const shopRoutes: RouteConfig[] = [
         ...shopProductsRoutes(isOpen, onOpenChange),
         ...cartRoutes,
+        ...orderRoutes,
     ];
 
     return (
@@ -80,6 +87,21 @@ export default function AppRoutes() {
             <Route
                 path="/cart/*"
                 element={
+                    user?.role !== Role.CLIENT ? (
+                        <Navigate to="/login" replace />
+                    ) : !isCartConfirmation && cartItems.length === 0 ? (
+                        <Navigate to="/shop" replace />
+                    ) : (
+                        <CartLayout />
+                    )
+                }
+            >
+                <Route index element={<CartVerification />} />
+                {renderRoutes(cartRoutes)}
+            </Route>
+            <Route
+                path="/orders/*"
+                element={
                     user?.role === Role.CLIENT ? (
                         <CartLayout />
                     ) : (
@@ -87,8 +109,8 @@ export default function AppRoutes() {
                     )
                 }
             >
-                <Route index element={<CartVerification />} />
-                {renderRoutes(shopRoutes)}
+                <Route index element={<OrdersPage />} />
+                {renderRoutes(orderRoutes)}
             </Route>
             <Route
                 path="/*"

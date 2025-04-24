@@ -6,7 +6,7 @@
                 "view": "Voir",
                 "edit": "Modifier",
                 "delete": {
-                    "title":"Supprimer",
+                    "title": "Supprimer",
                     "dialog": {
                         "title": "Supprimer le transporteur",
                         "message": "Êtes-vous sûr de vouloir supprimer le transporteur : <b>{{name}}</b> ? Cette action est irréversible.",
@@ -51,7 +51,7 @@
         },
         "edit": {
             "title": "Modifier le transporteur",
-            "alert" : {
+            "alert": {
                 "success": "Le transporteur a été modifié avec succès.",
                 "error": "Une erreur est survenue lors de la modification du transporteur."
             }
@@ -62,13 +62,16 @@
     },
     "cart": {
         "_name": "Panier",
+        "your_cart": "Votre panier",
         "empty": "Votre panier est vide.",
         "total_ttc": "Total TTC",
         "total_ht": "Total HT",
         "tva": "TVA",
-        "validate_cart" : "Valider le panier",
+        "validate_cart": "Valider le panier",
+        "validate_command": "Valider la commande",
+        "info_confirmation": "Confirmation des informations de livraison",
         "remove": {
-            "title":"Supprimer",
+            "title": "Supprimer",
             "dialog": {
                 "title": "Supprimer le produit",
                 "message": "Êtes-vous sûr de vouloir supprimer le produit : <b>{{name}}</b> ? Cette action est irréversible.",
@@ -77,8 +80,8 @@
             "success": "Le produit a été supprimé avec succès.",
             "error": "Une erreur est survenue lors de la suppression du produit."
         },
-        "add" : {
-            "label":"Ajouter au panier",
+        "add": {
+            "label": "Ajouter au panier",
             "back": {
                 "title": "Retour à la liste des produits",
                 "button": "Retour"
@@ -86,18 +89,18 @@
             "quantity": "Quantité"
         }
     },
-    "categories" : {
+    "categories": {
         "_name": "Catégories",
         "_name_all": "Toutes les catégories"
     },
-    "customer" : {
+    "customer": {
         "_name": "Client",
         "table": {
             "actions": {
                 "view": "Voir",
                 "edit": "Modifier",
                 "delete": {
-                    "title":"Supprimer",
+                    "title": "Supprimer",
                     "dialog": {
                         "title": "Supprimer le client",
                         "message": "Êtes-vous sûr de vouloir supprimer le client : <b>{{name}}</b> ? Cette action est irréversible.",
@@ -141,7 +144,7 @@
             }
         }
     },
-    "errors" : {
+    "errors": {
         "login": {
             "invalid": "Les identifiants saisis sont invalides.",
             "email": "Veuillez saisir une adresse email valide contenant un '@'.",
@@ -149,7 +152,7 @@
         },
         "message": "Une erreur est survenue. Veuillez réessayer plus tard."
     },
-    "generics" : {
+    "generics": {
         "email": "Email",
         "password": "Mot de passe",
         "login_btn": "Se connecter",
@@ -163,7 +166,7 @@
         "errors": {
             "add": {
                 "name": {
-                    "required":"Le nom est obligatoire",
+                    "required": "Le nom est obligatoire",
                     "value": "Le nom doit contenir au moins 3 caractères"
                 },
                 "firstname": {
@@ -226,12 +229,61 @@
         }
     },
     "global": {
-        "confirmation": "Confirmation"
+        "confirmation": "Confirmation",
+        "links": {
+            "my_account": "Mon compte",
+            "my_orders": "Mes commandes",
+            "logout": "Déconnexion"
+        }
     },
-    "orders" : {
-        "_name": "Commandes"
+    "orders": {
+        "_name": "Commandes",
+        "my_orders": "Toutes mes commandes",
+        "confirmation": {
+            "title": "Merci pour votre commande n°{{reference}}",
+            "emailing": "Vous recevrez un email de confirmation à l'adresse <b>{{email}}</b> dans les prochaines minutes.",
+            "info": "Votre commande sera traitée dans les plus brefs délais et vous serez informé de son avancement.",
+            "detail": "Pour voir le détail de votre commande",
+            "link": "cliquez ici",
+            "contact": {
+                "title": "Pour toute informations complémentaires ou tout autres demandes, ",
+                "link": "merci de contactez le service client."
+            }
+        },
+        "details": {
+            "title": "Détails de la commande",
+            "delivery": {
+                "title": "Livraison à l'adresse suivante :",
+                "no_store": "Aucun point de vente"
+            },
+            "more": "Plus de détails",
+            "products": {
+                "headers": {
+                    "product": "Produit",
+                    "quantity": "Quantité",
+                    "price": "Prix HT"
+                },
+                "count": "Nombre de produits"
+            }
+        },
+        "download": {
+            "title": "Télécharger la facture",
+            "button": "Télécharger"
+        },
+        "empty": "Vous n'avez pas de commandes.",
+        "status": {
+            "title": "Statut de la commande",
+            "pending": "Commande validée",
+            "processing": "En préparation",
+            "confirmed": "Prête à être expédiée",
+            "shipped": "Expédiée",
+            "cancelled": "Annulée"
+        },
+        "title": "Commande n°{{reference}}",
+        "total_ttc": "Total TTC",
+        "total_ht": "Total HT"
     },
-    "products" : {
+    "products": {
         "_name": "Produits",
         "_name_all": "Tous les produits",
         "table": {
@@ -239,7 +291,7 @@
                 "view": "Voir",
                 "edit": "Modifier",
                 "delete": {
-                    "title":"Supprimer",
+                    "title": "Supprimer",
                     "dialog": {
                         "title": "Supprimer le produit",
                         "message": "Êtes-vous sûr de vouloir supprimer le produit : <b>{{name}}</b> ? Cette action est irréversible.",
@@ -293,14 +345,14 @@
             "price": "Prix"
         }
     },
-    "suppliers" : {
+    "suppliers": {
         "_name": "Fournisseurs",
         "table": {
             "actions": {
                 "view": "Voir",
                 "edit": "Modifier",
                 "delete": {
-                    "title":"Supprimer",
+                    "title": "Supprimer",
                     "dialog": {
                         "title": "Supprimer le fournisseur",
                         "message": "Êtes-vous sûr de vouloir supprimer le fournisseur : <b>{{name}}</b> ? Cette action est irréversible.",
@@ -345,7 +397,7 @@
         },
         "edit": {
             "title": "Modifier le fournisseur",
-            "alert" : {
+            "alert": {
                 "success": "Le fournisseur a été modifié avec succès.",
                 "error": "Une erreur est survenue lors de la modification du fournisseur."
             }
@@ -361,7 +413,7 @@
                 "view": "Voir",
                 "edit": "Modifier",
                 "delete": {
-                    "title":"Supprimer",
+                    "title": "Supprimer",
                     "dialog": {
                         "title": "Supprimer le point de vente",
                         "message": "Êtes-vous sûr de vouloir supprimer le point de vente : <b>{{name}}</b> ? Cette action est irréversible.",
@@ -398,14 +450,14 @@
             }
         }
     },
-    "users" : {
+    "users": {
         "_name": "Utilisateurs",
         "table": {
             "actions": {
                 "view": "Voir",
                 "edit": "Modifier",
                 "delete": {
-                    "title":"Supprimer",
+                    "title": "Supprimer",
                     "dialog": {
                         "title": "Supprimer l'utilisateur",
                         "message": "Êtes-vous sûr de vouloir supprimer <b>{{name}}</b> ? Cette action est irréversible.",
@@ -425,7 +477,7 @@
             },
             "filter": {
                 "role": {
-                    "all" : "Tous les utilisateurs",
+                    "all": "Tous les utilisateurs",
                     "admin": "Administrateur",
                     "gestionnaire": "Gestionnaire",
                     "logisticien": "Logisticien"
@@ -453,7 +505,8 @@
                     "title": "Rôle",
                     "placeholder": "Sélectionner un rôle"
                 },
-                "image": "Ajouter une image de profil"
+                "image": "Ajouter une image de profil",
+                "complementary_info": "Informations complémentaires"
             }
         }
     }

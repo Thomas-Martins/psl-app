@@ -14,6 +14,10 @@ class UsersProvider {
         return api.post("/users", payload);
     }
 
+    static updateUser(id: string, payload: object) {
+        return api.put(`/users/${id}`, payload);
+    }
+
     static deleteUser(id: number) {
         return api.delete(`/users/${id}`);
     }

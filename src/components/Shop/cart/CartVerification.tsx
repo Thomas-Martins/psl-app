@@ -1,86 +1,127 @@
 import { Button, Input, Textarea } from "@heroui/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import { useState } from "react";
 import CartDetail from "@components/Shop/cart/CartDetail.tsx";
+import { useTranslation } from "react-i18next";
+import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
+import UsersProvider from "@core/api/Providers/UsersProvider.ts";
+import { updateStore } from "@store/userSlice.ts";
+import { clearCart } from "@store/cartSlice.ts";
+import { useNavigate } from "react-router";
 
 export default function CartVerification() {
-    const user = useSelector((state: RootState) => state.user);
-    const [validateAddress, setValidateAddress] = useState(user.address);
-    const [validateZipcode, setValidateZipcode] = useState(user.zipcode);
-    const [validateCity, setValidateCity] = useState(user.city);
-    const [validatePhone, setValidatePhone] = useState(user.phone);
-    const [validateComplementaryInfo, setValidateComplementaryInfo] =
-        useState("");
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector((s: RootState) => s.user);
+    const cartItems = useSelector((s: RootState) => s.cart.items);
 
-    console.log("user", user);
-    const handleValidateCart = () => {
-        //1.Mettre à jour l'addresse de livraison
+    const [addr, setAddr] = useState(user.store?.address ?? "");
+    const [zip, setZip] = useState(user.store?.zipcode ?? "");
+    const [city, setCity] = useState(user.store?.city ?? "");
+    const [phone, setPhone] = useState(user.store?.phone ?? "");
+    const [info, setInfo] = useState("");
 
-        //2. Faire la requête de validation de commande en ajoutant les informations complémentaires dans le payload
+    const [loading, setLoading] = useState(false);
 
-        //3. Rediriger vers la page de confirmation de commande
-        console.log("validate cart");
+    const handleValidateCart = async () => {
+        setLoading(true);
+        try {
+            await UsersProvider.updateUser(user.id, {
+                address: addr,
+                zipcode: zip,
+                city,
+                phone,
+            });
+            dispatch(updateStore({ address: addr, zipcode: zip, city, phone }));
+
+            const payload = {
+                user_id: user.id,
+                complementary_info: info,
+                products: cartItems,
+            };
+            const response = await OrdersProvider.createOrder(payload);
+
+            dispatch(clearCart());
+            navigate("/cart/confirmation", {
+                state: {
+                    orderId: response.data.data.id,
+                    order: response.data.data,
+                    fromCart: true,
+                },
+            });
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="grid grid-cols-5 gap-4 items-start h-full">
-            {/*Confirmation livraison*/}
-            <div className="bg-white w-full col-span-3 p-5 rounded-2xl flex flex-col gap-3 shadow align-self: start">
-                <h1 className="text-xl">Confirmation des informations</h1>
-                <div className="flex gap-3">
+            <div className="bg-white w-full col-span-3 p-5 rounded-2xl flex flex-col gap-3 shadow">
+                <h1 className="text-2xl font-medium">
+                    {t("cart.info_confirmation")}
+                </h1>
+                <p className="text-xl mb-4">
+                    {t("stores._name")} : {user.store?.name}
+                </p>
+                <div className="flex gap-3 mb-3">
                     <Input
                         type="text"
-                        label="Adresse"
+                        label={t("users.add.inputs.address")}
                         labelPlacement="outside"
-                        isRequired={true}
-                        value={validateAddress}
-                        onChange={(e) => setValidateAddress(e.target.value)}
+                        isRequired
+                        value={addr}
+                        onChange={(e) => setAddr(e.target.value)}
                     />
                     <Input
                         type="text"
-                        label="Code postal"
+                        label={t("users.add.inputs.zipcode")}
                         labelPlacement="outside"
-                        isRequired={true}
-                        value={validateZipcode}
-                        onChange={(e) => setValidateZipcode(e.target.value)}
+                        isRequired
+                        value={zip}
+                        onChange={(e) => setZip(e.target.value)}
                     />
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 mb-3">
                     <Input
                         type="text"
-                        label="Ville"
+                        label={t("users.add.inputs.city")}
                         labelPlacement="outside"
-                        isRequired={true}
-                        value={validateCity}
-                        onChange={(e) => setValidateCity(e.target.value)}
+                        isRequired
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
                     />
                     <Input
                         type="text"
-                        label="Téléphone"
+                        label={t("users.add.inputs.phone")}
                         labelPlacement="outside"
-                        isRequired={true}
-                        value={validatePhone}
-                        onChange={(e) => setValidatePhone(e.target.value)}
+                        isRequired
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                     />
                 </div>
                 <Textarea
-                    label="Informations complémentaires"
+                    label={t("users.add.inputs.complementary_info")}
                     labelPlacement="outside"
-                    value={validateComplementaryInfo}
-                    minRows={5}
-                    onChange={(e) =>
-                        setValidateComplementaryInfo(e.target.value)
-                    }
+                    value={info}
+                    minRows={4}
+                    onChange={(e) => setInfo(e.target.value)}
                 />
             </div>
 
-            {/*Confirmation panier*/}
-            <div className="bg-white w-full col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between self-stretch h-full space-y-5">
-                <h1 className="text-3xl">Votre panier</h1>
+            <div className="bg-white w-full col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between h-full">
+                <h1 className="text-2xl font-medium">{t("cart.your_cart")}</h1>
                 <CartDetail />
-                <Button color="primary" size="lg" onPress={handleValidateCart}>
-                    Valider la commande
+                <Button
+                    color="primary"
+                    size="lg"
+                    isLoading={loading}
+                    onPress={handleValidateCart}
+                >
+                    {t("cart.validate_command")}
                 </Button>
             </div>
         </div>
