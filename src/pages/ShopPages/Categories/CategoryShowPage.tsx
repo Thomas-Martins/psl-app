@@ -34,7 +34,7 @@ export default function CategoryShowPage() {
             .then((res) => setProducts(res.data))
             .catch((err) => {
                 console.error("Erreur chargement produits :", err);
-                setErrorMessage(t("categories.errors.get_categories"));
+                setErrorMessage(t("categories.products.no_products"));
             })
             .finally(() => setLoading(false));
     }, [categoryId, currentPage, limit, t]);
