@@ -15,7 +15,7 @@ import {
     TableHeader,
     TableRow,
 } from "@heroui/react";
-import StatusStep from "@components/Shop/cart/StatusStep.tsx";
+import StatusStep from "@components/Shop/Cart/StatusStep.tsx";
 import FileIcon from "@components/ui/icons/FileIcon.tsx";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
 import { useTranslation } from "react-i18next";

@@ -18,7 +18,7 @@ import { RouteConfig } from "@core/router/RouteConfig.ts";
 import { shopProductsRoutes } from "@core/router/routes/shop/ShopProducts.routes.tsx";
 import CartLayout from "@layouts/ShopLayout/CartLayout.tsx";
 import { cartRoutes } from "@core/router/routes/shop/Cart.routes.tsx";
-import CartVerification from "@components/Shop/cart/CartVerification.tsx";
+import CartVerification from "@components/Shop/Cart/CartVerification.tsx";
 import { orderRoutes } from "@core/router/routes/shop/Order.routes.tsx";
 import OrdersPage from "@pages/ShopPages/OrdersPage.tsx";
 
@@ -51,8 +51,6 @@ export default function AppRoutes() {
 
     const shopRoutes: RouteConfig[] = [
         ...shopProductsRoutes(isOpen, onOpenChange),
-        ...cartRoutes,
-        ...orderRoutes,
     ];
 
     return (
@@ -81,8 +79,8 @@ export default function AppRoutes() {
                     )
                 }
             >
-                {renderRoutes(shopRoutes)}
                 <Route index element={<Navigate to="products" />} />
+                {renderRoutes(shopRoutes)}
             </Route>
             <Route
                 path="/cart/*"

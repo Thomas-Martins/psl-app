@@ -2,7 +2,7 @@ import { Button, Input, Textarea } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import { useState } from "react";
-import CartDetail from "@components/Shop/cart/CartDetail.tsx";
+import CartDetail from "@components/Shop/Cart/CartDetail.tsx";
 import { useTranslation } from "react-i18next";
 import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";

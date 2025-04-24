@@ -58,7 +58,7 @@ export default function ProductModal({
 
     const handleModalClose = (open: boolean) => {
         if (!open) {
-            navigate("/shop/products", { replace: true });
+            navigate(-1);
         }
         onOpenChange(open);
     };

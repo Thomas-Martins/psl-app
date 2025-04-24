@@ -2,8 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
-import StatusStep from "@components/Shop/cart/StatusStep.tsx";
 import { Trans, useTranslation } from "react-i18next";
+import StatusStep from "@components/Shop/Cart/StatusStep.tsx";
 
 export default function CartConfirmation() {
     const { t } = useTranslation();

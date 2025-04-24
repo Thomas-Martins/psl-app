@@ -91,7 +91,13 @@
     },
     "categories": {
         "_name": "Catégories",
-        "_name_all": "Toutes les catégories"
+        "_name_all": "Toutes les catégories",
+        "back_to" : {
+            "categories": "Retour aux catégories"
+        },
+        "products": {
+            "no_products": "Aucun produits trouvés dans cette catégorie."
+        }
     },
     "customer": {
         "_name": "Client",
