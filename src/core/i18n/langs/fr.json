@@ -253,7 +253,8 @@
         "details": {
             "title": "Détails de la commande",
             "delivery": {
-                "title": "Livraison à l'adresse suivante :"
+                "title": "Livraison à l'adresse suivante :",
+                "no_store": "Aucun point de vente"
             },
             "more": "Plus de détails",
             "products": {
@@ -278,7 +279,7 @@
             "shipped": "Expédiée",
             "cancelled": "Annulée"
         },
-        "title": "Commandes n°{{reference}}",
+        "title": "Commande n°{{reference}}",
         "total_ttc": "Total TTC",
         "total_ht": "Total HT"
     },

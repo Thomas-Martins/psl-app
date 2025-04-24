@@ -54,7 +54,19 @@ export const userSlice = createSlice({
         }),
         updateStore: (state, action: PayloadAction<Partial<Store>>) => {
             if (!state.store) {
-                state.store = {} as Store;
+                state.store = {
+                    id: 0,
+                    name: "",
+                    address: "",
+                    zipcode: "",
+                    city: "",
+                    phone: "",
+                    email: "",
+                    customers_count: 0,
+                    image_url: "",
+                    ...action.payload,
+                };
+                return;
             }
             state.store = {
                 ...state.store,

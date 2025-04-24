@@ -45,7 +45,9 @@ export default function OrdersPage() {
                                 <AccordionItem
                                     key={order.id}
                                     aria-label={order.reference}
-                                    title={`${t("Commande n°")} ${order.reference}`}
+                                    title={t("orders.title", {
+                                        reference: order.reference,
+                                    })}
                                 >
                                     <div>
                                         {t("orders.details.products.count")} :{" "}

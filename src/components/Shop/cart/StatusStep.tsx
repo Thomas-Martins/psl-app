@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
 interface StatusStepProps {
-    status: string;
+    status: OrderStatus;
 }
 
 export default function StatusStep({ status }: StatusStepProps) {

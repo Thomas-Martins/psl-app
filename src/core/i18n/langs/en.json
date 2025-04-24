@@ -244,7 +244,8 @@
         "details": {
             "title": "Order details",
             "delivery": {
-                "title": "Delivery to the following address:"
+                "title": "Delivery to the following address:",
+                "no_store": "No store"
             },
             "more": "More details",
             "products": {
