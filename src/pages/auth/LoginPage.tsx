@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@store/userSlice.ts";
 import { useNavigate } from "react-router";
 import GlobalAlert from "@components/ui/global/GlobalAlert.tsx";
+import CartsProvider from "@core/api/Providers/CartsProvider.ts";
+import { clearCart, setCart } from "@store/cartSlice.ts";
 
 export default function LoginPage() {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -27,6 +29,18 @@ export default function LoginPage() {
                 response.data.access_token,
             );
             dispatch(setUser(response.data.user));
+
+            const user = response.data.user;
+
+            const cartResp = await CartsProvider.getCartByUserId(user.id);
+            const products = cartResp.data?.data?.products;
+
+            if (Array.isArray(products) && products.length > 0) {
+                dispatch(setCart(products));
+            } else {
+                dispatch(clearCart());
+            }
+
             navigate("/");
         } catch (error) {
             console.error(error);
