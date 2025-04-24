@@ -5,7 +5,7 @@ import { usePagination } from "@utils/hook/usePagination.ts";
 import useSWR from "swr";
 import ProductsGrid from "@components/Shop/products/ProductsGrid.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useShopLayout } from "@utils/hook/useShopLayoutContext.ts";
 import ProductsAsideMenu from "@components/Shop/products/ProductsAsideMenu.tsx";
 import {
@@ -59,15 +59,20 @@ export default function ShopProductsPages() {
             layout.setShowAside?.(false);
             layout.setAside?.(null);
         };
-    }, []);
+    }, [layout]);
 
-    useEffect(() => {
-        layout.setAside?.(
+    const asideComponent = useMemo(
+        () => (
             <ProductFiltersContext.Provider value={{ filters, setFilters }}>
                 <ProductsAsideMenu />
-            </ProductFiltersContext.Provider>,
-        );
-    }, []);
+            </ProductFiltersContext.Provider>
+        ),
+        [filters, setFilters],
+    );
+
+    useEffect(() => {
+        layout.setAside?.(asideComponent);
+    }, [asideComponent, layout]);
 
     return (
         <ProductFiltersContext.Provider value={{ filters, setFilters }}>
