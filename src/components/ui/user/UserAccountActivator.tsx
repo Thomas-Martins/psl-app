@@ -9,10 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import LogoutIcon from "@components/ui/icons/LogoutIcon.tsx";
 import { useNavigate } from "react-router";
-import { userSlice } from "@store/userSlice.ts";
 import RoleChip from "@components/ui/global/RoleChip.tsx";
 import { Role } from "@/types/Role.ts";
 import { useTranslation } from "react-i18next";
+import CartsProvider from "@core/api/Providers/CartsProvider.ts";
+import { clearUser } from "@store/userSlice.ts";
+import { clearCart } from "@store/cartSlice.ts";
 
 interface UserAccountActivatorProps {
     customer?: boolean;
@@ -22,14 +24,30 @@ export default function UserAccountActivator({
     customer = false,
 }: UserAccountActivatorProps) {
     const { t } = useTranslation();
-    const user = useSelector((state: RootState) => state.user);
-    const navigate = useNavigate();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const handleLogout = () => {
-        dispatch(userSlice.actions.clearUser());
-        navigate("/login");
+    const user = useSelector((state: RootState) => state.user);
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+
+    const handleLogout = async () => {
+        try {
+            if (cartItems.length > 0) {
+                await CartsProvider.createCart({
+                    products: cartItems,
+                });
+            } else {
+                await CartsProvider.deleteCart(Number(user.id));
+            }
+        } catch (error) {
+            console.error("Erreur lors de la sauvegarde du panier :", error);
+        } finally {
+            dispatch(clearUser());
+            dispatch(clearCart());
+            navigate("/login");
+        }
     };
+
     return (
         <Dropdown placement="bottom-end">
             <DropdownTrigger>

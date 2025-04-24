@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@store/userSlice.ts";
 import { useNavigate } from "react-router";
 import GlobalAlert from "@components/ui/global/GlobalAlert.tsx";
+import CartsProvider from "@core/api/Providers/CartsProvider.ts";
+import { clearCart, setCart } from "@store/cartSlice.ts";
 
 export default function LoginPage() {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,16 +24,31 @@ export default function LoginPage() {
         try {
             setErrorMessage("");
             const response = await LoginProvider.login({ email, password });
-            localStorage.setItem(
-                "psl_access_token",
-                response.data.access_token,
-            );
-            dispatch(setUser(response.data.user));
+            const { user, access_token } = response.data;
+
+            localStorage.setItem("psl_access_token", access_token);
+            dispatch(setUser(user));
+
+            try {
+                const cartResp = await CartsProvider.getCartByUserId(user.id);
+                const products = cartResp.data?.data?.products;
+                if (Array.isArray(products) && products.length > 0) {
+                    dispatch(setCart(products));
+                } else {
+                    dispatch(clearCart());
+                }
+            } catch (cartError) {
+                console.error(
+                    "Erreur lors de la récupération du panier :",
+                    cartError,
+                );
+                dispatch(clearCart());
+            }
+
             navigate("/");
-        } catch (error) {
-            console.error(error);
-            const message = t("errors.login.invalid");
-            setErrorMessage(message);
+        } catch (loginError) {
+            console.error(loginError);
+            setErrorMessage(t("errors.login.invalid"));
         }
     };
 
