@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import ProductsProvider from "@core/api/Providers/ProductsProvider.ts";
 import {
+    addToast,
     Button,
     Modal,
     ModalBody,
@@ -66,7 +67,28 @@ export default function ProductModal({
     const handleAddToCart = () => {
         if (product) {
             dispatch(addItem({ ...product, quantity }));
+            addToast({
+                title: t("cart.add.toast.success"),
+                color: "success",
+                classNames: {
+                    icon: "w-6 h-6 fill-green-600",
+                    closeButton: "border-none",
+                },
+                timeout: 2000,
+                shouldShowTimeoutProgress: true,
+            });
             handleModalClose(false);
+        } else {
+            addToast({
+                title: t("cart.add.toast.error"),
+                color: "danger",
+                classNames: {
+                    icon: "w-6 h-6 fill-red-600",
+                    closeButton: "border-none",
+                },
+                timeout: 2000,
+                shouldShowTimeoutProgress: true,
+            });
         }
     };
 

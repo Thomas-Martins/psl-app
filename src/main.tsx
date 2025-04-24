@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
         <Provider store={store}>
             <BrowserRouter>
                 <HeroUIProvider>
-                    <ToastProvider />
+                    <ToastProvider placement="top-right" />
                     <GlobalAlertProvider>
                         <ConfirmationModalProvider>
                             <App />

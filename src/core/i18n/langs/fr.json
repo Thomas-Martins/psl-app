@@ -86,7 +86,11 @@
                 "title": "Retour à la liste des produits",
                 "button": "Retour"
             },
-            "quantity": "Quantité"
+            "quantity": "Quantité",
+            "toast": {
+                "success": "Le produit a été ajouté au panier.",
+                "error": "Une erreur est survenue lors de l'ajout du produit au panier."
+            }
         }
     },
     "categories": {

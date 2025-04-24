@@ -86,7 +86,11 @@
                 "title": "Back to product list",
                 "button": "Back"
             },
-            "quantity": "Quantity"
+            "quantity": "Quantity",
+            "toast": {
+                "success": "The product was successfully added to the cart.",
+                "error": "An error occurred while adding the product to the cart."
+            }
         }
     },
     "categories": {
