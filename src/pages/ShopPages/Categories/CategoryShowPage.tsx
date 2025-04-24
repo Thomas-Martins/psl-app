@@ -7,6 +7,7 @@ import { usePagination } from "@utils/hook/usePagination.ts";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import { CircularProgress } from "@heroui/react";
 import { useTranslation } from "react-i18next";
+import GlobalAlert from "@components/ui/global/GlobalAlert.tsx";
 
 export default function CategoryShowPage() {
     const { t } = useTranslation();
@@ -16,10 +17,11 @@ export default function CategoryShowPage() {
 
     const [products, setProducts] = useState<PaginatedProducts>();
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (!categoryId) return;
-
+        setErrorMessage("");
         setLoading(true);
         ProductsProvider.getProducts({
             paginate: true,
@@ -30,9 +32,12 @@ export default function CategoryShowPage() {
             categoryId,
         })
             .then((res) => setProducts(res.data))
-            .catch((err) => console.error("Erreur chargement produits :", err))
+            .catch((err) => {
+                console.error("Erreur chargement produits :", err);
+                setErrorMessage(t("categories.errors.get_categories"));
+            })
             .finally(() => setLoading(false));
-    }, [categoryId, currentPage, limit]);
+    }, [categoryId, currentPage, limit, t]);
 
     return (
         <>
@@ -70,7 +75,14 @@ export default function CategoryShowPage() {
                     />
                 )}
             </div>
-
+            {errorMessage && (
+                <GlobalAlert
+                    type="danger"
+                    hideIcon
+                    title={errorMessage}
+                    variant="solid"
+                />
+            )}
             <Outlet />
         </>
     );

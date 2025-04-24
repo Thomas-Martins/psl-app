@@ -97,6 +97,9 @@
         },
         "products": {
             "no_products": "No products found in this category."
+        },
+        "errors": {
+            "get_categories": "An error occurred while fetching categories."
         }
     },
     "customer": {

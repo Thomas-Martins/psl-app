@@ -96,7 +96,10 @@
             "categories": "Retour aux catégories"
         },
         "products": {
-            "no_products": "Aucun produits trouvés dans cette catégorie."
+            "no_products": "Aucun produit trouvé dans cette catégorie."
+        },
+        "errors": {
+            "get_categories": "Erreur lors de la récupération des catégories."
         }
     },
     "customer": {

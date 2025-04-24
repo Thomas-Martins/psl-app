@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { HeroUIProvider } from "@heroui/react";
+import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { BrowserRouter } from "react-router";
 import App from "./App.tsx";
 import "./styles/main.css";
@@ -15,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
         <Provider store={store}>
             <BrowserRouter>
                 <HeroUIProvider>
+                    <ToastProvider />
                     <GlobalAlertProvider>
                         <ConfirmationModalProvider>
                             <App />
