@@ -1,41 +1,53 @@
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import useSWR from "swr";
 import CategoriesProvider from "@core/api/Providers/CategoriesProvider.ts";
 import { Category } from "@/types/Categories.ts";
-import { Card, CardFooter, CircularProgress, Image } from "@heroui/react";
+import {
+    addToast,
+    Card,
+    CardFooter,
+    CircularProgress,
+    Image,
+} from "@heroui/react";
 import { Link } from "react-router";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
-import GlobalAlert from "@components/ui/global/GlobalAlert.tsx";
-import { useTranslation } from "react-i18next";
+import { useCallback } from "react";
 
 export default function CategoriesPage() {
     const { t } = useTranslation();
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [errorMessage, setErrorMessage] = useState("");
 
-    useEffect(() => {
-        setErrorMessage("");
-        setLoading(true);
-        CategoriesProvider.getCategories()
-            .then((res) => {
-                setCategories(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setErrorMessage(t("categories.errors.get_categories"));
-            });
-    }, [t]);
+    const swrKey = JSON.stringify({ key: "categories" });
+
+    const fetchCategories = useCallback(
+        async (key: string): Promise<Category[]> => {
+            try {
+                JSON.parse(key);
+                const res = await CategoriesProvider.getCategories();
+                return res.data;
+            } catch (e) {
+                console.error(e);
+                addToast({
+                    title: t("categories.errors.get_categories"),
+                    color: "danger",
+                    hideIcon: true,
+                    timeout: 2500,
+                    shouldShowTimeoutProgress: true,
+                });
+                throw e;
+            }
+        },
+        [t],
+    );
+
+    const { data: categories } = useSWR<Category[]>(swrKey, fetchCategories, {
+        keepPreviousData: true,
+    });
 
     return (
-        <div className="flex flex-col gap-5">
-            <h1 className="text-2xl">{t("categories._name")}</h1>
-            {loading ? (
+        <>
+            {!categories ? (
                 <div className="flex justify-center py-10 h-96">
-                    <CircularProgress
-                        className="stroke-primary-500"
-                        size="lg"
-                    />
+                    <CircularProgress size="lg" aria-label="Loading..." />
                 </div>
             ) : (
                 <div className="grid grid-cols-5 gap-5">
@@ -52,13 +64,13 @@ export default function CategoriesPage() {
                             >
                                 {category.image_url ? (
                                     <Image
-                                        alt="Card background"
+                                        alt={category.name}
                                         className="object-cover rounded-xl"
                                         src={category.image_url}
                                         height={225}
                                     />
                                 ) : (
-                                    <div className="bg-light-100 h-56 rounded-xl flex items-center justify-center">
+                                    <div className="bg-zinc-500 bg-opacity-20 h-56 rounded-xl flex items-center justify-center">
                                         <ImageIcon size={50} color="white" />
                                     </div>
                                 )}
@@ -71,14 +83,6 @@ export default function CategoriesPage() {
                     ))}
                 </div>
             )}
-            {errorMessage && (
-                <GlobalAlert
-                    type="danger"
-                    hideIcon
-                    title={errorMessage}
-                    variant="solid"
-                />
-            )}
-        </div>
+        </>
     );
 }

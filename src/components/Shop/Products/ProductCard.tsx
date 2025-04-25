@@ -18,7 +18,7 @@ export default function ProductCard({ item }: ProductCardProps) {
                             width="100%"
                         />
                     ) : (
-                        <div className="bg-light-200 flex flex-col justify-center items-center h-36">
+                        <div className="bg-zinc-500 bg-opacity-20 flex flex-col justify-center items-center h-36">
                             <ImageIcon size={50} color={"white"} />
                         </div>
                     )}

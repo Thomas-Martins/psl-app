@@ -132,7 +132,7 @@ export default function ProductsTableList({
                                     ) : (
                                         <div
                                             className={
-                                                "bg-light-200 min-h-20 min-w-20 rounded-lg flex justify-center items-center"
+                                                "bg-zinc-500 bg-opacity-20 min-h-20 min-w-20 rounded-lg flex justify-center items-center"
                                             }
                                         >
                                             <ImageIcon

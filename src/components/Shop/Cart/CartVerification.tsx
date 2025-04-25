@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from "@heroui/react";
+import { addToast, Button, Input, Textarea } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import { useState } from "react";
@@ -24,7 +24,6 @@ export default function CartVerification() {
     const [info, setInfo] = useState("");
 
     const [loading, setLoading] = useState(false);
-
     const handleValidateCart = async () => {
         setLoading(true);
         try {
@@ -53,6 +52,14 @@ export default function CartVerification() {
             });
         } catch (e) {
             console.error(e);
+            addToast({
+                title: t("cart.error.validate_cart"),
+                description: t("generics.errors.retry"),
+                color: "danger",
+                hideIcon: true,
+                timeout: 3000,
+                shouldShowTimeoutProgress: true,
+            });
         } finally {
             setLoading(false);
         }
