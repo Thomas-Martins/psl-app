@@ -79,7 +79,7 @@ export default function PaginateFooter({
                 page={currentPage}
                 onChange={handlePageChange}
             />
-            <div className="flex w-40 items-center gap-4">
+            <div className="flex w-44 items-center gap-4">
                 <Select
                     aria-label="items-per-page"
                     size="md"

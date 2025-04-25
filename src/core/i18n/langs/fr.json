@@ -242,7 +242,8 @@
                     "value": "L'emplacement doit être dans le format suivant : 'A01-E01'"
                 }
             },
-            "retry": "Merci de réessayer plus tard."
+            "retry": "Merci de réessayer plus tard.",
+            "surprise": "Une erreur est survenue, veuillez réessayer plus tard."
         }
     },
     "global": {

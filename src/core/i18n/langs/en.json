@@ -233,7 +233,8 @@
                     "value": "Location must be in the format 'A01-E01'"
                 }
             },
-            "retry": "Please try again later."
+            "retry": "Please try again later.",
+            "surprise": "An error occurred. Please try again later."
         }
     },
     "global": {
