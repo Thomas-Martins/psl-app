@@ -42,6 +42,7 @@ export default function ProductModal({
                 setProduct(null);
                 setLoadError(false);
                 setLoading(false);
+                setQuantity(1);
                 navigate("..", { replace: true, relative: "path" });
             }
             onOpenChange(open);
@@ -148,10 +149,6 @@ export default function ProductModal({
                                 aria-label="Loading..."
                                 size="lg"
                             />
-                        </div>
-                    ) : loadError ? (
-                        <div className="text-center text-red-600 h-60 flex items-center justify-center">
-                            Erreur de chargement
                         </div>
                     ) : product ? (
                         <>
