@@ -91,6 +91,9 @@
                 "success": "The product was successfully added to the cart.",
                 "error": "An error occurred while adding the product to the cart."
             }
+        },
+        "error": {
+            "validate_cart": "An error occurred while validating the cart."
         }
     },
     "categories": {
@@ -229,7 +232,8 @@
                     "required": "Location is required",
                     "value": "Location must be in the format 'A01-E01'"
                 }
-            }
+            },
+            "retry": "Please try again later."
         }
     },
     "global": {
@@ -347,6 +351,11 @@
                 "button": "Apply filters"
             },
             "price": "Price"
+        },
+        "errors": {
+            "get_product": "An error occurred while fetching product.",
+            "get_products": "An error occurred while fetching products.",
+            "get_categories": "An error occurred while fetching categories."
         }
     },
     "suppliers": {

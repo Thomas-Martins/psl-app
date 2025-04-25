@@ -104,7 +104,7 @@ export default function ProductModal({
                             width="100%"
                         />
                     ) : (
-                        <div className="bg-light-200 flex flex-col justify-center items-center h-60 rounded-2xl">
+                        <div className="bg-zinc-500 bg-opacity-20 flex flex-col justify-center items-center h-60 rounded-2xl">
                             <ImageIcon size={50} color={"white"} />
                         </div>
                     )}

@@ -5,7 +5,7 @@ import { usePagination } from "@utils/hook/usePagination.ts";
 import useSWR from "swr";
 import ProductsGrid from "@components/Shop/Products/ProductsGrid.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useShopLayout } from "@utils/hook/useShopLayoutContext.ts";
 import ProductsAsideMenu from "@components/Shop/Products/ProductsAsideMenu.tsx";
 import {
@@ -13,26 +13,46 @@ import {
     ProductFiltersContext,
 } from "@/contexts/ProductFiltersContext";
 import { Outlet } from "react-router";
-
-const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
-    const params = JSON.parse(key);
-    const response = await ProductsProvider.getProducts({
-        paginate: true,
-        page: params.page,
-        limit: params.limit,
-        orderBy: params.orderBy,
-        orderWay: params.orderWay,
-        search: params.search,
-        ...(params.filters || {}),
-    });
-    return response.data;
-};
+import { CircularProgress } from "@heroui/progress";
+import { addToast } from "@heroui/react";
+import { useTranslation } from "react-i18next";
 
 export default function ShopProductsPages() {
+    const { t } = useTranslation();
     const [filters, setFilters] = useState<ProductFilters>({});
     const { orderWay, orderBy } = useSort("name", "ASC");
     const { currentPage, limit, handlePageChange, handleLimitChange } =
         usePagination(1, 20);
+
+    const fetchProducts = useCallback(
+        async (key: string): Promise<PaginatedProducts> => {
+            try {
+                const params = JSON.parse(key);
+
+                const response = await ProductsProvider.getProducts({
+                    paginate: true,
+                    page: params.page,
+                    limit: params.limit,
+                    orderBy: params.orderBy,
+                    orderWay: params.orderWay,
+                    search: params.search,
+                    ...(params.filters || {}),
+                });
+                return response.data;
+            } catch (e) {
+                console.error(e);
+                addToast({
+                    title: t("products.errors.get_products"),
+                    color: "danger",
+                    hideIcon: true,
+                    timeout: 2500,
+                    shouldShowTimeoutProgress: true,
+                });
+                throw e;
+            }
+        },
+        [t],
+    );
 
     const swrKey = JSON.stringify({
         key: "products",
@@ -67,7 +87,7 @@ export default function ShopProductsPages() {
                 <ProductsAsideMenu />
             </ProductFiltersContext.Provider>
         ),
-        [filters, setFilters],
+        [filters],
     );
 
     useEffect(() => {
@@ -75,25 +95,33 @@ export default function ShopProductsPages() {
     }, [asideComponent, layout]);
 
     return (
-        <ProductFiltersContext.Provider value={{ filters, setFilters }}>
-            <div className="space-y-5">
-                <ProductsGrid products={products} />
-                <PaginateFooter
-                    values={["20", "50", "100"]}
-                    totalPages={products?.last_page || 1}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                    itemsPerPage={limit}
-                    totalItems={products?.total || 0}
-                    onLimitChange={(newLimit) =>
-                        handleLimitChange(
-                            newLimit,
-                            products ? Number(products.total) : 20,
-                        )
-                    }
-                />
-            </div>
-            <Outlet />
-        </ProductFiltersContext.Provider>
+        <>
+            {!products || products?.data.length === 0 ? (
+                <div className="flex justify-center items-center py-10 h-full">
+                    <CircularProgress aria-label="Loading..." size="lg" />
+                </div>
+            ) : (
+                <ProductFiltersContext.Provider value={{ filters, setFilters }}>
+                    <div className="space-y-5">
+                        <ProductsGrid products={products} />
+                        <PaginateFooter
+                            values={["20", "50", "100"]}
+                            totalPages={products?.last_page || 1}
+                            currentPage={currentPage}
+                            handlePageChange={handlePageChange}
+                            itemsPerPage={limit}
+                            totalItems={products?.total || 0}
+                            onLimitChange={(newLimit) =>
+                                handleLimitChange(
+                                    newLimit,
+                                    products ? Number(products.total) : 20,
+                                )
+                            }
+                        />
+                    </div>
+                    <Outlet />
+                </ProductFiltersContext.Provider>
+            )}
+        </>
     );
 }

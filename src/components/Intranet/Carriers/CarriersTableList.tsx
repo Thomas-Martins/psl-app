@@ -122,7 +122,7 @@ export default function CarriersTableList({
                     {carriers.data.map((carrier) => (
                         <TableRow
                             key={carrier.id}
-                            className="hover:bg-light-50 cursor-pointer"
+                            className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"
                         >
                             <TableCell>
                                 <h3 className="text-md">{carrier.name}</h3>

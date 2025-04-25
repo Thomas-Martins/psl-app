@@ -91,6 +91,9 @@
                 "success": "Le produit a été ajouté au panier.",
                 "error": "Une erreur est survenue lors de l'ajout du produit au panier."
             }
+        },
+        "error": {
+            "validate_cart": "Erreur lors de la validation du panier."
         }
     },
     "categories": {
@@ -238,7 +241,8 @@
                     "required": "L'emplacement est obligatoire",
                     "value": "L'emplacement doit être dans le format suivant : 'A01-E01'"
                 }
-            }
+            },
+            "retry": "Merci de réessayer plus tard."
         }
     },
     "global": {
@@ -356,6 +360,11 @@
                 "button": "Appliquer les filtres"
             },
             "price": "Prix"
+        },
+        "errors": {
+            "get_product": "Erreur lors de la récupération du produit.",
+            "get_products": "Erreur lors de la récupération des produits.",
+            "get_categories": "Erreur lors de la récupération des catégories."
         }
     },
     "suppliers": {
