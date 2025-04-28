@@ -69,7 +69,10 @@ export default function UserAccountActivator({
                 </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="solid">
-                <DropdownItem key="settings">
+                <DropdownItem
+                    key="settings"
+                    onPress={() => navigate("/my-account")}
+                >
                     {t("global.links.my_account")}
                 </DropdownItem>
                 {customer ? (

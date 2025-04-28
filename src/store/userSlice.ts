@@ -52,6 +52,9 @@ export const userSlice = createSlice({
             identity: "",
             image_url: "",
         }),
+        updateUser: (state, action: PayloadAction<Partial<UserState>>) => {
+            Object.assign(state, action.payload);
+        },
         updateStore: (state, action: PayloadAction<Partial<Store>>) => {
             if (!state.store) {
                 state.store = {
@@ -76,5 +79,6 @@ export const userSlice = createSlice({
     },
 });
 
-export const { setUser, clearUser, updateStore } = userSlice.actions;
+export const { setUser, clearUser, updateStore, updateUser } =
+    userSlice.actions;
 export default userSlice.reducer;

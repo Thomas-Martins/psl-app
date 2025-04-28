@@ -53,7 +53,6 @@ export default function AddFormModal({
 
     const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-    // Fonction utilitaire pour gérer l'onChange des NumberInput
     const handleNumberChange =
         (name: string) =>
         (input: number | React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +77,6 @@ export default function AddFormModal({
                                   : "";
                     });
                 } else if (!isFormTitle(field)) {
-                    // Ici, le champ est un InputField
                     initialData[field.name] =
                         field.type === "file"
                             ? null
@@ -129,7 +127,6 @@ export default function AddFormModal({
                     }
                 });
             } else if (!isFormTitle(field)) {
-                // Ici, le champ est un InputField
                 const value = formData[field.name];
                 if (
                     field.required &&
@@ -216,7 +213,7 @@ export default function AddFormModal({
             <div>
                 <label className="font-medium">{label}</label>
                 <p className="text-xs text-gray-500">
-                    Seul les formats .jpeg, .jpg et .png sont pris en charge.
+                    {t("generics.image_format")}
                 </p>
                 {errorMessage && (
                     <p className="text-xs text-red-500 mt-1">{errorMessage}</p>

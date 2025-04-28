@@ -27,20 +27,24 @@ export default function ProductModal({
     onOpenChange,
 }: ProductModalProps) {
     const { t } = useTranslation();
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams<{ id?: string }>();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [product, setProduct] = useState<Product | null>(null);
     const [quantity, setQuantity] = useState(1);
-    const [loadError, setLoadError] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (id && !isOpen) {
+            onOpenChange(true);
+        }
+    }, [id, isOpen, onOpenChange]);
 
     const handleModalClose = useCallback(
         (open: boolean) => {
             if (!open) {
                 setProduct(null);
-                setLoadError(false);
                 setLoading(false);
                 setQuantity(1);
                 navigate("..", { replace: true, relative: "path" });
@@ -51,22 +55,14 @@ export default function ProductModal({
     );
 
     useEffect(() => {
-        if (!id) {
-            setProduct(null);
-            setLoadError(false);
-            setLoading(false);
-            return;
-        }
+        if (!id) return;
 
         let isMounted = true;
         setLoading(true);
-        setLoadError(false);
 
         ProductsProvider.getProduct(Number(id))
             .then(({ data }) => {
-                if (isMounted) {
-                    setProduct(data);
-                }
+                if (isMounted) setProduct(data);
             })
             .catch((error) => {
                 if (isMounted) {
@@ -81,14 +77,11 @@ export default function ProductModal({
                         timeout: 2000,
                         shouldShowTimeoutProgress: true,
                     });
-                    setLoadError(true);
                     handleModalClose(false);
                 }
             })
             .finally(() => {
-                if (isMounted) {
-                    setLoading(false);
-                }
+                if (isMounted) setLoading(false);
             });
 
         return () => {
@@ -110,7 +103,6 @@ export default function ProductModal({
             });
             return;
         }
-
         if (product.stock < quantity) {
             addToast({
                 title: t("generics.errors.surprise"),
@@ -124,7 +116,6 @@ export default function ProductModal({
             });
             return;
         }
-
         dispatch(addItem({ ...product, quantity }));
         addToast({
             title: t("cart.add.toast.success"),
@@ -193,7 +184,7 @@ export default function ProductModal({
                     ) : null}
                 </ModalBody>
 
-                {!loading && !loadError && product && (
+                {!loading && product && (
                     <ModalFooter>
                         <div className="flex gap-2 w-full">
                             <Button

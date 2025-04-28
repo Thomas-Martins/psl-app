@@ -21,6 +21,7 @@ import { cartRoutes } from "@core/router/routes/shop/Cart.routes.tsx";
 import CartVerification from "@components/Shop/Cart/CartVerification.tsx";
 import { orderRoutes } from "@core/router/routes/shop/Order.routes.tsx";
 import OrdersPage from "@pages/ShopPages/OrdersPage.tsx";
+import { myAccountRoutes } from "@core/router/routes/MyAccount.routes.tsx";
 
 function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
     return routeConfigs.map((route, index) => (
@@ -70,6 +71,34 @@ export default function AppRoutes() {
                 }
             />
             <Route
+                path="/*"
+                element={
+                    isAuthenticated && user?.role !== Role.CLIENT ? (
+                        <IntranetLayout />
+                    ) : (
+                        <Navigate to="/login" />
+                    )
+                }
+            >
+                {renderRoutes(protectedRoutes)}
+                <Route index element={<Navigate to="commands" />} />
+            </Route>
+            <Route
+                path="/my-account/*"
+                element={
+                    user.role === Role.CLIENT ? (
+                        <ShopLayout />
+                    ) : user.role ===
+                      (Role.ADMIN || Role.GESTIONNAIRE || Role.LOGISTICIEN) ? (
+                        <IntranetLayout />
+                    ) : (
+                        <Navigate to="/login" />
+                    )
+                }
+            >
+                {renderRoutes(myAccountRoutes)}
+            </Route>
+            <Route
                 path="/shop/*"
                 element={
                     user?.role === Role.CLIENT ? (
@@ -109,19 +138,6 @@ export default function AppRoutes() {
             >
                 <Route index element={<OrdersPage />} />
                 {renderRoutes(orderRoutes)}
-            </Route>
-            <Route
-                path="/*"
-                element={
-                    isAuthenticated && user?.role !== Role.CLIENT ? (
-                        <IntranetLayout />
-                    ) : (
-                        <Navigate to="/login" />
-                    )
-                }
-            >
-                {renderRoutes(protectedRoutes)}
-                <Route index element={<Navigate to="commands" />} />
             </Route>
         </Routes>
     );
