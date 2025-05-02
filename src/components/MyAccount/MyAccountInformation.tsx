@@ -13,7 +13,6 @@ export default function MyAccountInformation() {
     const user = useSelector((state: RootState) => state.user);
 
     const [loading, setLoading] = useState(false);
-
     const [firstname, setFirstname] = useState(user.firstname);
     const [lastname, setLastname] = useState(user.lastname);
     const [email, setEmail] = useState(user.email);
@@ -21,11 +20,11 @@ export default function MyAccountInformation() {
     const [address, setAddress] = useState(user.address);
     const [zipcode, setZipcode] = useState(user.zipcode);
     const [city, setCity] = useState(user.city);
-
     const [previewImage, setPreviewImage] = useState<string>(
         user.image_url || "",
     );
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     useEffect(() => {
         return () => {
@@ -38,10 +37,7 @@ export default function MyAccountInformation() {
     const uploadProfileImage = async (file: File) => {
         const formData = new FormData();
         formData.append("image", file);
-        const res = await UsersProvider.uploadUserImage(
-            Number(user.id),
-            formData,
-        );
+        const res = await UsersProvider.uploadUserImage(user.id, formData);
         if (!res || !res.data?.image_url) {
             throw new Error("UploadResponse invalide");
         }
@@ -76,7 +72,67 @@ export default function MyAccountInformation() {
         }
     };
 
+    const validate = (): boolean => {
+        const newErrors: Record<string, string> = {};
+        let isValid = true;
+
+        if (!firstname) {
+            newErrors.firstname = t("generics.errors.add.firstname.required");
+            isValid = false;
+        } else if (firstname.length < 3) {
+            newErrors.firstname = t("generics.errors.add.firstname.value");
+            isValid = false;
+        }
+
+        if (!lastname) {
+            newErrors.lastname = t("generics.errors.add.lastname.required");
+            isValid = false;
+        } else if (lastname.length < 3) {
+            newErrors.lastname = t("generics.errors.add.lastname.value");
+            isValid = false;
+        }
+
+        if (!email) {
+            newErrors.email = t("generics.errors.add.email.required");
+            isValid = false;
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            newErrors.email = t("generics.errors.add.email.value");
+            isValid = false;
+        }
+
+        if (!phone) {
+            newErrors.phone = t("generics.errors.add.phone.required");
+            isValid = false;
+        } else if (!/^\d{10}$/.test(phone)) {
+            newErrors.phone = t("generics.errors.add.phone.value");
+            isValid = false;
+        }
+
+        if (!address) {
+            newErrors.address = t("generics.errors.add.address.required");
+            isValid = false;
+        }
+
+        if (!zipcode) {
+            newErrors.zipcode = t("generics.errors.add.zipcode.required");
+            isValid = false;
+        } else if (!/^\d{5}$/.test(zipcode)) {
+            newErrors.zipcode = t("generics.errors.add.zipcode.value");
+            isValid = false;
+        }
+
+        if (!city) {
+            newErrors.city = t("generics.errors.add.city.required");
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    };
+
     const handleUpdateUser = async () => {
+        if (!validate()) return;
+
         const payload = {
             firstname,
             lastname,
@@ -86,7 +142,6 @@ export default function MyAccountInformation() {
             zipcode,
             city,
         };
-
         setLoading(true);
 
         try {
@@ -153,6 +208,8 @@ export default function MyAccountInformation() {
                     labelPlacement="outside"
                     value={lastname}
                     onChange={(e) => setLastname(e.target.value)}
+                    errorMessage={errors.lastname}
+                    isInvalid={!!errors.lastname}
                 />
                 <Input
                     type="text"
@@ -160,6 +217,8 @@ export default function MyAccountInformation() {
                     labelPlacement="outside"
                     value={firstname}
                     onChange={(e) => setFirstname(e.target.value)}
+                    errorMessage={errors.firstname}
+                    isInvalid={!!errors.firstname}
                 />
             </div>
             <div className="flex gap-5">
@@ -169,6 +228,8 @@ export default function MyAccountInformation() {
                     labelPlacement="outside"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    errorMessage={errors.email}
+                    isInvalid={!!errors.email}
                 />
                 <Input
                     type="text"
@@ -176,6 +237,8 @@ export default function MyAccountInformation() {
                     labelPlacement="outside"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    errorMessage={errors.phone}
+                    isInvalid={!!errors.phone}
                 />
             </div>
             <Input
@@ -184,6 +247,8 @@ export default function MyAccountInformation() {
                 labelPlacement="outside"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                errorMessage={errors.address}
+                isInvalid={!!errors.address}
             />
             <div className="flex gap-5">
                 <Input
@@ -192,6 +257,8 @@ export default function MyAccountInformation() {
                     labelPlacement="outside"
                     value={zipcode}
                     onChange={(e) => setZipcode(e.target.value)}
+                    errorMessage={errors.zipcode}
+                    isInvalid={!!errors.zipcode}
                 />
                 <Input
                     type="text"
@@ -199,10 +266,11 @@ export default function MyAccountInformation() {
                     labelPlacement="outside"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
+                    errorMessage={errors.city}
+                    isInvalid={!!errors.city}
                 />
             </div>
 
-            {/* Bouton */}
             <div className="flex justify-end">
                 <Button
                     color="primary"

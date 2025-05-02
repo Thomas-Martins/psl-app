@@ -26,8 +26,14 @@ class UsersProvider {
         return api.post("/logout");
     }
 
-    static uploadUserImage(id: number, formData: FormData, query = {}) {
-        return api.post(`/users/${id}/upload-image`, formData, query);
+    static uploadUserImage(
+        id: string,
+        formData: FormData,
+        query: Record<string, never> = {},
+    ) {
+        return api.post(`/users/${id}/upload-image`, formData, {
+            params: query,
+        });
     }
 }
 

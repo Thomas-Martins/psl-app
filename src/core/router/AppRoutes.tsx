@@ -33,6 +33,7 @@ function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
 
 export default function AppRoutes() {
     const user = useSelector((state: RootState) => state.user);
+    const role = user.role;
     const cartItems = useSelector((s: RootState) => s.cart.items);
     const { isOpen, onOpenChange } = useDisclosure();
     const isAuthenticated = Boolean(user && user.role);
@@ -60,7 +61,7 @@ export default function AppRoutes() {
                 path="/login"
                 element={
                     isAuthenticated ? (
-                        user?.role === Role.CLIENT ? (
+                        role === Role.CLIENT ? (
                             <Navigate to="/shop" />
                         ) : (
                             <Navigate to="/commands" />
@@ -73,7 +74,7 @@ export default function AppRoutes() {
             <Route
                 path="/*"
                 element={
-                    isAuthenticated && user?.role !== Role.CLIENT ? (
+                    isAuthenticated && role !== Role.CLIENT ? (
                         <IntranetLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -86,10 +87,11 @@ export default function AppRoutes() {
             <Route
                 path="/my-account/*"
                 element={
-                    user.role === Role.CLIENT ? (
+                    role === Role.CLIENT ? (
                         <ShopLayout />
-                    ) : user.role ===
-                      (Role.ADMIN || Role.GESTIONNAIRE || Role.LOGISTICIEN) ? (
+                    ) : user.role === Role.ADMIN ||
+                    user.role === Role.GESTIONNAIRE ||
+                    user.role === Role.LOGISTICIEN ? (
                         <IntranetLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -101,7 +103,7 @@ export default function AppRoutes() {
             <Route
                 path="/shop/*"
                 element={
-                    user?.role === Role.CLIENT ? (
+                    role === Role.CLIENT ? (
                         <ShopLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -114,7 +116,7 @@ export default function AppRoutes() {
             <Route
                 path="/cart/*"
                 element={
-                    user?.role !== Role.CLIENT ? (
+                    role !== Role.CLIENT ? (
                         <Navigate to="/login" replace />
                     ) : !isCartConfirmation && cartItems.length === 0 ? (
                         <Navigate to="/shop" replace />
@@ -129,7 +131,7 @@ export default function AppRoutes() {
             <Route
                 path="/orders/*"
                 element={
-                    user?.role === Role.CLIENT ? (
+                    role === Role.CLIENT ? (
                         <CartLayout />
                     ) : (
                         <Navigate to="/login" />
