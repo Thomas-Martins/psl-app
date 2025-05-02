@@ -169,6 +169,7 @@
         "email": "Email",
         "password": "Password",
         "login_btn": "Log In",
+        "image_format": "Only .jpg, .jpeg, .png formats are accepted.",
         "cancel": "Cancel",
         "close": "Close",
         "save": "Save",
@@ -232,6 +233,10 @@
                     "required": "Location is required",
                     "value": "Location must be in the format 'A01-E01'"
                 }
+            },
+            "edit": {
+                "error": "An error occurred while modifying the profil.",
+                "success": "The profile was successfully modified."
             },
             "retry": "Please try again later.",
             "surprise": "An error occurred. Please try again later."
@@ -516,8 +521,18 @@
                 "zipcode": "Postal code",
                 "city": "City",
                 "role": { "title": "Role", "placeholder": "Select a role" },
-                "image": "Add a profile image"
+                "image" : {
+                    "title": "Profile image",
+                    "label": "Add a profile image",
+                    "alt": "Profile image",
+                    "format": "Only .jpg, .jpeg, .png formats are accepted.",
+                    "error": "An error occurred while uploading the image.",
+                    "success": "The image was successfully uploaded."
+                }
             }
+        },
+        "my_account": {
+            "title": "My account"
         }
     }
 }

@@ -172,6 +172,7 @@
         "email": "Email",
         "password": "Mot de passe",
         "login_btn": "Se connecter",
+        "image_format": "Seuls les formats .jpg, .jpeg et .png sont pris en charge.",
         "cancel": "Annuler",
         "close": "Fermer",
         "save": "Enregistrer",
@@ -241,6 +242,10 @@
                     "required": "L'emplacement est obligatoire",
                     "value": "L'emplacement doit être dans le format suivant : 'A01-E01'"
                 }
+            },
+            "edit": {
+                "error": "Une erreur est survenue lors de la modification.",
+                "success": "Les informations ont été modifiées avec succès."
             },
             "retry": "Merci de réessayer plus tard.",
             "surprise": "Une erreur est survenue, veuillez réessayer plus tard."
@@ -528,9 +533,19 @@
                     "title": "Rôle",
                     "placeholder": "Sélectionner un rôle"
                 },
-                "image": "Ajouter une image de profil",
+                "image" : {
+                    "title": "Image de profil",
+                    "label": "Ajouter une image de profil",
+                    "alt": "Image de profil",
+                    "format": "Seuls les formats .jpg, .jpeg et .png sont pris en charge.",
+                    "error": "Une erreur est survenue lors de l'upload de l'image.",
+                    "success": "L'image a été modifiée avec succès."
+                },
                 "complementary_info": "Informations complémentaires"
             }
+        },
+        "my_account": {
+            "title": "Mon compte"
         }
     }
 }

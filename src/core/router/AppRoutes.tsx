@@ -21,6 +21,7 @@ import { cartRoutes } from "@core/router/routes/shop/Cart.routes.tsx";
 import CartVerification from "@components/Shop/Cart/CartVerification.tsx";
 import { orderRoutes } from "@core/router/routes/shop/Order.routes.tsx";
 import OrdersPage from "@pages/ShopPages/OrdersPage.tsx";
+import { myAccountRoutes } from "@core/router/routes/MyAccount.routes.tsx";
 
 function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
     return routeConfigs.map((route, index) => (
@@ -32,6 +33,7 @@ function renderRoutes(routeConfigs: RouteConfig[]): JSX.Element[] {
 
 export default function AppRoutes() {
     const user = useSelector((state: RootState) => state.user);
+    const role = user.role;
     const cartItems = useSelector((s: RootState) => s.cart.items);
     const { isOpen, onOpenChange } = useDisclosure();
     const isAuthenticated = Boolean(user && user.role);
@@ -59,7 +61,7 @@ export default function AppRoutes() {
                 path="/login"
                 element={
                     isAuthenticated ? (
-                        user?.role === Role.CLIENT ? (
+                        role === Role.CLIENT ? (
                             <Navigate to="/shop" />
                         ) : (
                             <Navigate to="/commands" />
@@ -70,9 +72,38 @@ export default function AppRoutes() {
                 }
             />
             <Route
+                path="/*"
+                element={
+                    isAuthenticated && role !== Role.CLIENT ? (
+                        <IntranetLayout />
+                    ) : (
+                        <Navigate to="/login" />
+                    )
+                }
+            >
+                {renderRoutes(protectedRoutes)}
+                <Route index element={<Navigate to="commands" />} />
+            </Route>
+            <Route
+                path="/my-account/*"
+                element={
+                    role === Role.CLIENT ? (
+                        <ShopLayout />
+                    ) : user.role === Role.ADMIN ||
+                    user.role === Role.GESTIONNAIRE ||
+                    user.role === Role.LOGISTICIEN ? (
+                        <IntranetLayout />
+                    ) : (
+                        <Navigate to="/login" />
+                    )
+                }
+            >
+                {renderRoutes(myAccountRoutes)}
+            </Route>
+            <Route
                 path="/shop/*"
                 element={
-                    user?.role === Role.CLIENT ? (
+                    role === Role.CLIENT ? (
                         <ShopLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -85,7 +116,7 @@ export default function AppRoutes() {
             <Route
                 path="/cart/*"
                 element={
-                    user?.role !== Role.CLIENT ? (
+                    role !== Role.CLIENT ? (
                         <Navigate to="/login" replace />
                     ) : !isCartConfirmation && cartItems.length === 0 ? (
                         <Navigate to="/shop" replace />
@@ -100,7 +131,7 @@ export default function AppRoutes() {
             <Route
                 path="/orders/*"
                 element={
-                    user?.role === Role.CLIENT ? (
+                    role === Role.CLIENT ? (
                         <CartLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -109,19 +140,6 @@ export default function AppRoutes() {
             >
                 <Route index element={<OrdersPage />} />
                 {renderRoutes(orderRoutes)}
-            </Route>
-            <Route
-                path="/*"
-                element={
-                    isAuthenticated && user?.role !== Role.CLIENT ? (
-                        <IntranetLayout />
-                    ) : (
-                        <Navigate to="/login" />
-                    )
-                }
-            >
-                {renderRoutes(protectedRoutes)}
-                <Route index element={<Navigate to="commands" />} />
             </Route>
         </Routes>
     );
