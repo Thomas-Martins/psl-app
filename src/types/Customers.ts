@@ -12,7 +12,7 @@ export interface Customer {
         id: number;
         name: string;
     };
-    commands_count: number;
+    orders_count: number;
 }
 
 export interface PaginatedCustomers {

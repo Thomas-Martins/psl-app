@@ -145,7 +145,7 @@ export default function CustomersTableList({
                                 </p>
                             </TableCell>
                             <TableCell>
-                                <p>{customer.commands_count}</p>
+                                <p>{customer.orders_count}</p>
                             </TableCell>
                             <TableCell>
                                 <ThreeDotMenu
