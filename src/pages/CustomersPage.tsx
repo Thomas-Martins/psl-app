@@ -15,6 +15,7 @@ import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
+import i18n from "@/core/i18n/i18n";
 
 const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
     const params = JSON.parse(key);
@@ -66,6 +67,7 @@ export default function CustomersPage() {
     ): Promise<void> => {
         try {
             formData.role_id = "4";
+            formData.locale = i18n.language;
             await UsersProvider.createUser(formData);
             await mutate();
             onOpenChange();
