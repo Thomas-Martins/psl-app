@@ -9,6 +9,7 @@ import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { updateStore } from "@store/userSlice.ts";
 import { clearCart } from "@store/cartSlice.ts";
 import { useNavigate } from "react-router";
+import i18n from "@/core/i18n/i18n";
 
 export default function CartVerification() {
     const { t } = useTranslation();
@@ -39,6 +40,7 @@ export default function CartVerification() {
                 user_id: user.id,
                 complementary_info: info,
                 products: cartItems,
+                locale: i18n.language,
             };
             const response = await OrdersProvider.createOrder(payload);
 

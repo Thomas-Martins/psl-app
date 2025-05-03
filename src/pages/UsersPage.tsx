@@ -33,7 +33,7 @@ const fetchUsers = async (key: string): Promise<PaginatedUsers> => {
 };
 
 export default function UsersPage() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { setAlert } = useGlobalAlert();
     const { orderBy, orderWay, handleSortChange } = useSort("identity", "ASC");
@@ -79,6 +79,8 @@ export default function UsersPage() {
                 payload.append(key, value.toString());
             }
         });
+
+        payload.append('locale', i18n.language);
 
         try {
             await UsersProvider.createUser(payload);
