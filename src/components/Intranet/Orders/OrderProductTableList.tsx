@@ -34,7 +34,7 @@ export default function OrderProductTableList({
                         {t("orders.details.products.headers.price")}
                     </TableColumn>
                 </TableHeader>
-                <TableBody emptyContent={"No rows to display."}>
+                <TableBody>
                     {products.map((product: Product) => (
                         <TableRow key={product.id}>
                             <TableCell>
@@ -43,7 +43,7 @@ export default function OrderProductTableList({
                                         <img
                                             src={product.image_url}
                                             alt={product.name}
-                                            className="w-10 h-10 rounded-md"
+                                            className="w-10 h-10 rounded-md object-cover"
                                         />
                                     ) : (
                                         <div className="w-20 h-20 bg-zinc-500 bg-opacity-20 rounded-md flex justify-center items-center">

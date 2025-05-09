@@ -292,10 +292,11 @@
         },
         "empty": "You don't have any orders.",
         "status": {
+            "all": "All orders",
             "title": "Order status",
             "pending": "Order validated",
             "processing": "In preparation",
-            "confirmed": "Ready to ship",
+            "completed": "Ready to ship",
             "shipped": "Shipped",
             "cancelled": "Cancelled"
         },

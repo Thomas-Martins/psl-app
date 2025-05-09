@@ -149,21 +149,25 @@ export default function OrdersTableList({
                                             },
                                         },
                                         {
-                                            label: "Imprimer la liste des produits",
+                                            label: t(
+                                                "orders.table.actions.print.products_lists",
+                                            ),
                                             variant: "default",
                                             onClick: () => {
                                                 console.log(
-                                                    "Update status",
+                                                    "Print products lists",
                                                     order.id,
                                                 );
                                             },
                                         },
                                         {
-                                            label: "Imprimer la facture",
+                                            label: t(
+                                                "orders.table.actions.print.in",
+                                            ),
                                             variant: "default",
                                             onClick: () => {
                                                 console.log(
-                                                    "Update status",
+                                                    "Print invoice",
                                                     order.id,
                                                 );
                                             },

@@ -19,13 +19,14 @@ const fetchOrders = async (key: string): Promise<PaginatedOrders> => {
         paginate: true,
         page: params.page,
         limit: params.limit,
-        role: params.selectedRole,
         orderBy: params.orderBy,
         orderWay: params.orderWay,
         search: params.search,
+        status: params.status !== "all" ? params.status : undefined,
     });
     return response.data;
 };
+
 export default function OrdersPage() {
     const { t } = useTranslation();
     const { orderBy, orderWay, handleSortChange } = useSort("reference", "ASC");
@@ -33,6 +34,7 @@ export default function OrdersPage() {
         usePagination(1, 10);
 
     const [search, setSearch] = useState<string | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState<string>("all");
 
     const swrKey = JSON.stringify({
         key: "orders",
@@ -41,6 +43,7 @@ export default function OrdersPage() {
         orderBy,
         orderWay,
         search,
+        status: selectedStatus,
     });
 
     const { data, error, isLoading, mutate } = useSWR<PaginatedOrders>(
@@ -61,6 +64,11 @@ export default function OrdersPage() {
 
     const orderStatus = data?.status ?? [];
 
+    const handleStatusChange = (statusValue: string) => {
+        setSelectedStatus(statusValue);
+        handlePageChange(1);
+    };
+
     if (error) {
         return <div>{t("error.message")}</div>;
     }
@@ -73,13 +81,19 @@ export default function OrdersPage() {
                         aria-label="order-status-filter"
                         className="w-1/4"
                         radius="md"
-                        defaultSelectedKeys={["0"]}
+                        defaultSelectedKeys={["all"]}
+                        onChange={(e) => handleStatusChange(e.target.value)}
                     >
-                        {orderStatus.map((status, index) => (
-                            <SelectItem key={index}>
-                                {orderStatusName(status)}
-                            </SelectItem>
-                        ))}
+                        {[
+                            <SelectItem key="all">
+                                {t("orders.status.all")}
+                            </SelectItem>,
+                            ...orderStatus.map((status) => (
+                                <SelectItem key={status}>
+                                    {orderStatusName(status)}
+                                </SelectItem>
+                            )),
+                        ]}
                     </Select>
                     <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
                 </div>

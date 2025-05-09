@@ -301,10 +301,11 @@
         },
         "empty": "Vous n'avez pas de commandes.",
         "status": {
+            "all": "Tous les statuts",
             "title": "Statut de la commande",
             "pending": "Commande validée",
             "processing": "En préparation",
-            "confirmed": "Prête à être expédiée",
+            "completed": "Prête à être expédiée",
             "shipped": "Expédiée",
             "cancelled": "Annulée"
         },

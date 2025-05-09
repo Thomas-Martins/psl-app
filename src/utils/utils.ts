@@ -50,5 +50,6 @@ export const orderStatusColor = (status: OrderStatus): ChipColor =>
     orderStatusColors[status];
 
 export const totalHtToTtc = (totalHt: number, tva: number): number => {
-    return Number((totalHt + (totalHt * tva) / 100).toFixed(2));
+    const ttc = totalHt * (1 + tva / 100);
+    return Number(ttc.toFixed(2));
 };
