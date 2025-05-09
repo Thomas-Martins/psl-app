@@ -3,25 +3,29 @@ import { useEffect, useState } from "react";
 import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
 import { Accordion, AccordionItem, CircularProgress } from "@heroui/react";
 import { Link } from "react-router";
-import { Order } from "@/types/Order.ts";
+import { Order } from "@/types/Orders.ts";
+import { useSelector } from "react-redux";
+import { RootState } from "@store/store.ts";
 
 export default function OrdersPage() {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [orders, setOrders] = useState<Order[]>([]);
+    const user = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
         setLoading(true);
-        OrdersProvider.getOrders()
+        OrdersProvider.getOrders({ paginate: false, user_id: user.id })
             .then((response) => {
-                setOrders(response.data.data);
+                setOrders(response.data);
             })
             .catch()
             .finally(() => {
                 setLoading(false);
             });
-    }, [setLoading, setOrders]);
+    }, [setLoading, setOrders, user.id]);
 
+    console.log("ORDERS", orders);
     const calculateTotalPriceTva = (ht: number): number => {
         const TVA_RATE = 0.2;
         const ttc = ht * (1 + TVA_RATE);
@@ -39,7 +43,7 @@ export default function OrdersPage() {
                 </div>
             ) : (
                 <div>
-                    {orders.length > 0 ? (
+                    {orders && orders.length > 0 ? (
                         <Accordion variant="splitted">
                             {orders.map((order) => (
                                 <AccordionItem
@@ -65,7 +69,7 @@ export default function OrdersPage() {
                                         €
                                     </div>
                                     <div>
-                                        <Link to={`/orders/${order.id}`}>
+                                        <Link to={`/user/orders/${order.id}`}>
                                             <p className="text-light-400 underline hover:text-light-600">
                                                 {t("orders.details.more")}
                                             </p>

@@ -121,7 +121,7 @@ export default function CartVerification() {
                 />
             </div>
 
-            <div className="bg-white w-full col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between h-full">
+            <div className="bg-white w-full col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between h-full gap-5">
                 <h1 className="text-2xl font-medium">{t("cart.your_cart")}</h1>
                 <CartDetail />
                 <Button

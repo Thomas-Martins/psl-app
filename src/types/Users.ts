@@ -1,6 +1,8 @@
 import { Role } from "@/types/Role.ts";
+import { ReactNode } from "react";
 
 export interface User {
+    name: ReactNode;
     id: number;
     firstname: string;
     lastname: string;
@@ -12,6 +14,11 @@ export interface User {
     city: string;
     identity: string;
     image_url: string;
+    store: {
+        address: string;
+        zipcode: string;
+        city: string;
+    };
 }
 
 export interface PaginatedUsers {

@@ -274,18 +274,24 @@
             }
         },
         "details": {
+            "_name": "Commande",
             "title": "Détails de la commande",
             "delivery": {
+                "address": "Adresse de livraison",
+                "estimated": "Date de livraison estimée",
                 "title": "Livraison à l'adresse suivante :",
                 "no_store": "Aucun point de vente"
             },
             "more": "Plus de détails",
             "products": {
+                "title": "Liste des produits de la commande",
                 "headers": {
                     "product": "Produit",
                     "quantity": "Quantité",
-                    "price": "Prix HT"
+                    "price": "Prix U HT"
                 },
+                "ref": "Ref",
+                "location": "Emplacement",
                 "count": "Nombre de produits"
             }
         },
@@ -301,6 +307,25 @@
             "confirmed": "Prête à être expédiée",
             "shipped": "Expédiée",
             "cancelled": "Annulée"
+        },
+        "table": {
+            "actions": {
+                "update_status" : "Mettre à jour l'état",
+                "print": {
+                    "invoice": "Imprimer la facture",
+                    "products_lists": "Imprimer la liste des produits"
+                }
+            },
+            "headers": {
+                "reference": "Référence",
+                "status": "Statut",
+                "date_delivery": "Livraison",
+                "address": "Adresse de livraison",
+                "customer": "Client",
+                "products_count": "Nb de produits",
+                "total_ht": "Total HT",
+                "actions": "Actions"
+            }
         },
         "title": "Commande n°{{reference}}",
         "total_ttc": "Total TTC",
