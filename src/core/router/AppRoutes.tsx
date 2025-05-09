@@ -7,7 +7,7 @@ import LoginPage from "@pages/auth/LoginPage.tsx";
 import ShopLayout from "@layouts/ShopLayout/ShopLayout.tsx";
 import IntranetLayout from "@layouts/IntranetLayout/IntranetLayout.tsx";
 import { Role } from "@/types/Role.ts";
-import { commandsRoutes } from "./routes/Commands.routes";
+import { ordersRoutes } from "./routes/Orders.routes.tsx";
 import { customersRoutes } from "./routes/Customers.routes";
 import { productsRoutes } from "./routes/Products.routes";
 import { usersRoutes } from "./routes/Users.routes";
@@ -19,7 +19,7 @@ import { shopProductsRoutes } from "@core/router/routes/shop/ShopProducts.routes
 import CartLayout from "@layouts/ShopLayout/CartLayout.tsx";
 import { cartRoutes } from "@core/router/routes/shop/Cart.routes.tsx";
 import CartVerification from "@components/Shop/Cart/CartVerification.tsx";
-import { orderRoutes } from "@core/router/routes/shop/Order.routes.tsx";
+import { userOrderRoutes } from "@core/router/routes/shop/UserOrders.routes.tsx";
 import OrdersPage from "@pages/ShopPages/OrdersPage.tsx";
 import { myAccountRoutes } from "@core/router/routes/MyAccount.routes.tsx";
 
@@ -42,7 +42,7 @@ export default function AppRoutes() {
         location.pathname.startsWith("/cart/confirmation");
 
     const protectedRoutes: RouteConfig[] = [
-        ...commandsRoutes,
+        ...ordersRoutes,
         ...customersRoutes,
         ...productsRoutes,
         ...usersRoutes,
@@ -64,7 +64,7 @@ export default function AppRoutes() {
                         role === Role.CLIENT ? (
                             <Navigate to="/shop" />
                         ) : (
-                            <Navigate to="/commands" />
+                            <Navigate to="/orders" />
                         )
                     ) : (
                         <LoginPage />
@@ -82,7 +82,7 @@ export default function AppRoutes() {
                 }
             >
                 {renderRoutes(protectedRoutes)}
-                <Route index element={<Navigate to="commands" />} />
+                <Route index element={<Navigate to="orders" />} />
             </Route>
             <Route
                 path="/my-account/*"
@@ -90,8 +90,8 @@ export default function AppRoutes() {
                     role === Role.CLIENT ? (
                         <ShopLayout />
                     ) : user.role === Role.ADMIN ||
-                    user.role === Role.GESTIONNAIRE ||
-                    user.role === Role.LOGISTICIEN ? (
+                      user.role === Role.GESTIONNAIRE ||
+                      user.role === Role.LOGISTICIEN ? (
                         <IntranetLayout />
                     ) : (
                         <Navigate to="/login" />
@@ -129,7 +129,7 @@ export default function AppRoutes() {
                 {renderRoutes(cartRoutes)}
             </Route>
             <Route
-                path="/orders/*"
+                path="/user/orders/*"
                 element={
                     role === Role.CLIENT ? (
                         <CartLayout />
@@ -139,7 +139,7 @@ export default function AppRoutes() {
                 }
             >
                 <Route index element={<OrdersPage />} />
-                {renderRoutes(orderRoutes)}
+                {renderRoutes(userOrderRoutes)}
             </Route>
         </Routes>
     );

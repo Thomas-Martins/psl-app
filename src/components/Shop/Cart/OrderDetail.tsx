@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
 import { useEffect, useState } from "react";
-import { Order } from "@/types/Order.ts";
+import { Order } from "@/types/Orders";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import {
@@ -19,6 +19,7 @@ import StatusStep from "@components/Shop/Cart/StatusStep.tsx";
 import FileIcon from "@components/ui/icons/FileIcon.tsx";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
 import { useTranslation } from "react-i18next";
+import ArrowLeftIcon from "@components/ui/icons/ArrowLeftIcon.tsx";
 
 export default function OrderDetail() {
     const { t } = useTranslation();
@@ -56,11 +57,20 @@ export default function OrderDetail() {
                 <div>
                     <div className="space-y-5">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-xl font-medium">
-                                {t("orders.title", {
-                                    reference: order?.reference,
-                                })}
-                            </h3>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="light"
+                                    isIconOnly={true}
+                                    onPress={() => navigate(-1)}
+                                >
+                                    <ArrowLeftIcon size={20} />
+                                </Button>
+                                <h3 className="text-xl font-medium">
+                                    {t("orders.title", {
+                                        reference: order?.reference,
+                                    })}
+                                </h3>
+                            </div>
                             <Button variant="light">
                                 {t("orders.download.title")}
                                 <FileIcon />

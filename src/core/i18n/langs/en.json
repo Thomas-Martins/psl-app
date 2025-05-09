@@ -265,18 +265,24 @@
             }
         },
         "details": {
+            "_name": "Order",
             "title": "Order details",
             "delivery": {
+                "address": "Delivery address",
+                "estimated": "Estimated delivery date",
                 "title": "Delivery to the following address:",
                 "no_store": "No store"
             },
             "more": "More details",
             "products": {
+                "title": "List of ordered products",
                 "headers": {
                     "product": "Product",
                     "quantity": "Quantity",
                     "price": "Price excl. tax"
                 },
+                "ref": "Ref",
+                "location": "Location",
                 "count": "Number of products"
             }
         },
@@ -286,12 +292,32 @@
         },
         "empty": "You don't have any orders.",
         "status": {
+            "all": "All orders",
             "title": "Order status",
             "pending": "Order validated",
             "processing": "In preparation",
-            "confirmed": "Ready to ship",
+            "completed": "Ready to ship",
             "shipped": "Shipped",
             "cancelled": "Cancelled"
+        },
+        "table": {
+            "actions": {
+                "update_status": "Update status",
+                "print": {
+                    "invoice": "Print invoice",
+                    "products_lists": "Print products list"
+                }
+            },
+            "headers": {
+                "reference": "Reference",
+                "status": "Status",
+                "date_delivery": "Delivery",
+                "address": "Delivery address",
+                "customer": "Customer",
+                "products_count": "Number of products",
+                "total_ht": "Total (excl. tax)",
+                "actions": "Actions"
+            }
         },
         "title": "Order n°{{reference}}",
         "total_ttc": "Total (incl. tax)",

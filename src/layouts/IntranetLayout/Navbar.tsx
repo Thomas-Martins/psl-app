@@ -48,7 +48,7 @@ export default function NavbarIntranet() {
     const user = useSelector((state: RootState) => state.user);
 
     const menuItems = [
-        { label: t("orders._name"), url: "/commands" },
+        { label: t("orders._name"), url: "/orders" },
         {
             label: t("customer._name"),
             url: "/clients",

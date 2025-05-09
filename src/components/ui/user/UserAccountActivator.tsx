@@ -78,7 +78,7 @@ export default function UserAccountActivator({
                 {customer ? (
                     <DropdownItem
                         key="orders"
-                        onPress={() => navigate("/orders")}
+                        onPress={() => navigate("/user/orders")}
                     >
                         {t("global.links.my_orders")}
                     </DropdownItem>

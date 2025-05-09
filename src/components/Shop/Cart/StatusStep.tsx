@@ -16,7 +16,7 @@ export default function StatusStep({ status }: StatusStepProps) {
         status === OrderStatus.PENDING
             ? 1
             : status === OrderStatus.PROCESSING ||
-                status === OrderStatus.CONFIRMED
+                status === OrderStatus.COMPLETED
               ? 2
               : status === OrderStatus.SHIPPED
                 ? 3
