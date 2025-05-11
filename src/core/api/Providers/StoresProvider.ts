@@ -13,6 +13,10 @@ class StoresProvider {
         return api.post("/stores", payload);
     }
 
+    static updateStore(id: string, payload: object) {
+        return api.put(`/stores/${id}`, payload);
+    }
+
     static deleteStore(id: number) {
         return api.delete(`/stores/${id}`);
     }

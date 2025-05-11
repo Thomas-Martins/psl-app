@@ -15,6 +15,7 @@ import StoresTableList from "@components/Intranet/Stores/StoresTableList.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
+import { Outlet } from "react-router";
 
 const fetchStores = async (key: string): Promise<PaginatedStores> => {
     const params = JSON.parse(key);
@@ -155,6 +156,8 @@ export default function StoresPage() {
                 fields={inputs}
                 onSubmit={handleStoresAddSubmit}
             />
+
+            <Outlet />
         </div>
     );
 }

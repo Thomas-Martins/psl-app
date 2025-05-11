@@ -500,6 +500,7 @@
                 "error": "Une erreur est survenue lors de l'ajout du point de vente."
             },
             "inputs": {
+                "title": "Informations de l'entreprise",
                 "name": "Nom du point de vente",
                 "address": "Adresse",
                 "zipcode": "Code postal",
@@ -508,6 +509,13 @@
                 "email": "Email",
                 "siret": "SIRET",
                 "image": "Ajouter un logo"
+            }
+        },
+        "edit": {
+            "title": "Modifier le point de vente",
+            "alert": {
+                "success": "Le point de vente a été modifié avec succès.",
+                "error": "Une erreur est survenue lors de la modification du point de vente."
             }
         }
     },
