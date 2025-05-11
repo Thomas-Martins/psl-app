@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
     Modal,
     ModalBody,
@@ -31,6 +31,14 @@ export default function AddCategoryModal({
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    useEffect(() => {
+        return () => {
+            if (previewImage) {
+                URL.revokeObjectURL(previewImage);
+            }
+        };
+    }, [previewImage]);
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files && e.target.files[0];
         if (selectedFile) {
@@ -47,29 +55,26 @@ export default function AddCategoryModal({
         }
         formData.append("name", categoryName);
 
-        await CategoriesProvider.createCategory(formData)
-            .then(() => {
-                onOpenChange(false);
-                if (onSuccess) {
-                    onSuccess();
-                    addToast({
-                        title: t("categories.inputs.success"),
-                        color: "success",
-                        timeout: 2500,
-                        shouldShowTimeoutProgress: true,
-                    });
-                }
-            })
-            .catch((error) => {
-                console.error("Error creating category:", error);
-                addToast({
-                    title: t("categories.inputs.error"),
-                    color: "danger",
-                    hideIcon: true,
-                    timeout: 2500,
-                    shouldShowTimeoutProgress: true,
-                });
+        try {
+            await CategoriesProvider.createCategory(formData);
+            onOpenChange(false);
+            onSuccess?.();
+            addToast({
+                title: t("categories.inputs.success"),
+                color: "success",
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
             });
+        } catch (error) {
+            console.error("Error creating category:", error);
+            addToast({
+                title: t("categories.inputs.error"),
+                color: "danger",
+                hideIcon: true,
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
+            });
+        }
     };
 
     const renderCustomFileInput = () => (

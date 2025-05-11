@@ -62,42 +62,49 @@ export default function AddFormModal({
     }, [fields]);
 
     const handleCategoryAdded = async () => {
-        const categoriesResponse = await CategoriesProvider.getCategories();
-        const categoriesData = categoriesResponse.data as {
-            id: number;
-            name: string;
-        }[];
-        const categoriesOptions = [
-            {
-                label: i18n.t("categories.inputs.title"),
-                value: "add-category",
-            },
-            ...categoriesData.map((category) => ({
-                label: category.name,
-                value: category.id,
-            })),
-        ];
+        try {
+            const categoriesResponse = await CategoriesProvider.getCategories();
+            const categoriesData = categoriesResponse.data as {
+                id: number;
+                name: string;
+            }[];
+            const categoriesOptions = [
+                {
+                    label: i18n.t("categories.inputs.title"),
+                    value: "add-category",
+                },
+                ...categoriesData.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                })),
+            ];
 
-        const updatedFields = localFields.map((field) => {
-            if (isFormRow(field)) {
-                return {
-                    ...field,
-                    elements: field.elements.map((el) => {
-                        if (el.name === "category_id") {
-                            return {
-                                ...el,
-                                options: categoriesOptions,
-                            };
-                        }
-                        return el;
-                    }),
-                };
-            }
-            return field;
-        });
+            const updatedFields = localFields.map((field) => {
+                if (isFormRow(field)) {
+                    return {
+                        ...field,
+                        elements: field.elements.map((el) => {
+                            if (el.name === "category_id") {
+                                return {
+                                    ...el,
+                                    options: categoriesOptions,
+                                };
+                            }
+                            return el;
+                        }),
+                    };
+                }
+                return field;
+            });
 
-        setLocalFields(updatedFields);
-        setSelectKey((prev) => prev + 1);
+            setLocalFields(updatedFields);
+            setSelectKey((prev) => prev + 1);
+        } catch (error) {
+            console.error(
+                "Erreur lors du rafraîchissement des catégories:",
+                error,
+            );
+        }
     };
 
     const handleNumberChange =
@@ -339,9 +346,7 @@ export default function AddFormModal({
                                                                 {el.type ===
                                                                 "select" ? (
                                                                     <Select
-                                                                        key={
-                                                                            selectKey
-                                                                        }
+                                                                        key={`${el.name}-${selectKey}`}
                                                                         label={
                                                                             el.label
                                                                         }
