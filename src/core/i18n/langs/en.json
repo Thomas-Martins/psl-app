@@ -491,6 +491,7 @@
                 "error": "An error occurred while adding the store."
             },
             "inputs": {
+                "title": "Company Information",
                 "name": "Store Name",
                 "address": "Address",
                 "zipcode": "Postal Code",
@@ -499,6 +500,13 @@
                 "email": "Email",
                 "siret": "SIRET",
                 "image": "Add a logo"
+            }
+        },
+        "edit": {
+            "title": "Edit the Store",
+            "alert": {
+                "success": "The store was successfully modified.",
+                "error": "An error occurred while modifying the store."
             }
         }
     },

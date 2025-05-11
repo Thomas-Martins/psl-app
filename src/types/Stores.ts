@@ -8,6 +8,8 @@ export interface Store {
     email: string;
     customers_count: number;
     image_url: string;
+    full_address: string;
+    siret: string;
 }
 
 export interface PaginatedStores {

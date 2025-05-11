@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { StoresTableListHeaders } from "@components/Intranet/Stores/StoresTableList.headers.ts";
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import { PaginatedStores, Store } from "@/types/Stores.ts";
 import StoresProvider from "@core/api/Providers/StoresProvider.ts";
@@ -16,6 +16,7 @@ import {
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useNavigate } from "react-router";
 
 interface StoresTableListProps {
     stores: PaginatedStores;
@@ -35,6 +36,7 @@ export default function StoresTableList({
     mutate,
 }: StoresTableListProps) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const headers = StoresTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
 
@@ -42,6 +44,10 @@ export default function StoresTableList({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
+
+    const handleRowAction = (key: Key) => {
+        navigate(`/stores/${key}`);
+    };
 
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
@@ -99,6 +105,7 @@ export default function StoresTableList({
                 aria-label="suppliers-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
+                onRowAction={handleRowAction}
             >
                 <TableHeader>
                     {headers.map((header) => (
@@ -121,7 +128,10 @@ export default function StoresTableList({
                     loadingState={loadingState}
                 >
                     {stores.data.map((store) => (
-                        <TableRow key={store.id}>
+                        <TableRow
+                            key={store.id}
+                            className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"
+                        >
                             <TableCell>
                                 <h3 className="text-md">{store.name}</h3>
                                 <p className="text-sm text-light-400">
