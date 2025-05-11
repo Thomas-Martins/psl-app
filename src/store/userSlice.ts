@@ -67,6 +67,8 @@ export const userSlice = createSlice({
                     email: "",
                     customers_count: 0,
                     image_url: "",
+                    full_address: "",
+                    siret: "",
                     ...action.payload,
                 };
                 return;

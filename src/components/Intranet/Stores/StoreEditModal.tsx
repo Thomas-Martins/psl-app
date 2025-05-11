@@ -43,14 +43,15 @@ export default function StoreEditModal({
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const init = useCallback(() => {
+        if (!state?.store) return;
         setFormData({
-            name: state.store.name || "",
-            email: state.store.email || "",
-            phone: state.store.phone || "",
-            address: state.store.address || "",
-            zipcode: state.store.zipcode || "",
-            city: state.store.city || "",
-            siret: state.store.siret || "",
+            name: state?.store?.name || "",
+            email: state?.store?.email || "",
+            phone: state?.store?.phone || "",
+            address: state?.store?.address || "",
+            zipcode: state?.store?.zipcode || "",
+            city: state?.store?.city || "",
+            siret: state?.store?.siret || "",
         });
     }, [state?.store]);
 
@@ -226,7 +227,7 @@ export default function StoreEditModal({
                                     label={t("stores.add.inputs.siret")}
                                     value={formData.siret}
                                     onChange={(e) =>
-                                        handleChange("address", e.target.value)
+                                        handleChange("siret", e.target.value)
                                     }
                                     errorMessage={errors.siret}
                                     isInvalid={!!errors.siret}

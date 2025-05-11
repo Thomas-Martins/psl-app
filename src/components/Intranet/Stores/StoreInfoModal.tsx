@@ -11,7 +11,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Store } from "@/types/Stores.ts";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface StoresInfoModalProps {
     isOpen: boolean;
@@ -22,6 +22,7 @@ export default function StoreInfoModal({
     isOpen,
     onOpenChange,
 }: StoresInfoModalProps) {
+    const { t } = useTranslation();
     const { storeId } = useParams<{ storeId: string }>();
     const navigate = useNavigate();
     const effectiveIsOpen = Boolean(storeId) || isOpen;
@@ -86,7 +87,7 @@ export default function StoreInfoModal({
                 </ModalHeader>
                 <ModalBody>
                     <h3 className="underline font-medium">
-                        {t("carriers.add.inputs.title")}
+                        {t("stores.add.inputs.title")}
                     </h3>
                     <div className="text-light-500 text-sm flex flex-row gap-8">
                         <div className="space-y-2">
