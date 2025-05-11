@@ -23,8 +23,9 @@ import {
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import UploadFileIcon from "@/components/ui/icons/UploadFileIcon";
+import AddCategoryModal from "@/components/Intranet/Categories/AddCategoryModal";
+import CategoriesProvider from "@/core/api/Providers/CategoriesProvider";
 
-// Garde de type pour vérifier que le champ est bien un InputField
 function isInputField(field: FieldDefinition): field is InputField {
     return field.type !== "form-row" && field.type !== "form-title";
 }
@@ -50,8 +51,54 @@ export default function AddFormModal({
     const [previewImages, setPreviewImages] = useState<Record<string, string>>(
         {},
     );
+    const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
+    const [selectKey, setSelectKey] = useState(0);
+    const [localFields, setLocalFields] = useState<FieldDefinition[]>(fields);
 
     const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+    useEffect(() => {
+        setLocalFields(fields);
+    }, [fields]);
+
+    const handleCategoryAdded = async () => {
+        const categoriesResponse = await CategoriesProvider.getCategories();
+        const categoriesData = categoriesResponse.data as {
+            id: number;
+            name: string;
+        }[];
+        const categoriesOptions = [
+            {
+                label: i18n.t("categories.inputs.title"),
+                value: "add-category",
+            },
+            ...categoriesData.map((category) => ({
+                label: category.name,
+                value: category.id,
+            })),
+        ];
+
+        const updatedFields = localFields.map((field) => {
+            if (isFormRow(field)) {
+                return {
+                    ...field,
+                    elements: field.elements.map((el) => {
+                        if (el.name === "category_id") {
+                            return {
+                                ...el,
+                                options: categoriesOptions,
+                            };
+                        }
+                        return el;
+                    }),
+                };
+            }
+            return field;
+        });
+
+        setLocalFields(updatedFields);
+        setSelectKey((prev) => prev + 1);
+    };
 
     const handleNumberChange =
         (name: string) =>
@@ -96,6 +143,18 @@ export default function AddFormModal({
             ...prev,
             [name]: value,
         }));
+    };
+
+    const handleSelectChange = (name: string, value: FormDataValue) => {
+        handleInputChange(name, value);
+        if (name === "category_id" && value === "add-category") {
+            setIsAddCategoryModalOpen(true);
+            setFormData((prev) => ({
+                ...prev,
+                category_id: "",
+            }));
+            setSelectKey(selectKey + 1);
+        }
     };
 
     const validate = (): boolean => {
@@ -223,335 +282,382 @@ export default function AddFormModal({
     );
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-            isDismissable={false}
-            isKeyboardDismissDisabled={true}
-            size="2xl"
-        >
-            <ModalContent>
-                {(onClose) => (
-                    <>
-                        <ModalHeader className="flex flex-col gap-1">
-                            {title}
-                        </ModalHeader>
-                        <ModalBody>
-                            <Form
-                                id="add-form"
-                                onSubmit={handleSubmit}
-                                validationErrors={errors}
-                            >
-                                {fields.map((field) => {
-                                    if (isFormTitle(field)) {
-                                        if (!field.visible) return null;
-                                        return (
-                                            <div
-                                                key={"title-" + field.title}
-                                                className="mb-4"
-                                            >
-                                                <h3 className="text-sm font-medium">
-                                                    {field.title}
-                                                </h3>
-                                            </div>
-                                        );
-                                    }
-                                    if (isFormRow(field)) {
-                                        if (!field.visible) return null;
-                                        return (
-                                            <div
-                                                key={
-                                                    "row-" +
-                                                    field.elements
-                                                        .map((el) => el.name)
-                                                        .join("-")
-                                                }
-                                                className="mb-4 flex flex-row gap-4 w-full"
-                                            >
-                                                {field.elements.map((el) => (
-                                                    <div
-                                                        key={el.name}
-                                                        className="flex-1"
-                                                    >
-                                                        {el.type ===
-                                                        "select" ? (
-                                                            <Select
-                                                                label={el.label}
-                                                                labelPlacement="outside"
-                                                                name={el.name}
-                                                                placeholder={
-                                                                    el.placeholder
-                                                                }
-                                                                isRequired={
-                                                                    el.required
-                                                                }
-                                                                aria-label={
-                                                                    el.label
-                                                                }
-                                                                onChange={(
-                                                                    event: React.ChangeEvent<HTMLSelectElement>,
-                                                                ) =>
-                                                                    handleInputChange(
-                                                                        el.name,
-                                                                        event
-                                                                            .target
-                                                                            .value,
-                                                                    )
-                                                                }
+        <>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                isDismissable={false}
+                isKeyboardDismissDisabled={true}
+                size="2xl"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">
+                                {title}
+                            </ModalHeader>
+                            <ModalBody>
+                                <Form
+                                    id="add-form"
+                                    onSubmit={handleSubmit}
+                                    validationErrors={errors}
+                                >
+                                    {localFields.map((field) => {
+                                        if (isFormTitle(field)) {
+                                            if (!field.visible) return null;
+                                            return (
+                                                <div
+                                                    key={"title-" + field.title}
+                                                    className="mb-4"
+                                                >
+                                                    <h3 className="text-sm font-medium">
+                                                        {field.title}
+                                                    </h3>
+                                                </div>
+                                            );
+                                        }
+                                        if (isFormRow(field)) {
+                                            if (!field.visible) return null;
+                                            return (
+                                                <div
+                                                    key={
+                                                        "row-" +
+                                                        field.elements
+                                                            .map(
+                                                                (el) => el.name,
+                                                            )
+                                                            .join("-")
+                                                    }
+                                                    className="mb-4 flex flex-row gap-4 w-full"
+                                                >
+                                                    {field.elements.map(
+                                                        (el) => (
+                                                            <div
+                                                                key={el.name}
+                                                                className="flex-1"
                                                             >
-                                                                {el.options?.map(
-                                                                    (
-                                                                        option,
-                                                                    ) => (
-                                                                        <SelectItem
-                                                                            key={
-                                                                                option.value
-                                                                            }
-                                                                            data-value={
-                                                                                option.value
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                option.label
-                                                                            }
-                                                                        </SelectItem>
-                                                                    ),
-                                                                ) ?? null}
-                                                            </Select>
-                                                        ) : el.type ===
-                                                          "file" ? (
-                                                            renderCustomFileInput(
-                                                                el.name,
-                                                                el.label,
-                                                                errors[
-                                                                    el.name
-                                                                ] ||
-                                                                    el.errorMessage,
-                                                            )
-                                                        ) : el.type ===
-                                                          "price" ? (
-                                                            <NumberInput
-                                                                label={el.label}
-                                                                labelPlacement="outside"
-                                                                name={el.name}
-                                                                placeholder={
-                                                                    el.placeholder
-                                                                }
-                                                                isRequired={
-                                                                    el.required
-                                                                }
-                                                                errorMessage={
-                                                                    errors[
-                                                                        el.name
-                                                                    ] ||
-                                                                    el.errorMessage
-                                                                }
-                                                                min={0}
-                                                                hideStepper
-                                                                endContent={
-                                                                    <div className="pointer-events-none flex items-center">
-                                                                        <span className="text-default-400 text-small">
-                                                                            €
-                                                                        </span>
-                                                                    </div>
-                                                                }
-                                                                value={
-                                                                    typeof formData[
-                                                                        el.name
-                                                                    ] ===
-                                                                    "number"
-                                                                        ? (formData[
-                                                                              el
-                                                                                  .name
-                                                                          ] as number)
-                                                                        : 0
-                                                                }
-                                                                onChange={handleNumberChange(
-                                                                    el.name,
-                                                                )}
-                                                            />
-                                                        ) : (
-                                                            <Input
-                                                                label={el.label}
-                                                                name={el.name}
-                                                                labelPlacement="outside"
-                                                                placeholder={
-                                                                    el.placeholder
-                                                                }
-                                                                type={el.type}
-                                                                isRequired={
-                                                                    el.required
-                                                                }
-                                                                errorMessage={
-                                                                    errors[
-                                                                        el.name
-                                                                    ] ||
-                                                                    el.errorMessage
-                                                                }
-                                                                value={
-                                                                    (formData[
-                                                                        el.name
-                                                                    ] as string) ||
-                                                                    ""
-                                                                }
-                                                                onChange={(e) =>
-                                                                    handleInputChange(
+                                                                {el.type ===
+                                                                "select" ? (
+                                                                    <Select
+                                                                        key={
+                                                                            selectKey
+                                                                        }
+                                                                        label={
+                                                                            el.label
+                                                                        }
+                                                                        labelPlacement="outside"
+                                                                        name={
+                                                                            el.name
+                                                                        }
+                                                                        placeholder={
+                                                                            el.placeholder
+                                                                        }
+                                                                        isRequired={
+                                                                            el.required
+                                                                        }
+                                                                        aria-label={
+                                                                            el.label
+                                                                        }
+                                                                        onChange={(
+                                                                            event: React.ChangeEvent<HTMLSelectElement>,
+                                                                        ) =>
+                                                                            handleSelectChange(
+                                                                                el.name,
+                                                                                event
+                                                                                    .target
+                                                                                    .value,
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        {el.options?.map(
+                                                                            (
+                                                                                option,
+                                                                            ) => (
+                                                                                <SelectItem
+                                                                                    key={
+                                                                                        option.value
+                                                                                    }
+                                                                                    data-value={
+                                                                                        option.value
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        option.label
+                                                                                    }
+                                                                                </SelectItem>
+                                                                            ),
+                                                                        ) ??
+                                                                            null}
+                                                                    </Select>
+                                                                ) : el.type ===
+                                                                  "file" ? (
+                                                                    renderCustomFileInput(
                                                                         el.name,
-                                                                        e.target
-                                                                            .value,
+                                                                        el.label,
+                                                                        errors[
+                                                                            el
+                                                                                .name
+                                                                        ] ||
+                                                                            el.errorMessage,
                                                                     )
-                                                                }
-                                                            />
-                                                        )}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        );
-                                    }
-                                    if (isInputField(field)) {
-                                        return (
-                                            <div
-                                                key={field.name}
-                                                className="mb-4"
-                                            >
-                                                {field.type === "select" ? (
-                                                    <Select
-                                                        label={field.label}
-                                                        labelPlacement="outside"
-                                                        name={field.name}
-                                                        placeholder={
-                                                            field.placeholder
-                                                        }
-                                                        isRequired={
-                                                            field.required
-                                                        }
-                                                        aria-label={field.label}
-                                                        onChange={(
-                                                            event: React.ChangeEvent<HTMLSelectElement>,
-                                                        ) =>
-                                                            handleInputChange(
-                                                                field.name,
-                                                                event.target
-                                                                    .value,
-                                                            )
-                                                        }
-                                                    >
-                                                        {field.options?.map(
-                                                            (option) => (
-                                                                <SelectItem
-                                                                    key={
-                                                                        option.value
-                                                                    }
-                                                                    data-value={
-                                                                        option.value
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        option.label
-                                                                    }
-                                                                </SelectItem>
-                                                            ),
-                                                        ) ?? null}
-                                                    </Select>
-                                                ) : field.type === "file" ? (
-                                                    renderCustomFileInput(
-                                                        field.name,
-                                                        field.label,
-                                                        errors[field.name] ||
-                                                            field.errorMessage,
-                                                    )
-                                                ) : field.type === "price" ? (
-                                                    <NumberInput
-                                                        label={field.label}
-                                                        labelPlacement="outside"
-                                                        name={field.name}
-                                                        placeholder={
-                                                            field.placeholder
-                                                        }
-                                                        isRequired={
-                                                            field.required
-                                                        }
-                                                        errorMessage={
-                                                            errors[
-                                                                field.name
-                                                            ] ||
-                                                            field.errorMessage
-                                                        }
-                                                        min={0}
-                                                        hideStepper
-                                                        endContent={
-                                                            <div className="pointer-events-none flex items-center">
-                                                                <span className="text-default-400 text-small">
-                                                                    €
-                                                                </span>
+                                                                ) : el.type ===
+                                                                  "price" ? (
+                                                                    <NumberInput
+                                                                        label={
+                                                                            el.label
+                                                                        }
+                                                                        labelPlacement="outside"
+                                                                        name={
+                                                                            el.name
+                                                                        }
+                                                                        placeholder={
+                                                                            el.placeholder
+                                                                        }
+                                                                        isRequired={
+                                                                            el.required
+                                                                        }
+                                                                        errorMessage={
+                                                                            errors[
+                                                                                el
+                                                                                    .name
+                                                                            ] ||
+                                                                            el.errorMessage
+                                                                        }
+                                                                        min={0}
+                                                                        hideStepper
+                                                                        endContent={
+                                                                            <div className="pointer-events-none flex items-center">
+                                                                                <span className="text-default-400 text-small">
+                                                                                    €
+                                                                                </span>
+                                                                            </div>
+                                                                        }
+                                                                        value={
+                                                                            typeof formData[
+                                                                                el
+                                                                                    .name
+                                                                            ] ===
+                                                                            "number"
+                                                                                ? (formData[
+                                                                                      el
+                                                                                          .name
+                                                                                  ] as number)
+                                                                                : 0
+                                                                        }
+                                                                        onChange={handleNumberChange(
+                                                                            el.name,
+                                                                        )}
+                                                                    />
+                                                                ) : (
+                                                                    <Input
+                                                                        label={
+                                                                            el.label
+                                                                        }
+                                                                        name={
+                                                                            el.name
+                                                                        }
+                                                                        labelPlacement="outside"
+                                                                        placeholder={
+                                                                            el.placeholder
+                                                                        }
+                                                                        type={
+                                                                            el.type
+                                                                        }
+                                                                        isRequired={
+                                                                            el.required
+                                                                        }
+                                                                        errorMessage={
+                                                                            errors[
+                                                                                el
+                                                                                    .name
+                                                                            ] ||
+                                                                            el.errorMessage
+                                                                        }
+                                                                        value={
+                                                                            (formData[
+                                                                                el
+                                                                                    .name
+                                                                            ] as string) ||
+                                                                            ""
+                                                                        }
+                                                                        onChange={(
+                                                                            e,
+                                                                        ) =>
+                                                                            handleInputChange(
+                                                                                el.name,
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                )}
                                                             </div>
-                                                        }
-                                                        value={
-                                                            typeof formData[
-                                                                field.name
-                                                            ] === "number"
-                                                                ? (formData[
-                                                                      field.name
-                                                                  ] as number)
-                                                                : 0
-                                                        }
-                                                        onChange={handleNumberChange(
+                                                        ),
+                                                    )}
+                                                </div>
+                                            );
+                                        }
+                                        if (isInputField(field)) {
+                                            return (
+                                                <div
+                                                    key={field.name}
+                                                    className="mb-4"
+                                                >
+                                                    {field.type === "select" ? (
+                                                        <Select
+                                                            key={selectKey}
+                                                            label={field.label}
+                                                            labelPlacement="outside"
+                                                            name={field.name}
+                                                            placeholder={
+                                                                field.placeholder
+                                                            }
+                                                            isRequired={
+                                                                field.required
+                                                            }
+                                                            aria-label={
+                                                                field.label
+                                                            }
+                                                            onChange={(
+                                                                event: React.ChangeEvent<HTMLSelectElement>,
+                                                            ) => {
+                                                                handleSelectChange(
+                                                                    field.name,
+                                                                    event.target
+                                                                        .value,
+                                                                );
+                                                            }}
+                                                        >
+                                                            {field.options?.map(
+                                                                (option) => (
+                                                                    <SelectItem
+                                                                        key={
+                                                                            option.value
+                                                                        }
+                                                                        data-value={
+                                                                            option.value
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            option.label
+                                                                        }
+                                                                    </SelectItem>
+                                                                ),
+                                                            ) ?? null}
+                                                        </Select>
+                                                    ) : field.type ===
+                                                      "file" ? (
+                                                        renderCustomFileInput(
                                                             field.name,
-                                                        )}
-                                                    />
-                                                ) : (
-                                                    <Input
-                                                        label={field.label}
-                                                        name={field.name}
-                                                        labelPlacement="outside"
-                                                        placeholder={
-                                                            field.placeholder
-                                                        }
-                                                        type={field.type}
-                                                        isRequired={
-                                                            field.required
-                                                        }
-                                                        errorMessage={
+                                                            field.label,
                                                             errors[
                                                                 field.name
                                                             ] ||
-                                                            field.errorMessage
-                                                        }
-                                                        value={
-                                                            (formData[
-                                                                field.name
-                                                            ] as string) || ""
-                                                        }
-                                                        onChange={(e) =>
-                                                            handleInputChange(
+                                                                field.errorMessage,
+                                                        )
+                                                    ) : field.type ===
+                                                      "price" ? (
+                                                        <NumberInput
+                                                            label={field.label}
+                                                            labelPlacement="outside"
+                                                            name={field.name}
+                                                            placeholder={
+                                                                field.placeholder
+                                                            }
+                                                            isRequired={
+                                                                field.required
+                                                            }
+                                                            errorMessage={
+                                                                errors[
+                                                                    field.name
+                                                                ] ||
+                                                                field.errorMessage
+                                                            }
+                                                            min={0}
+                                                            hideStepper
+                                                            endContent={
+                                                                <div className="pointer-events-none flex items-center">
+                                                                    <span className="text-default-400 text-small">
+                                                                        €
+                                                                    </span>
+                                                                </div>
+                                                            }
+                                                            value={
+                                                                typeof formData[
+                                                                    field.name
+                                                                ] === "number"
+                                                                    ? (formData[
+                                                                          field
+                                                                              .name
+                                                                      ] as number)
+                                                                    : 0
+                                                            }
+                                                            onChange={handleNumberChange(
                                                                 field.name,
-                                                                e.target.value,
-                                                            )
-                                                        }
-                                                    />
-                                                )}
-                                            </div>
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </Form>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button variant="light" onPress={onClose}>
-                                {t("generics.cancel")}
-                            </Button>
-                            <Button
-                                color="primary"
-                                type="submit"
-                                form="add-form"
-                            >
-                                {t("generics.add")}
-                            </Button>
-                        </ModalFooter>
-                    </>
-                )}
-            </ModalContent>
-        </Modal>
+                                                            )}
+                                                        />
+                                                    ) : (
+                                                        <Input
+                                                            label={field.label}
+                                                            name={field.name}
+                                                            labelPlacement="outside"
+                                                            placeholder={
+                                                                field.placeholder
+                                                            }
+                                                            type={field.type}
+                                                            isRequired={
+                                                                field.required
+                                                            }
+                                                            errorMessage={
+                                                                errors[
+                                                                    field.name
+                                                                ] ||
+                                                                field.errorMessage
+                                                            }
+                                                            value={
+                                                                (formData[
+                                                                    field.name
+                                                                ] as string) ||
+                                                                ""
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleInputChange(
+                                                                    field.name,
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    })}
+                                </Form>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button variant="light" onPress={onClose}>
+                                    {t("generics.cancel")}
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    type="submit"
+                                    form="add-form"
+                                >
+                                    {t("generics.add")}
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+            <AddCategoryModal
+                isOpen={isAddCategoryModalOpen}
+                onOpenChange={setIsAddCategoryModalOpen}
+                onSuccess={handleCategoryAdded}
+            />
+        </>
     );
 }

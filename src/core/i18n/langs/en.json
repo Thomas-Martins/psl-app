@@ -99,8 +99,15 @@
     "categories": {
         "_name": "Categories",
         "_name_all": "All categories",
-        "back_to" : {
+        "back_to": {
             "categories": "Back to categories"
+        },
+        "inputs": {
+            "title": "+ Add a category",
+            "placeholder": "Name of the category",
+            "image": "Add a category image",
+            "success": "The category was successfully added.",
+            "error": "An error occurred while adding the category."
         },
         "products": {
             "no_products": "No products found in this category."
@@ -547,7 +554,7 @@
                 "zipcode": "Postal code",
                 "city": "City",
                 "role": { "title": "Role", "placeholder": "Select a role" },
-                "image" : {
+                "image": {
                     "title": "Profile image",
                     "label": "Add a profile image",
                     "alt": "Profile image",

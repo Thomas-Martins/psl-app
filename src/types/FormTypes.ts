@@ -5,7 +5,7 @@ export interface InputField {
     label: string;
     errorMessage?: string;
     required?: boolean;
-    options?: { label: string; value: number }[];
+    options?: { label: string; value: number | string }[];
     validators?: ((value: FormDataValue) => string | null)[];
 }
 

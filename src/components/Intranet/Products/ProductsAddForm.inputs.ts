@@ -20,10 +20,16 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
         id: number;
         name: string;
     }[];
-    const categoriesOptions = categoriesData.map((category) => ({
-        label: category.name,
-        value: category.id,
-    }));
+    const categoriesOptions = [
+        {
+            label: i18n.t("categories.inputs.title"),
+            value: "add-category",
+        },
+        ...categoriesData.map((category) => ({
+            label: category.name,
+            value: category.id,
+        })),
+    ];
 
     return [
         {
