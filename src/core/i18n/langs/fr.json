@@ -99,8 +99,15 @@
     "categories": {
         "_name": "Catégories",
         "_name_all": "Toutes les catégories",
-        "back_to" : {
+        "back_to": {
             "categories": "Retour aux catégories"
+        },
+        "inputs": {
+            "title": "+ Ajouter une catégorie",
+            "placeholder": "Nom de la catégorie",
+            "image": "Image de la catégorie",
+            "success": "La catégorie a été ajoutée avec succès.",
+            "error": "Une erreur est survenue lors de l'ajout de la catégorie."
         },
         "products": {
             "no_products": "Aucun produit trouvé dans cette catégorie."
@@ -311,7 +318,7 @@
         },
         "table": {
             "actions": {
-                "update_status" : "Mettre à jour l'état",
+                "update_status": "Mettre à jour l'état",
                 "print": {
                     "invoice": "Imprimer la facture",
                     "products_lists": "Imprimer la liste des produits"
@@ -559,7 +566,7 @@
                     "title": "Rôle",
                     "placeholder": "Sélectionner un rôle"
                 },
-                "image" : {
+                "image": {
                     "title": "Image de profil",
                     "label": "Ajouter une image de profil",
                     "alt": "Image de profil",
