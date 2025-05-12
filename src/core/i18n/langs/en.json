@@ -566,10 +566,19 @@
                     "title": "Profile image",
                     "label": "Add a profile image",
                     "alt": "Profile image",
-                    "format": "Only .jpg, .jpeg, .png formats are accepted.",
+                    "format": "Only .jpg, .jpeg, .png formats are accepted. Maximum size: 2MB.",
                     "error": "An error occurred while uploading the image.",
                     "success": "The image was successfully uploaded."
-                }
+                },
+                "complementary_info": "Additional information"
+            }
+        },
+        "edit": {
+            "title": "Edit user",
+            "alert": {
+                "success": "The user was successfully modified.",
+                "error": "An error occurred while modifying the user.",
+                "image": "The image exceeds the maximum size of 2MB."
             }
         },
         "my_account": {

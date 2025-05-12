@@ -7,11 +7,7 @@ interface RoleChipProps {
 }
 export default function RoleChip({ role }: RoleChipProps) {
     return (
-        <Chip
-            className={`${role === "logisticien" ? "text-black" : "text-white"} ${chipRoleColor(role)}`}
-            radius="sm"
-            size="sm"
-        >
+        <Chip className={`${chipRoleColor(role)} shadow`} radius="sm" size="sm">
             {roleName(role)}
         </Chip>
     );

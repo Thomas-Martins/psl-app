@@ -45,7 +45,7 @@ export default function AppRoutes() {
         ...ordersRoutes,
         ...customersRoutes,
         ...productsRoutes,
-        ...usersRoutes,
+        ...usersRoutes(isOpen, onOpenChange),
         ...storesRoutes(isOpen, onOpenChange),
         ...suppliersRoutes(isOpen, onOpenChange),
         ...carriersRoutes(isOpen, onOpenChange),

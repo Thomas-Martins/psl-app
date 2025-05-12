@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import {
     Avatar,
     CircularProgress,
@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { InitialsLetter } from "@utils/utils.ts";
+import { useNavigate } from "react-router";
 
 interface UsersTableListProps {
     users: PaginatedUsers;
@@ -38,6 +39,7 @@ export default function UsersTableList({
     mutate,
 }: UsersTableListProps) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const headers = UsersTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
 
@@ -45,6 +47,10 @@ export default function UsersTableList({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
+
+    const handleRowAction = (key: Key) => {
+        navigate(`/users/${key}`);
+    };
 
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
@@ -102,6 +108,7 @@ export default function UsersTableList({
                 aria-label="users-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
+                onRowAction={handleRowAction}
             >
                 <TableHeader>
                     {headers.map((header) => (
@@ -125,7 +132,10 @@ export default function UsersTableList({
                     loadingState={loadingState}
                 >
                     {(user: User) => (
-                        <TableRow key={user.id}>
+                        <TableRow
+                            key={user.id}
+                            className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"
+                        >
                             <TableCell className="flex flex-row items-center gap-2">
                                 <Avatar
                                     src={user.image_url}

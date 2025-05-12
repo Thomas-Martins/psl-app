@@ -15,6 +15,7 @@ import SearchInput from "@components/tools/SearchInput.tsx";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
+import { Outlet } from "react-router";
 
 const fetchUsers = async (key: string): Promise<PaginatedUsers> => {
     const params = JSON.parse(key);
@@ -80,7 +81,7 @@ export default function UsersPage() {
             }
         });
 
-        payload.append('locale', i18n.language);
+        payload.append("locale", i18n.language);
 
         try {
             await UsersProvider.createUser(payload);
@@ -188,6 +189,8 @@ export default function UsersPage() {
                 fields={inputs}
                 onSubmit={handleUserAddSubmit}
             />
+
+            <Outlet />
         </div>
     );
 }
