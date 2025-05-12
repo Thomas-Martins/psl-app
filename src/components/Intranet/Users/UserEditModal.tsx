@@ -215,7 +215,7 @@ export default function UserEditModal({
 
         try {
             const { image_url } = await uploadProfileImage(file);
-            if (user.id === state.user.id) {
+            if (user.id === state?.user?.id) {
                 dispatch(updateUser({ image_url }));
             }
             addToast({
