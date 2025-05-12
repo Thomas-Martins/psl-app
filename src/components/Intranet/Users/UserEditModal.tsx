@@ -118,6 +118,7 @@ export default function UserEditModal({
         try {
             setIsSubmitting(true);
             if (!userId) {
+                setIsSubmitting(false);
                 return;
             }
             await UsersProvider.updateUser(userId, formData);
@@ -253,7 +254,7 @@ export default function UserEditModal({
                                     </div>
                                 </div>
                                 <h3 className="underline font-medium">
-                                    {t("carriers.add.inputs.title")}
+                                    {t("users.add.inputs.complementary_info")}
                                 </h3>
                                 <div className="flex gap-4">
                                     <Input

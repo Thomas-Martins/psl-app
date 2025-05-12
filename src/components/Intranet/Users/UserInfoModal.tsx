@@ -98,13 +98,13 @@ export default function UserInfoModal({
                 </ModalHeader>
                 <ModalBody>
                     <h3 className="underline font-medium">
-                        {t("carriers.add.inputs.title")}
+                        {t("users.add.inputs.complementary_info")}
                     </h3>
                     <div className="text-light-500 text-sm flex flex-row gap-8">
                         <div className="space-y-2">
-                            <p> {t("carriers.add.inputs.email")}:</p>
-                            <p> {t("carriers.add.inputs.phone")}:</p>
-                            <p> {t("carriers.add.inputs.address")}:</p>
+                            <p> {t("users.add.inputs.email")}:</p>
+                            <p> {t("users.add.inputs.phone")}:</p>
+                            <p> {t("users.add.inputs.address")}:</p>
                         </div>
                         <div className="space-y-2">
                             <p>{user?.email}</p>
