@@ -15,10 +15,10 @@ const roleNames: Record<Role, string> = {
 export const roleName = (role: Role): string => roleNames[role];
 
 const roleColors: Record<Role, string> = {
-    [Role.ADMIN]: "bg-primary-400",
-    [Role.GESTIONNAIRE]: "bg-violet",
-    [Role.LOGISTICIEN]: "bg-light-100",
-    [Role.CLIENT]: "",
+    [Role.ADMIN]: "bg-blue-500 text-white",
+    [Role.GESTIONNAIRE]: "bg-violet-700 text-white",
+    [Role.LOGISTICIEN]: "bg-foreground-500 text-white",
+    [Role.CLIENT]: "default",
 };
 
 export const chipRoleColor = (role: Role): string => roleColors[role];

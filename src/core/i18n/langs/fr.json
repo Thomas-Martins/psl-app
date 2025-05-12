@@ -578,11 +578,19 @@
                     "title": "Image de profil",
                     "label": "Ajouter une image de profil",
                     "alt": "Image de profil",
-                    "format": "Seuls les formats .jpg, .jpeg et .png sont pris en charge.",
+                    "format": "Seuls les formats .jpg, .jpeg et .png sont pris en charge. Taille maximum 2Mo.",
                     "error": "Une erreur est survenue lors de l'upload de l'image.",
                     "success": "L'image a été modifiée avec succès."
                 },
                 "complementary_info": "Informations complémentaires"
+            }
+        },
+        "edit": {
+            "title": "Modifier l'utilisateur",
+            "alert": {
+                "success": "L'utilisateur a été modifié avec succès.",
+                "error": "Une erreur est survenue lors de la modification de l'utilisateur.",
+                "image": "L'image dépasse la taille maximum requise."
             }
         },
         "my_account": {

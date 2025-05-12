@@ -1,4 +1,5 @@
 import {
+    addToast,
     Button,
     Modal,
     ModalBody,
@@ -10,7 +11,6 @@ import { useNavigate, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
 import { Carrier } from "@/types/Carriers.ts";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useTranslation } from "react-i18next";
 
 interface CarrierInfoModalProps {
@@ -23,7 +23,6 @@ export default function CarrierInfoModal({
     onOpenChange,
 }: CarrierInfoModalProps) {
     const { carrierId } = useParams<{ carrierId: string }>();
-    const { setAlert } = useGlobalAlert();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const effectiveIsOpen = Boolean(carrierId) || isOpen;
@@ -36,9 +35,11 @@ export default function CarrierInfoModal({
         if (isNaN(id)) {
             console.error("carrierId is not a valid number:", carrierId);
             navigate("/carriers");
-            setAlert({
-                type: "danger",
+            addToast({
+                color: "danger",
                 title: t("carriers.errors.get_carrier"),
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
             return;
         }
@@ -48,12 +49,14 @@ export default function CarrierInfoModal({
         } catch (error) {
             console.error("Error fetching carrier:", error);
             navigate("/carriers");
-            setAlert({
-                type: "danger",
+            addToast({
+                color: "danger",
                 title: t("carriers.errors.get_carrier"),
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         }
-    }, [carrierId, navigate, setAlert, t]);
+    }, [carrierId, navigate, t]);
 
     const handleModalOpenChange = (open: boolean) => {
         if (!open) {
