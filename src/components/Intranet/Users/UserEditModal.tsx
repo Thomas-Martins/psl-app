@@ -65,11 +65,50 @@ export default function UserEditModal({
         });
     }, [state?.user]);
 
+    const fetchUser = useCallback(async () => {
+        try {
+            const response = await UsersProvider.getUser(Number(userId));
+            if (response?.data) {
+                setFormData({
+                    firstname: response.data.firstname || "",
+                    lastname: response.data.lastname || "",
+                    email: response.data.email || "",
+                    phone: response.data.phone || "",
+                    address: response.data.address || "",
+                    zipcode: response.data.zipcode || "",
+                    city: response.data.city || "",
+                });
+                setPreviewImage(response.data.image_url || "");
+            }
+        } catch (error) {
+            console.error("Error fetching user:", error);
+            addToast({
+                color: "danger",
+                title: t("users.edit.alert.error_loading"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
+                hideIcon: true,
+            });
+        }
+    }, [userId, t]);
+
     useEffect(() => {
         if (state?.user) {
             init();
+        } else if (userId) {
+            fetchUser().then((r) => {
+                console.log(r);
+            });
         }
-    }, [state?.user, init]);
+    }, [state?.user, init, userId, fetchUser]);
+
+    useEffect(() => {
+        return () => {
+            if (previewImage && previewImage.startsWith("blob:")) {
+                URL.revokeObjectURL(previewImage);
+            }
+        };
+    }, [previewImage]);
 
     const fieldValidatorMapping: Record<string, string> = {
         firstname: "firstname",
