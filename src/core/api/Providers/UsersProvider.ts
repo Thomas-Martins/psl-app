@@ -6,8 +6,8 @@ class UsersProvider {
         return api.get("/users", { params: query });
     }
 
-    static getUser(id: number) {
-        return api.get(`/users/${id}`);
+    static getUser(id: number, query = {}) {
+        return api.get(`/users/${id}`, { params: query });
     }
 
     static createUser(payload: object) {

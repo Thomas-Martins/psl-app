@@ -1,7 +1,10 @@
+import { Order } from "./Orders";
+
 export interface Customer {
     id: number;
     firstname: string;
     lastname: string;
+    identity: string;
     email: string;
     phone: string;
     address: string;
@@ -13,6 +16,7 @@ export interface Customer {
         name: string;
     };
     orders_count: number;
+    orders: Order[];
 }
 
 export interface PaginatedCustomers {

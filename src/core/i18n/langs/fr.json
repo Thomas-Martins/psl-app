@@ -165,6 +165,27 @@
                     "placeholder": "Sélectionner un point de vente"
                 }
             }
+        },
+        "details": {
+            "informations": "Informations du client",
+            "history": "Historique des commandes",
+            "email": "Email",
+            "phone": "Téléphone",
+            "address": "Adresse",
+            "empty_orders": "Aucune commande pour le moment.",
+            "headers": {
+                "orders": "Commandes",
+                "products_count": "Nb de produits",
+                "total_ht": "Total HT"
+            },
+            "invoiced": {
+                "yes": "Facturée",
+                "no": "Non facturée"
+            },
+            "errors": {
+                "get_customer": "Erreur lors de la récupération du client.",
+                "get_orders": "Erreur lors de la récupération des commandes."
+            }
         }
     },
     "errors": {

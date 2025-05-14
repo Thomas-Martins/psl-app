@@ -11,7 +11,8 @@ export interface Order {
     products: Product[];
     estimated_delivery_date: string;
     user: User;
-    total_quantity: number;
+    total_quantity?: number;
+    invoiced: boolean;
     createdAt: string;
     updatedAt: string;
 }

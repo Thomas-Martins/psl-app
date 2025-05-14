@@ -69,56 +69,51 @@ export default function OrderDetailsPage() {
                 }}
             >
                 <DrawerContent>
-                    <>
-                        <DrawerHeader className="flex flex-col gap-1">
-                            <div className="flex items-center gap-2">
-                                <BackButton />
-                                <div className="flex items-center gap-6 ">
-                                    <h1 className="text-xl font-bold">
-                                        {t("orders.details._name") +
-                                            " #" +
-                                            order?.reference}
-                                    </h1>
-                                    <Chip
-                                        color={orderStatusColor(
-                                            order?.status ||
-                                                OrderStatus.PENDING,
-                                        )}
-                                    >
-                                        {order?.status &&
-                                            orderStatusName(order.status)}
-                                    </Chip>
-                                </div>
+                    <DrawerHeader className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                            <BackButton />
+                            <div className="flex items-center gap-6 ">
+                                <h1 className="text-xl font-bold">
+                                    {t("orders.details._name") +
+                                        " #" +
+                                        order?.reference}
+                                </h1>
+                                <Chip
+                                    color={orderStatusColor(
+                                        order?.status || OrderStatus.PENDING,
+                                    )}
+                                >
+                                    {order?.status &&
+                                        orderStatusName(order.status)}
+                                </Chip>
                             </div>
-                            <div>
-                                <p className="text-sm font-normal">
-                                    {t("customer._name") +
-                                        " : " +
-                                        order?.user.identity}
-                                </p>
-                                <p className="text-sm font-normal">
-                                    {t("orders.details.delivery.estimated") +
-                                        " : " +
-                                        order?.estimated_delivery_date}
-                                </p>
-                                <p className="text-sm font-normal">
-                                    {t("orders.details.delivery.address") +
-                                        " : " +
-                                        order?.user.store.address}
-                                </p>
-                            </div>
-                        </DrawerHeader>
-                        <DrawerBody>
-                            <h2 className="text-md underline font-semibold">
-                                {t("orders.details.products.title")}
-                            </h2>
-                            {order?.products && order.products.length > 0 && (
-                                <OrderProductTableList
-                                    products={order?.products}
-                                />
-                            )}
-                        </DrawerBody>
-                    </>
+                        </div>
+                        <div>
+                            <p className="text-sm font-normal">
+                                {t("customer._name") +
+                                    " : " +
+                                    order?.user.identity}
+                            </p>
+                            <p className="text-sm font-normal">
+                                {t("orders.details.delivery.estimated") +
+                                    " : " +
+                                    order?.estimated_delivery_date}
+                            </p>
+                            <p className="text-sm font-normal">
+                                {t("orders.details.delivery.address") +
+                                    " : " +
+                                    order?.user.store.address}
+                            </p>
+                        </div>
+                    </DrawerHeader>
+                    <DrawerBody>
+                        <h2 className="text-md underline font-semibold">
+                            {t("orders.details.products.title")}
+                        </h2>
+                        {order?.products && order.products.length > 0 && (
+                            <OrderProductTableList products={order?.products} />
+                        )}
+                    </DrawerBody>
                 </DrawerContent>
             </Drawer>
         </>

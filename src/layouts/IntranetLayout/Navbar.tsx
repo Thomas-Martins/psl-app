@@ -51,7 +51,7 @@ export default function NavbarIntranet() {
         { label: t("orders._name"), url: "/orders" },
         {
             label: t("customer._name"),
-            url: "/clients",
+            url: "/customers",
             visible: user.role === "admin",
         },
         {
