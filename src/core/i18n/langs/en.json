@@ -402,6 +402,18 @@
                     "success": "The image was successfully modified.",
                     "error": "An error occurred while uploading the image."
                 }
+            },
+            "stock": {
+                "title": "Add stock",
+                "alert": {
+                    "success": "The stock was successfully updated.",
+                    "error": "An error occurred while updating the stock."
+                },
+                "inputs": {
+                    "quantity": {
+                        "title": "Quantity"
+                    }
+                }
             }
         },
         "shop": {

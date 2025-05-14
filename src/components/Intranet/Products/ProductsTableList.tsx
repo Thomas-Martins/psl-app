@@ -14,11 +14,13 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    useDisclosure,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
 import { useNavigate } from "react-router";
+import ProductAddStockModal from "@components/Intranet/Products/ProductAddStockModal.tsx";
 
 interface ProductsTableListProps {
     products: PaginatedProducts;
@@ -40,6 +42,11 @@ export default function ProductsTableList({
     const { t } = useTranslation();
     const headers = ProductsTableListHeaders(t);
     const navigate = useNavigate();
+    const { isOpen, onOpenChange } = useDisclosure();
+
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(
+        null,
+    );
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -95,6 +102,11 @@ export default function ProductsTableList({
 
     const loadingState =
         isLoading || products.data.length === 0 ? "loading" : "idle";
+
+    const handleOpenAddStockModal = (productId: number) => {
+        setSelectedProductId(productId);
+        onOpenChange();
+    };
 
     return (
         <div>
@@ -199,8 +211,7 @@ export default function ProductsTableList({
                                             ),
                                             variant: "default",
                                             onClick: () =>
-                                                console.log(
-                                                    "ajouter du stock",
+                                                handleOpenAddStockModal(
                                                     product.id,
                                                 ),
                                         },
@@ -239,6 +250,16 @@ export default function ProductsTableList({
                     ))}
                 </TableBody>
             </Table>
+
+            <ProductAddStockModal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                productId={selectedProductId}
+                onSuccess={async () => {
+                    await mutate();
+                    onOpenChange();
+                }}
+            />
         </div>
     );
 }
