@@ -102,7 +102,7 @@ export default function ProductInfoModal({
                                     {product?.name}
                                 </h2>
                                 <p className="text-zinc-500 text-sm">
-                                    {product?.category.name}
+                                    {product?.category?.name}
                                 </p>
                             </div>
                             <p className="text-zinc-500 text-sm">
@@ -127,7 +127,7 @@ export default function ProductInfoModal({
                                 <p className="text-sm">
                                     {t("products.table.headers.supplier") +
                                         " : " +
-                                        product?.supplier.name}
+                                        product?.supplier?.name}
                                 </p>
                                 <p className="text-sm">
                                     {t("products.table.headers.stock") +
