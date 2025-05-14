@@ -3,7 +3,14 @@ import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import { Product } from "@/types/Products.ts";
 import ProductsProvider from "@core/api/Providers/ProductsProvider.ts";
-import { addToast, Image, Modal, ModalBody, ModalContent } from "@heroui/react";
+import {
+    addToast,
+    CircularProgress,
+    Image,
+    Modal,
+    ModalBody,
+    ModalContent,
+} from "@heroui/react";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
 
 interface ProductInfoModalProps {
@@ -71,6 +78,11 @@ export default function ProductInfoModal({
         <Modal isOpen={effectiveIsOpen} onOpenChange={handleModalOpenChange}>
             <ModalContent>
                 <ModalBody className="py-6">
+                    {!product && (
+                        <div className="flex justify-center items-center h-60">
+                            <CircularProgress />
+                        </div>
+                    )}
                     {product && product.image_url ? (
                         <Image
                             src={product?.image_url}

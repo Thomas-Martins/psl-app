@@ -33,7 +33,7 @@ class ProductsProvider {
     }
 
     static uploadProductImage(
-        id: string,
+        id: number,
         formData: FormData,
         query: Record<string, never> = {},
     ) {

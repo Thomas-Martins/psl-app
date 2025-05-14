@@ -51,8 +51,8 @@ export default function ProductEditModal({
         categoryId: "0",
         supplierId: "",
     });
-    const [categories, setCategories] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [suppliers, setSuppliers] = useState<Supplier[]>([]);
     const [previewImage, setPreviewImage] = useState<string>(
         state?.product.image_url || "",
     );
@@ -164,9 +164,8 @@ export default function ProductEditModal({
         Object.keys(formData).forEach((field) => {
             const validatorKey = fieldValidatorMapping[field];
             if (validatorKey && validators[validatorKey]) {
-                const error = validators[validatorKey](
-                    formData[field as keyof typeof formData],
-                );
+                const value = String(formData[field as keyof typeof formData]);
+                const error = validators[validatorKey](value);
                 if (error) {
                     newErrors[field] = error;
                 }
@@ -234,7 +233,7 @@ export default function ProductEditModal({
         const formData = new FormData();
         formData.append("image", file);
         const res = await ProductsProvider.uploadProductImage(
-            productId,
+            Number(productId),
             formData,
         );
         if (!res || !res.data?.image_url) {

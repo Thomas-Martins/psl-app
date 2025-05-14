@@ -26,8 +26,24 @@ export default function ProductAddStockModal({
     const { t } = useTranslation();
     const [quantity, setQuantity] = useState<number>(0);
     const handleAddStock = async () => {
-        if (!quantity) return;
-        if (!productId) return;
+        if (!quantity) {
+            addToast({
+                color: "warning",
+                title: t("products.edit.stock.required"),
+                shouldShowTimeoutProgress: true,
+                timeout: 3000,
+            });
+            return;
+        }
+        if (!productId) {
+            addToast({
+                color: "danger",
+                title: t("generics.errors.surprise"),
+                shouldShowTimeoutProgress: true,
+                timeout: 3000,
+            });
+            return;
+        }
         try {
             await ProductsProvider.updateProduct(
                 productId,

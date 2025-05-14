@@ -405,6 +405,7 @@
             },
             "stock": {
                 "title": "Add stock",
+                "required": "Quantity is required",
                 "alert": {
                     "success": "The stock was successfully updated.",
                     "error": "An error occurred while updating the stock."
