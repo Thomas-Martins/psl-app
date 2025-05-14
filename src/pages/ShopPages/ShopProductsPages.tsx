@@ -11,7 +11,7 @@ import ProductsAsideMenu from "@components/Shop/Products/ProductsAsideMenu.tsx";
 import {
     ProductFilters,
     ProductFiltersContext,
-} from "@/contexts/ProductFiltersContext";
+} from "@/contexts/Products/ProductFiltersContext.ts";
 import { Outlet } from "react-router";
 import { CircularProgress } from "@heroui/progress";
 import { addToast } from "@heroui/react";

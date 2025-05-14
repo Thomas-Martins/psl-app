@@ -7,6 +7,7 @@ export interface Customer {
     identity: string;
     email: string;
     phone: string;
+    full_address: string;
     address: string;
     zipcode: string;
     city: string;

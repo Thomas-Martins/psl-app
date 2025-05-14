@@ -99,7 +99,7 @@ export default function CustomerDetailDrawer() {
                                     <p>
                                         {t("customer.details.address") +
                                             " : " +
-                                            customer.address}
+                                            customer.full_address}
                                     </p>
                                 </div>
                             </div>
