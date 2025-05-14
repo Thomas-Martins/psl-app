@@ -1,11 +1,11 @@
 import { PaginatedProducts, Product } from "@/types/Products.ts";
 import { useTranslation } from "react-i18next";
 import { ProductsTableListHeaders } from "@components/Intranet/Products/ProductsTableList.headers.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
-import { useState } from "react";
+import { Key, useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import ProductsProvider from "@core/api/Providers/ProductsProvider.ts";
 import {
+    addToast,
     CircularProgress,
     Image,
     Table,
@@ -14,10 +14,13 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    useDisclosure,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
+import { useNavigate } from "react-router";
+import ProductAddStockModal from "@components/Intranet/Products/ProductAddStockModal.tsx";
 
 interface ProductsTableListProps {
     products: PaginatedProducts;
@@ -38,7 +41,12 @@ export default function ProductsTableList({
 }: ProductsTableListProps) {
     const { t } = useTranslation();
     const headers = ProductsTableListHeaders(t);
-    const { setAlert } = useGlobalAlert();
+    const navigate = useNavigate();
+    const { isOpen, onOpenChange } = useDisclosure();
+
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(
+        null,
+    );
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -71,21 +79,34 @@ export default function ProductsTableList({
         try {
             await ProductsProvider.deleteProduct(product.id);
             await mutate();
-            setAlert({
-                type: "success",
+            addToast({
+                color: "success",
                 title: t("products.table.actions.delete.success"),
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         } catch (error) {
             console.error(error);
-            setAlert({
-                type: "danger",
+            addToast({
+                color: "danger",
                 title: t("products.table.actions.delete.error"),
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         }
     };
 
+    const handleRowAction = (key: Key) => {
+        navigate(`/stocks/${key}`);
+    };
+
     const loadingState =
         isLoading || products.data.length === 0 ? "loading" : "idle";
+
+    const handleOpenAddStockModal = (productId: number) => {
+        setSelectedProductId(productId);
+        onOpenChange();
+    };
 
     return (
         <div>
@@ -94,6 +115,7 @@ export default function ProductsTableList({
                 aria-label="products-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
+                onRowAction={handleRowAction}
             >
                 <TableHeader>
                     {headers.map((header) => (
@@ -118,7 +140,7 @@ export default function ProductsTableList({
                     {products.data.map((product) => (
                         <TableRow
                             key={product.id}
-                            className={"hover:bg-light-50 cursor-pointer"}
+                            className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"
                         >
                             <TableCell width="60%">
                                 <div className={"flex gap-4"}>
@@ -170,25 +192,26 @@ export default function ProductsTableList({
                                     actions={[
                                         {
                                             label: t(
-                                                "products.table.actions.view",
-                                            ),
-                                            variant: "default",
-                                            onClick: async () => {
-                                                const { data } =
-                                                    await ProductsProvider.getProduct(
-                                                        product.id,
-                                                    );
-                                                console.log("Voir", data);
-                                            },
-                                        },
-                                        {
-                                            label: t(
                                                 "products.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
-                                                console.log(
-                                                    "Modifier",
+                                                navigate(
+                                                    `/stocks/${product.id}/edit`,
+                                                    {
+                                                        state: {
+                                                            product: product,
+                                                        },
+                                                    },
+                                                ),
+                                        },
+                                        {
+                                            label: t(
+                                                "products.table.actions.add_stocks",
+                                            ),
+                                            variant: "default",
+                                            onClick: () =>
+                                                handleOpenAddStockModal(
                                                     product.id,
                                                 ),
                                         },
@@ -227,6 +250,16 @@ export default function ProductsTableList({
                     ))}
                 </TableBody>
             </Table>
+
+            <ProductAddStockModal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                productId={selectedProductId}
+                onSuccess={async () => {
+                    await mutate();
+                    onOpenChange();
+                }}
+            />
         </div>
     );
 }

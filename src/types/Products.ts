@@ -5,9 +5,13 @@ export interface Product {
     reference: string;
     location: string;
     category: {
+        id: number;
         name: string;
     };
-    supplier: object;
+    supplier: {
+        id: number;
+        name: string;
+    };
     price: number;
     stock: number;
     image_url: string;

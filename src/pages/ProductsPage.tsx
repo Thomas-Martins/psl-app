@@ -14,6 +14,8 @@ import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import ProductsTableList from "@components/Intranet/Products/ProductsTableList.tsx";
+import { Outlet } from "react-router";
+import { ProductsContext } from "@/contexts/Products/ProductsContext";
 
 const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
     const params = JSON.parse(key);
@@ -95,59 +97,63 @@ export default function ProductsPage() {
     if (error) return <div>{t("error.message")}</div>;
 
     return (
-        <div className="space-y-5">
-            <div className="flex items-center justify-between">
-                <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
-                <Button
-                    aria-label="add"
-                    color="primary"
-                    size="md"
-                    onPress={onOpen}
-                >
-                    <AddSquareIcon size={24} color="white" />
-                    {t("suppliers.add.button")}
-                </Button>
-            </div>
+        <ProductsContext.Provider value={{ mutate }}>
+            <div className="space-y-5">
+                <div className="flex items-center justify-between">
+                    <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
+                    <Button
+                        aria-label="add"
+                        color="primary"
+                        size="md"
+                        onPress={onOpen}
+                    >
+                        <AddSquareIcon size={24} color="white" />
+                        {t("suppliers.add.button")}
+                    </Button>
+                </div>
 
-            <ProductsTableList
-                products={
-                    products || {
-                        current_page: 1,
-                        data: [],
-                        per_page: 10,
-                        total: 0,
-                        last_page: 1,
+                <ProductsTableList
+                    products={
+                        products || {
+                            current_page: 1,
+                            data: [],
+                            per_page: 10,
+                            total: 0,
+                            last_page: 1,
+                        }
                     }
-                }
-                onSortChange={handleSortChange}
-                orderBy={orderBy}
-                orderWay={orderWay}
-                isLoading={isLoading}
-                mutate={mutate}
-            />
+                    onSortChange={handleSortChange}
+                    orderBy={orderBy}
+                    orderWay={orderWay}
+                    isLoading={isLoading}
+                    mutate={mutate}
+                />
 
-            <PaginateFooter
-                values={["10", "50", "100"]}
-                totalPages={products?.last_page || 1}
-                currentPage={currentPage}
-                handlePageChange={handlePageChange}
-                itemsPerPage={limit}
-                totalItems={products?.total || 0}
-                onLimitChange={(newLimit) =>
-                    handleLimitChange(
-                        newLimit,
-                        products ? Number(products.total) : 10,
-                    )
-                }
-            />
+                <PaginateFooter
+                    values={["10", "50", "100"]}
+                    totalPages={products?.last_page || 1}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    itemsPerPage={limit}
+                    totalItems={products?.total || 0}
+                    onLimitChange={(newLimit) =>
+                        handleLimitChange(
+                            newLimit,
+                            products ? Number(products.total) : 10,
+                        )
+                    }
+                />
 
-            <AddFormModal
-                title={t("products.add.title")}
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                fields={inputs}
-                onSubmit={handleProductsAddSubmit}
-            />
-        </div>
+                <AddFormModal
+                    title={t("products.add.title")}
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    fields={inputs}
+                    onSubmit={handleProductsAddSubmit}
+                />
+
+                <Outlet />
+            </div>
+        </ProductsContext.Provider>
     );
 }

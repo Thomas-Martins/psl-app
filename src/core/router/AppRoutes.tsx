@@ -44,7 +44,7 @@ export default function AppRoutes() {
     const protectedRoutes: RouteConfig[] = [
         ...ordersRoutes,
         ...customersRoutes,
-        ...productsRoutes,
+        ...productsRoutes(isOpen, onOpenChange),
         ...usersRoutes(isOpen, onOpenChange),
         ...storesRoutes(isOpen, onOpenChange),
         ...suppliersRoutes(isOpen, onOpenChange),

@@ -346,6 +346,7 @@
             "actions": {
                 "view": "Voir",
                 "edit": "Modifier",
+                "add_stocks": "Ajouter du stock",
                 "delete": {
                     "title": "Supprimer",
                     "dialog": {
@@ -363,6 +364,8 @@
                 "location": "Emplacement",
                 "stock": "Quantité",
                 "price": "Prix",
+                "supplier": "Fournisseur",
+                "description": "Description",
                 "actions": "Actions"
             },
             "empty": "Aucun produits trouvés."
@@ -390,7 +393,37 @@
                     "title": "Fournisseur",
                     "placeholder": "Sélectionner le fournisseur"
                 },
-                "image": "Ajouter une image produit"
+                "image": {
+                    "title": "Image du produit",
+                    "label": "Ajouter une image",
+                    "alt": "Image du produit",
+                    "format": "Seuls les formats .jpg, .jpeg et .png sont pris en charge. Taille maximum 2Mo."
+                }
+            }
+        },
+        "edit": {
+            "title": "Modifier le produit",
+            "alert": {
+                "success": "Le produit a été modifié avec succès.",
+                "error": "Une erreur est survenue lors de la modification du produit.",
+                "image": {
+                    "size": "L'image dépasse la taille maximum requise.",
+                    "success": "L'image a été modifiée avec succès.",
+                    "error": "Une erreur est survenue lors de l'upload de l'image."
+                }
+            },
+            "stock": {
+                "title": "Ajouter du stock",
+                "required": "La quantité est obligatoire",
+                "alert": {
+                    "success": "Le stock du produit a été mis à jour.",
+                    "error": "Une erreur est survenue lors de la mise à jour du stock."
+                },
+                "inputs": {
+                    "quantity": {
+                        "title": "Quantités"
+                    }
+                }
             }
         },
         "shop": {
