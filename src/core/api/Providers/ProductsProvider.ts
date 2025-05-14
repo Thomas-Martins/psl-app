@@ -31,6 +31,16 @@ class ProductsProvider {
     static deleteProduct(id: number) {
         return api.delete(`/products/${id}`);
     }
+
+    static uploadProductImage(
+        id: string,
+        formData: FormData,
+        query: Record<string, never> = {},
+    ) {
+        return api.post(`/products/${id}/upload-image`, formData, {
+            params: query,
+        });
+    }
 }
 
 export default ProductsProvider;

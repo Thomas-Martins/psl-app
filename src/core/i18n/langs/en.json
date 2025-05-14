@@ -337,6 +337,7 @@
             "actions": {
                 "view": "View",
                 "edit": "Edit",
+                "add_stocks": "Add stock",
                 "delete": {
                     "title": "Delete",
                     "dialog": {
@@ -354,6 +355,8 @@
                 "location": "Location",
                 "stock": "Quantity",
                 "price": "Price",
+                "supplier": "Supplier",
+                "description": "Description",
                 "actions": "Actions"
             },
             "empty": "No products found."
@@ -381,7 +384,24 @@
                     "title": "Supplier",
                     "placeholder": "Select supplier"
                 },
-                "image": "Add a product image"
+                "image": {
+                    "title": "Product image",
+                    "label": "Add an image",
+                    "alt": "Product image",
+                    "format": "Only .jpg, .jpeg, .png formats are accepted. Maximum size: 2MB."
+                }
+            }
+        },
+        "edit": {
+            "title": "Edit product",
+            "alert": {
+                "success": "The product was successfully modified.",
+                "error": "An error occurred while modifying the product.",
+                "image": {
+                    "size": "The image exceeds the maximum size required.",
+                    "success": "The image was successfully modified.",
+                    "error": "An error occurred while uploading the image."
+                }
             }
         },
         "shop": {
