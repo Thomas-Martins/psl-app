@@ -72,7 +72,7 @@ export default function CustomerEditModal({
         } catch (e) {
             console.error(e);
             addToast({
-                title: t("users.errors.get_user"),
+                title: t("customer.details.errors.get_customer"),
                 color: "danger",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
@@ -140,7 +140,7 @@ export default function CustomerEditModal({
             if (!customerId) return;
             await UsersProvider.updateUser(customerId, formData);
             addToast({
-                title: t("users.edit.alert.success"),
+                title: t("customer.edit.alert.success"),
                 color: "success",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
@@ -148,9 +148,9 @@ export default function CustomerEditModal({
             await mutate();
             navigate("/customers");
         } catch (error) {
-            console.error("Error updating user:", error);
+            console.error("Error updating customer:", error);
             addToast({
-                title: t("users.edit.alert.error"),
+                title: t("customer.edit.alert.error"),
                 color: "danger",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,

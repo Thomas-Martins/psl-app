@@ -87,19 +87,22 @@ export default function CustomerDetailDrawer() {
                                 </h3>
                                 <div className="flex flex-col gap-2 mt-4 text-zinc-500">
                                     <p>
-                                        {t("customer.details.email") +
-                                            " : " +
-                                            customer.email}
+                                        <span>
+                                            {t("customer.details.email")} :
+                                        </span>
+                                        {" " + customer.email}
                                     </p>
                                     <p>
-                                        {t("customer.details.phone") +
-                                            " : " +
-                                            customer.phone}
+                                        <span>
+                                            {t("customer.details.phone")} :
+                                        </span>
+                                        {" " + customer.phone}
                                     </p>
                                     <p>
-                                        {t("customer.details.address") +
-                                            " : " +
-                                            customer.full_address}
+                                        <span>
+                                            {t("customer.details.address")} :
+                                        </span>
+                                        {" " + customer.full_address}
                                     </p>
                                 </div>
                             </div>
