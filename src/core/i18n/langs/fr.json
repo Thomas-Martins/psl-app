@@ -138,7 +138,7 @@
                 "email": "Email",
                 "phone": "Téléphone",
                 "store": "Point de vente",
-                "address": "Adresse de livraison",
+                "address": "Adresse",
                 "commands_count": "Nb de commandes",
                 "actions": "Actions"
             },
@@ -164,6 +164,34 @@
                     "title": "Point de vente",
                     "placeholder": "Sélectionner un point de vente"
                 }
+            }
+        },
+        "details": {
+            "informations": "Informations du client",
+            "history": "Historique des commandes",
+            "email": "Email",
+            "phone": "Téléphone",
+            "address": "Adresse",
+            "empty_orders": "Aucune commande pour le moment.",
+            "headers": {
+                "orders": "Commandes",
+                "products_count": "Nb de produits",
+                "total_ht": "Total HT"
+            },
+            "invoiced": {
+                "yes": "Facturée",
+                "no": "Non facturée"
+            },
+            "errors": {
+                "get_customer": "Erreur lors de la récupération du client.",
+                "get_orders": "Erreur lors de la récupération des commandes."
+            }
+        },
+        "edit": {
+            "title": "Modifier le client",
+            "alert": {
+                "success": "Le client a été modifié avec succès.",
+                "error": "Une erreur est survenue lors de la modification du client."
             }
         }
     },

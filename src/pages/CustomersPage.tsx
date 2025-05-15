@@ -16,6 +16,8 @@ import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import i18n from "@/core/i18n/i18n";
+import { Outlet } from "react-router";
+import { CustomersContext } from "@/contexts/Customers/CustomersContext";
 
 const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
     const params = JSON.parse(key);
@@ -96,63 +98,70 @@ export default function CustomersPage() {
     }
 
     return (
-        <div className="space-y-5">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-5 w-full">
-                    <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
+        <CustomersContext.Provider value={{ mutate }}>
+            <div className="space-y-5">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-5 w-full">
+                        <SearchInput
+                            setSearch={setSearch}
+                            classNames={"w-1/4"}
+                        />
+                    </div>
+                    <div>
+                        <Button
+                            aria-label="add"
+                            color="primary"
+                            size="md"
+                            onPress={onOpen}
+                        >
+                            <AddSquareIcon size={24} color="white" />
+                            {t("users.add.button")}
+                        </Button>
+                    </div>
                 </div>
-                <div>
-                    <Button
-                        aria-label="add"
-                        color="primary"
-                        size="md"
-                        onPress={onOpen}
-                    >
-                        <AddSquareIcon size={24} color="white" />
-                        {t("users.add.button")}
-                    </Button>
-                </div>
-            </div>
 
-            <CustomersTableList
-                customers={
-                    customers || {
-                        current_page: 1,
-                        data: [],
-                        per_page: 10,
-                        total: 0,
-                        last_page: 1,
+                <CustomersTableList
+                    customers={
+                        customers || {
+                            current_page: 1,
+                            data: [],
+                            per_page: 10,
+                            total: 0,
+                            last_page: 1,
+                        }
                     }
-                }
-                isLoading={isLoading}
-                onSortChange={handleSortChange}
-                orderBy={orderBy}
-                orderWay={orderWay}
-                mutate={mutate}
-            />
+                    isLoading={isLoading}
+                    onSortChange={handleSortChange}
+                    orderBy={orderBy}
+                    orderWay={orderWay}
+                    mutate={mutate}
+                />
 
-            <PaginateFooter
-                values={["10", "50", "100"]}
-                currentPage={currentPage}
-                handlePageChange={handlePageChange}
-                totalPages={customers?.last_page || 1}
-                totalItems={customers?.total || 0}
-                itemsPerPage={limit}
-                onLimitChange={(newLimit) =>
-                    handleLimitChange(
-                        newLimit,
-                        customers ? Number(customers.total) : 10,
-                    )
-                }
-            />
+                <PaginateFooter
+                    values={["10", "50", "100"]}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    totalPages={customers?.last_page || 1}
+                    totalItems={customers?.total || 0}
+                    itemsPerPage={limit}
+                    onLimitChange={(newLimit) =>
+                        handleLimitChange(
+                            newLimit,
+                            customers ? Number(customers.total) : 10,
+                        )
+                    }
+                />
 
-            <AddFormModal
-                title={t("customer.add.title")}
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                fields={inputs}
-                onSubmit={handleCustomerAddSubmit}
-            />
-        </div>
+                <AddFormModal
+                    title={t("customer.add.title")}
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    fields={inputs}
+                    onSubmit={handleCustomerAddSubmit}
+                />
+
+                <Outlet />
+            </div>
+        </CustomersContext.Provider>
     );
 }

@@ -138,7 +138,7 @@
                 "email": "Email",
                 "phone": "Phone",
                 "store": "Store",
-                "address": "Shipping address",
+                "address": "Address",
                 "commands_count": "Number of orders",
                 "actions": "Actions"
             },
@@ -161,6 +161,34 @@
                 "zipcode": "Postal code",
                 "city": "City",
                 "store": { "title": "Store", "placeholder": "Select a store" }
+            }
+        },
+        "details": {
+            "informations": "Customer information",
+            "history": "Order history",
+            "email": "Email",
+            "phone": "Phone",
+            "address": "Address",
+            "empty_orders": "No orders for this customer.",
+            "headers": {
+                "orders": "Orders",
+                "products_count": "Nb Products",
+                "total_ht": "Total (excl. tax)"
+            },
+            "invoiced": {
+                "yes": "Invoiced",
+                "no": "Not invoiced"
+            },
+            "errors": {
+                "get_customer": "Error while fetching customer data.",
+                "get_orders": "Error while fetching customer orders."
+            }
+        },
+        "edit": {
+            "title": "Edit customer",
+            "alert": {
+                "success": "The customer was successfully modified.",
+                "error": "An error occurred while modifying the customer."
             }
         }
     },

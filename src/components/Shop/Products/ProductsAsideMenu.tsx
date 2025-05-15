@@ -1,4 +1,4 @@
-import { useProductFilters } from "@/contexts/ProductFiltersContext";
+import { useProductFilters } from "@/contexts/Products/ProductFiltersContext.ts";
 import {
     Accordion,
     AccordionItem,

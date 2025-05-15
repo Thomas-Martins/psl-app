@@ -1,6 +1,6 @@
 import { Customer, PaginatedCustomers } from "@/types/Customers.ts";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import {
     CircularProgress,
@@ -16,6 +16,7 @@ import { Action } from "@utils/Action.ts";
 import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
 import { CustomersTableListHeaders } from "@components/Intranet/Clients/CustomersTableList.headers.ts";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { useNavigate } from "react-router";
 
 interface CustomersTableListProps {
     customers: PaginatedCustomers;
@@ -36,11 +37,16 @@ export default function CustomersTableList({
     const { t } = useTranslation();
     const headers = CustomersTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
+    const navigate = useNavigate();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
+
+    const handleRowAction = (key: Key) => {
+        navigate(`/customers/${key}`);
+    };
 
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
@@ -100,6 +106,7 @@ export default function CustomersTableList({
                 aria-label="suppliers-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
+                onRowAction={handleRowAction}
             >
                 <TableHeader>
                     {headers.map((header) => (
@@ -122,7 +129,10 @@ export default function CustomersTableList({
                     loadingState={loadingState}
                 >
                     {customers.data.map((customer) => (
-                        <TableRow key={customer.id}>
+                        <TableRow
+                            key={customer.id}
+                            className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"
+                        >
                             <TableCell>
                                 <h3 className="text-md">
                                     {customer.lastname +
@@ -139,9 +149,8 @@ export default function CustomersTableList({
                                 </h3>
                             </TableCell>
                             <TableCell>
-                                <h3 className="text-md">{customer.address}</h3>
-                                <p className="text-sm text-light-400">
-                                    {customer.zipcode}, {customer.city}
+                                <p className="text-md">
+                                    {customer.full_address}
                                 </p>
                             </TableCell>
                             <TableCell>
@@ -152,26 +161,17 @@ export default function CustomersTableList({
                                     actions={[
                                         {
                                             label: t(
-                                                "customer.table.actions.view",
-                                            ),
-                                            variant: "default",
-                                            onClick: async () => {
-                                                const { data } =
-                                                    await CustomersProvider.getCustomer(
-                                                        customer.id,
-                                                    );
-                                                console.log("Voir", data);
-                                            },
-                                        },
-                                        {
-                                            label: t(
                                                 "customer.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
-                                                console.log(
-                                                    "Modifier",
-                                                    customer.id,
+                                                navigate(
+                                                    `/customers/${customer.id}/edit`,
+                                                    {
+                                                        state: {
+                                                            customer,
+                                                        },
+                                                    },
                                                 ),
                                         },
                                         {
