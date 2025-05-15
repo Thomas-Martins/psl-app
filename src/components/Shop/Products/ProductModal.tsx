@@ -62,7 +62,7 @@ export default function ProductModal({
 
         ProductsProvider.getProduct(Number(id))
             .then(({ data }) => {
-                if (isMounted) setProduct(data);
+                if (isMounted) setProduct(data.data);
             })
             .catch((error) => {
                 if (isMounted) {
