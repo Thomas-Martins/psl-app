@@ -1,7 +1,8 @@
 import { Role } from "@/types/Role.ts";
 import { OrderStatus } from "@/types/OrderStatus.ts";
-import { Chip } from "@heroui/react";
+import { addToast, Chip } from "@heroui/react";
 import { ComponentProps } from "react";
+import i18n from "i18next";
 
 type ChipColor = ComponentProps<typeof Chip>["color"];
 
@@ -52,4 +53,43 @@ export const orderStatusColor = (status: OrderStatus): ChipColor =>
 export const totalHtToTtc = (totalHt: number, tva: number): number => {
     const ttc = totalHt * (1 + tva / 100);
     return Number(ttc.toFixed(2));
+};
+
+type PDFData =
+    | string
+    | Blob
+    | ArrayBuffer
+    | { data: Uint8Array | ArrayBuffer | string };
+
+export const downloadPDF = (pdfData: PDFData): void => {
+    try {
+        let blob: Blob;
+
+        if (typeof pdfData === "string") {
+            blob = new Blob([pdfData], { type: "application/pdf" });
+        } else if (pdfData instanceof Blob) {
+            blob = pdfData;
+        } else if (pdfData instanceof ArrayBuffer) {
+            blob = new Blob([pdfData], { type: "application/pdf" });
+        } else {
+            blob = new Blob([pdfData.data], { type: "application/pdf" });
+        }
+
+        const blobUrl = URL.createObjectURL(blob);
+
+        window.open(blobUrl, "_blank");
+
+        setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+        }, 1000);
+    } catch (e) {
+        console.error(e);
+        addToast({
+            title: i18n.t("generics.errors.surprise"),
+            color: "danger",
+            timeout: 2000,
+            shouldShowTimeoutProgress: true,
+            hideIcon: true,
+        });
+    }
 };

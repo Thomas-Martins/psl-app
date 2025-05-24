@@ -4,6 +4,7 @@ import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/
 import { OrdersTableListHeaders } from "@components/Intranet/Orders/OrdersTableList.headers.ts";
 import { useTranslation } from "react-i18next";
 import {
+    addToast,
     Chip,
     CircularProgress,
     Table,
@@ -15,11 +16,14 @@ import {
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import {
+    downloadPDF,
     orderStatusColor,
     orderStatusName,
     totalHtToTtc,
 } from "@utils/utils.ts";
 import { useNavigate } from "react-router";
+import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
+import i18n from "@core/i18n/i18n.ts";
 
 interface OrdersTableListProps {
     orders: PaginatedOrders;
@@ -162,14 +166,34 @@ export default function OrdersTableList({
                                         },
                                         {
                                             label: t(
-                                                "orders.table.actions.print.in",
+                                                "orders.table.actions.print.invoice",
                                             ),
                                             variant: "default",
-                                            onClick: () => {
-                                                console.log(
-                                                    "Print invoice",
-                                                    order.id,
-                                                );
+                                            onClick: async () => {
+                                                try {
+                                                    const payload = {
+                                                        locale: i18n.language,
+                                                    };
+                                                    const response =
+                                                        await OrdersProvider.downloadInvoice(
+                                                            order.id,
+                                                            {},
+                                                            payload,
+                                                        );
+                                                    downloadPDF(response.data);
+                                                } catch (e) {
+                                                    console.error(e);
+                                                    addToast({
+                                                        title: t(
+                                                            "generics.errors.surprise",
+                                                        ),
+                                                        color: "danger",
+                                                        timeout: 2000,
+                                                        shouldShowTimeoutProgress:
+                                                            true,
+                                                        hideIcon: true,
+                                                    });
+                                                }
                                             },
                                         },
                                         {
