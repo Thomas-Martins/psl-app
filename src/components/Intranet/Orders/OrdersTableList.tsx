@@ -15,11 +15,14 @@ import {
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import {
+    downloadPDF,
     orderStatusColor,
     orderStatusName,
     totalHtToTtc,
 } from "@utils/utils.ts";
 import { useNavigate } from "react-router";
+import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
+import i18n from "@core/i18n/i18n.ts";
 
 interface OrdersTableListProps {
     orders: PaginatedOrders;
@@ -162,14 +165,19 @@ export default function OrdersTableList({
                                         },
                                         {
                                             label: t(
-                                                "orders.table.actions.print.in",
+                                                "orders.table.actions.print.invoice",
                                             ),
                                             variant: "default",
-                                            onClick: () => {
-                                                console.log(
-                                                    "Print invoice",
-                                                    order.id,
-                                                );
+                                            onClick: async () => {
+                                                const payload = {
+                                                    locale: i18n.language,
+                                                };
+                                                const response =
+                                                    await OrdersProvider.downloadInvoice(
+                                                        order.id,
+                                                        payload,
+                                                    );
+                                                downloadPDF(response.data);
                                             },
                                         },
                                         {

@@ -53,3 +53,31 @@ export const totalHtToTtc = (totalHt: number, tva: number): number => {
     const ttc = totalHt * (1 + tva / 100);
     return Number(ttc.toFixed(2));
 };
+
+type PDFData =
+    | string
+    | Blob
+    | ArrayBuffer
+    | { data: Uint8Array | ArrayBuffer | string };
+
+export const downloadPDF = (pdfData: PDFData): void => {
+    let blob: Blob;
+
+    if (typeof pdfData === "string") {
+        blob = new Blob([pdfData], { type: "application/pdf" });
+    } else if (pdfData instanceof Blob) {
+        blob = pdfData;
+    } else if (pdfData instanceof ArrayBuffer) {
+        blob = new Blob([pdfData], { type: "application/pdf" });
+    } else {
+        blob = new Blob([pdfData.data], { type: "application/pdf" });
+    }
+
+    const blobUrl = URL.createObjectURL(blob);
+
+    window.open(blobUrl, "_blank");
+
+    setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+    }, 100);
+};

@@ -47,7 +47,7 @@ export default function CartConfirmation() {
                     {t("orders.confirmation.detail")}{" "}
                     <Link
                         className="underline"
-                        to={`/orders/${state.orderId ?? order.id}`}
+                        to={`/user/orders/${state.orderId ?? order.id}`}
                     >
                         {t("orders.confirmation.link")}
                     </Link>

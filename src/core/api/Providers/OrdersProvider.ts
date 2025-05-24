@@ -20,6 +20,14 @@ class OrdersProvider {
     static deleteOrder(id: string) {
         return api.delete(`/orders/${id}`);
     }
+
+    static downloadInvoice(id: string, query = {}, payload: object = {}) {
+        return api.get(`/orders/${id}/invoice`, {
+            params: query,
+            responseType: "blob",
+            ...payload,
+        });
+    }
 }
 
 export default OrdersProvider;
