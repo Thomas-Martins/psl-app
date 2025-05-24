@@ -4,6 +4,7 @@ import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/
 import { OrdersTableListHeaders } from "@components/Intranet/Orders/OrdersTableList.headers.ts";
 import { useTranslation } from "react-i18next";
 import {
+    addToast,
     Chip,
     CircularProgress,
     Table,
@@ -169,15 +170,30 @@ export default function OrdersTableList({
                                             ),
                                             variant: "default",
                                             onClick: async () => {
-                                                const payload = {
-                                                    locale: i18n.language,
-                                                };
-                                                const response =
-                                                    await OrdersProvider.downloadInvoice(
-                                                        order.id,
-                                                        payload,
-                                                    );
-                                                downloadPDF(response.data);
+                                                try {
+                                                    const payload = {
+                                                        locale: i18n.language,
+                                                    };
+                                                    const response =
+                                                        await OrdersProvider.downloadInvoice(
+                                                            order.id,
+                                                            {},
+                                                            payload,
+                                                        );
+                                                    downloadPDF(response.data);
+                                                } catch (e) {
+                                                    console.error(e);
+                                                    addToast({
+                                                        title: t(
+                                                            "generics.errors.surprise",
+                                                        ),
+                                                        color: "danger",
+                                                        timeout: 2000,
+                                                        shouldShowTimeoutProgress:
+                                                            true,
+                                                        hideIcon: true,
+                                                    });
+                                                }
                                             },
                                         },
                                         {
