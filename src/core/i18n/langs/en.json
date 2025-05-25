@@ -645,5 +645,28 @@
         "my_account": {
             "title": "My account"
         }
+    },
+    "account": {
+        "changePassword": {
+            "title": "Change Password",
+            "description": "Please enter your current password and the new password you wish to set.",
+            "newPassword": {
+                "label": "New Password",
+                "placeholder": "Your new password"
+            },
+            "confirmPassword": {
+                "label": "Confirm Password",
+                "placeholder": "Confirm Password"
+            },
+            "currentPassword": {
+                "label": "Current Password",
+                "placeholder": "Current Password"
+            },
+            "updateButton": "Update Password",
+            "alert": {
+                "success": "Your password has been successfully updated.",
+                "error": "An error occurred while updating your password. Please try again."
+            }
+        }
     }
 }
