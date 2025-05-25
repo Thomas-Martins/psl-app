@@ -6,6 +6,7 @@ import UploadFileIcon from "@/components/ui/icons/UploadFileIcon";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { updateUser } from "@store/userSlice.ts";
 import { useTranslation } from "react-i18next";
+import ToggleVisibilityPassword from "@components/ui/Form/ToggleVisibilityPassword.tsx";
 
 export default function MyAccountInformation() {
     const { t } = useTranslation();
@@ -20,6 +21,8 @@ export default function MyAccountInformation() {
     const [address, setAddress] = useState(user.address);
     const [zipcode, setZipcode] = useState(user.zipcode);
     const [city, setCity] = useState(user.city);
+    const [password, setPassword] = useState("");
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState<string>(
         user.image_url || "",
     );
@@ -141,6 +144,7 @@ export default function MyAccountInformation() {
             address,
             zipcode,
             city,
+            password,
         };
         setLoading(true);
 
@@ -270,10 +274,32 @@ export default function MyAccountInformation() {
                     isInvalid={!!errors.city}
                 />
             </div>
+            <div className="flex gap-5">
+                <Input
+                    type={passwordVisible ? "text" : "password"}
+                    label={t("generics.password")}
+                    labelPlacement={"outside"}
+                    placeholder={t("generics.password")}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    errorMessage={errors.password}
+                    isInvalid={!!errors.password}
+                    endContent={
+                        <ToggleVisibilityPassword
+                            visible={passwordVisible}
+                            setVisibility={() =>
+                                setPasswordVisible(!passwordVisible)
+                            }
+                        />
+                    }
+                    isRequired={true}
+                />
+            </div>
 
             <div className="flex justify-end">
                 <Button
                     color="primary"
+                    isDisabled={!password}
                     isLoading={loading}
                     onPress={handleUpdateUser}
                 >
