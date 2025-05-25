@@ -18,7 +18,7 @@ class UsersProvider {
         return api.put(`/users/${id}`, payload);
     }
 
-    static updateUserPassword(id: string, payload: object) {
+    static updateUserPassword(id: number, payload: object) {
         return api.put(`/users/${id}/update-password`, payload);
     }
 

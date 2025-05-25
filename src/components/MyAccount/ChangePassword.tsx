@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
+import { validators } from "@/utils/InputForm.validators.ts";
 
 export default function ChangePassword() {
     const { t } = useTranslation();
@@ -16,10 +17,36 @@ export default function ChangePassword() {
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
     const [currentPassword, setCurrentPassword] = useState("");
     const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [errors, setErrors] = useState<{
+        newPassword?: string;
+        confirmPassword?: string;
+        currentPassword?: string;
+    }>({});
     const [loading, setLoading] = useState(false);
 
+    const validate = () => {
+        const currentPasswordError = !currentPassword ? t("generics.errors.add.password.required") : null;
+        const newPasswordError = validators.password(newPassword);
+        const confirmPasswordError = validators.confirmPassword(confirmPassword, { password: newPassword });
+
+        const newErrors = {
+            currentPassword: currentPasswordError || undefined,
+            newPassword: newPasswordError || undefined,
+            confirmPassword: confirmPasswordError || undefined,
+        };
+
+        setErrors(newErrors);
+        return newErrors;
+    };
+
     const handleUpdatePassword = useCallback(async () => {
+        const validationErrors = validate();
+
+        // Vérifier s'il y a des erreurs
+        if (Object.values(validationErrors).some(error => error !== undefined)) {
+            return;
+        }
+
         const payload = {
             password: newPassword,
             password_confirmation: confirmPassword,
@@ -28,7 +55,7 @@ export default function ChangePassword() {
         setLoading(true);
         setErrors({});
         try {
-            await UsersProvider.updateUserPassword(user.id, payload);
+            await UsersProvider.updateUserPassword(Number(user.id), payload);
             addToast({
                 title: t("account.changePassword.alert.success"),
                 color: "success",
@@ -74,8 +101,8 @@ export default function ChangePassword() {
                         )}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
-                        errorMessage={errors.password}
-                        isInvalid={!!errors.password}
+                        errorMessage={errors.newPassword}
+                        isInvalid={!!errors.newPassword}
                         endContent={
                             <ToggleVisibilityPassword
                                 visible={newPasswordVisible}
@@ -96,8 +123,8 @@ export default function ChangePassword() {
                         )}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        errorMessage={errors.password}
-                        isInvalid={!!errors.password}
+                        errorMessage={errors.confirmPassword}
+                        isInvalid={!!errors.confirmPassword}
                         endContent={
                             <ToggleVisibilityPassword
                                 visible={confirmPasswordVisible}
@@ -119,8 +146,8 @@ export default function ChangePassword() {
                     )}
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    errorMessage={errors.password}
-                    isInvalid={!!errors.password}
+                    errorMessage={errors.currentPassword}
+                    isInvalid={!!errors.currentPassword}
                     endContent={
                         <ToggleVisibilityPassword
                             visible={currentPasswordVisible}

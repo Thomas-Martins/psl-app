@@ -276,6 +276,15 @@
                 "location": {
                     "required": "L'emplacement est obligatoire",
                     "value": "L'emplacement doit être dans le format suivant : 'A01-E01'"
+                },
+                "password": {
+                    "required": "Le mot de passe est obligatoire",
+                    "min_length": "Le mot de passe doit contenir au moins 8 caractères",
+                    "lowercase": "Le mot de passe doit contenir au moins une lettre minuscule",
+                    "uppercase": "Le mot de passe doit contenir au moins une lettre majuscule",
+                    "number": "Le mot de passe doit contenir au moins un chiffre",
+                    "special": "Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&*)",
+                    "mismatch": "Les mots de passe ne correspondent pas"
                 }
             },
             "edit": {
