@@ -25,7 +25,7 @@ export default function ChangePassword() {
     const [loading, setLoading] = useState(false);
 
     const validate = () => {
-        const currentPasswordError = !currentPassword ? t("generics.errors.add.password.required") : null;
+        const currentPasswordError = !currentPassword ? t("account.changePassword.errors.currentPassword.required") : null;
         const newPasswordError = validators.password(newPassword);
         const confirmPasswordError = validators.confirmPassword(confirmPassword, { password: newPassword });
 
@@ -42,7 +42,6 @@ export default function ChangePassword() {
     const handleUpdatePassword = useCallback(async () => {
         const validationErrors = validate();
 
-        // Vérifier s'il y a des erreurs
         if (Object.values(validationErrors).some(error => error !== undefined)) {
             return;
         }
@@ -55,7 +54,7 @@ export default function ChangePassword() {
         setLoading(true);
         setErrors({});
         try {
-            await UsersProvider.updateUserPassword(Number(user.id), payload);
+            await UsersProvider.updateUserPassword(user.id, payload);
             addToast({
                 title: t("account.changePassword.alert.success"),
                 color: "success",
@@ -111,6 +110,8 @@ export default function ChangePassword() {
                                 }
                             />
                         }
+                        autoFocus
+                        aria-label={t("account.changePassword.newPassword.label")}
                     />
                     <Input
                         type={confirmPasswordVisible ? "text" : "password"}
@@ -135,6 +136,7 @@ export default function ChangePassword() {
                                 }
                             />
                         }
+                        aria-label={t("account.changePassword.confirmPassword.label")}
                     />
                 </div>
                 <Input
@@ -158,12 +160,13 @@ export default function ChangePassword() {
                             }
                         />
                     }
+                    aria-label={t("account.changePassword.currentPassword.label")}
                 />
             </div>
             <div className="flex justify-end">
                 <Button
                     isDisabled={
-                        !newPassword && !confirmPassword && !currentPassword
+                        !newPassword || !confirmPassword || !currentPassword
                     }
                     color="primary"
                     isLoading={loading}

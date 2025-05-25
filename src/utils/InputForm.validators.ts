@@ -123,16 +123,10 @@ export const validators: {
     confirmPassword: (value, formData?: Record<string, FormDataValue>) => {
         if (!value) return i18n.t("generics.errors.add.password.required");
         if (typeof value !== "string") return null;
-        if (value.length < 12)
-            return i18n.t("generics.errors.add.password.min_length");
-        if (!/(?=.*[a-z])/.test(value))
-            return i18n.t("generics.errors.add.password.lowercase");
-        if (!/(?=.*[A-Z])/.test(value))
-            return i18n.t("generics.errors.add.password.uppercase");
-        if (!/(?=.*\d)/.test(value))
-            return i18n.t("generics.errors.add.password.number");
-        if (!/(?=.*[!@#$%^&*])/.test(value))
-            return i18n.t("generics.errors.add.password.special");
+
+        const passwordError = validators.password(value);
+        if (passwordError) return passwordError;
+
         if (formData?.password !== value)
             return i18n.t("generics.errors.add.password.mismatch");
         return null;

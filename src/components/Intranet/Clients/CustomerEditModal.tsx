@@ -56,29 +56,29 @@ export default function CustomerEditModal({
     }, [state?.customer]);
 
     const fetchCustomer = useCallback(async () => {
+        if (!customerId) return;
         try {
-            const response = await UsersProvider.getUser(Number(customerId));
-            if (response.data.data) {
-                setFormData({
-                    firstname: response.data.data.firstname,
-                    lastname: response.data.data.lastname,
-                    email: response.data.data.email,
-                    phone: response.data.data.phone,
-                    address: response.data.data.address,
-                    zipcode: response.data.data.zipcode,
-                    city: response.data.data.city,
-                });
-            }
-        } catch (e) {
-            console.error(e);
-            addToast({
-                title: t("customer.details.errors.get_customer"),
-                color: "danger",
-                timeout: 2000,
-                shouldShowTimeoutProgress: true,
+            const response = await UsersProvider.getUser(customerId);
+            setFormData({
+                firstname: response.data.firstname || "",
+                lastname: response.data.lastname || "",
+                email: response.data.email || "",
+                phone: response.data.phone || "",
+                address: response.data.address || "",
+                zipcode: response.data.zipcode || "",
+                city: response.data.city || "",
             });
+        } catch (error) {
+            console.error("Error fetching customer:", error);
+            addToast({
+                color: "danger",
+                title: t("generics.errors.surprise"),
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
+            });
+            navigate("/customers");
         }
-    }, [customerId, t]);
+    }, [customerId, navigate, t]);
 
     useEffect(() => {
         if (state?.customer) {
