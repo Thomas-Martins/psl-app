@@ -276,6 +276,15 @@
                 "location": {
                     "required": "L'emplacement est obligatoire",
                     "value": "L'emplacement doit être dans le format suivant : 'A01-E01'"
+                },
+                "password": {
+                    "required": "Le mot de passe est requis",
+                    "min_length": "Le mot de passe doit contenir au moins 12 caractères",
+                    "lowercase": "Le mot de passe doit contenir au moins une lettre minuscule",
+                    "uppercase": "Le mot de passe doit contenir au moins une lettre majuscule",
+                    "number": "Le mot de passe doit contenir au moins un chiffre",
+                    "special": "Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&*)",
+                    "mismatch": "Les mots de passe ne correspondent pas"
                 }
             },
             "edit": {
@@ -656,6 +665,29 @@
         },
         "my_account": {
             "title": "Mon compte"
+        }
+    },
+    "account": {
+        "changePassword": {
+            "title": "Changer le mot de passe",
+            "description": "Veuillez entrer votre mot de passe actuel et le nouveau mot de passe que vous souhaitez définir.",
+            "newPassword": {
+                "label": "Nouveau mot de passe",
+                "placeholder": "Votre nouveau mot de passe"
+            },
+            "confirmPassword": {
+                "label": "Confirmation du mot de passe",
+                "placeholder": "Confirmation du mot de passe"
+            },
+            "currentPassword": {
+                "label": "Mot de passe actuel",
+                "placeholder": "Mot de passe actuel"
+            },
+            "updateButton": "Mettre à jour le mot de passe",
+            "alert": {
+                "success": "Le mot de passe a été mis à jour avec succès.",
+                "error": "Une erreur est survenue lors de la mise à jour du mot de passe."
+            }
         }
     }
 }

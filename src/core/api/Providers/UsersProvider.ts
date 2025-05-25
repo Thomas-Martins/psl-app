@@ -6,7 +6,7 @@ class UsersProvider {
         return api.get("/users", { params: query });
     }
 
-    static getUser(id: number, query = {}) {
+    static getUser(id: string, query = {}) {
         return api.get(`/users/${id}`, { params: query });
     }
 
@@ -18,7 +18,11 @@ class UsersProvider {
         return api.put(`/users/${id}`, payload);
     }
 
-    static deleteUser(id: number) {
+    static updateUserPassword(id: string, payload: object) {
+        return api.put(`/users/${id}/update-password`, payload);
+    }
+
+    static deleteUser(id: string) {
         return api.delete(`/users/${id}`);
     }
 

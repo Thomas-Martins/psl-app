@@ -23,21 +23,8 @@ export default function CustomerDetailDrawer() {
 
     const fetchCustomer = useCallback(async () => {
         if (!customerId) return;
-        const id = parseInt(customerId, 10);
-        if (isNaN(id)) {
-            console.error("customerId is not a valid number:", customerId);
-            navigate("/customers");
-            addToast({
-                color: "danger",
-                title: t("customer.details.errors.get_customer"),
-                shouldShowTimeoutProgress: true,
-                timeout: 5000,
-                hideIcon: true,
-            });
-            return;
-        }
         try {
-            const response = await UsersProvider.getUser(id, {
+            const response = await UsersProvider.getUser(customerId, {
                 withOrders: true,
             });
             setCustomer(response.data.data);

@@ -1,8 +1,13 @@
 import i18n from "i18next";
 import { FormDataValue } from "@/types/FormTypes.ts";
 
+type ValidatorFunction = (
+    value: FormDataValue,
+    formData?: Record<string, FormDataValue>,
+) => string | null;
+
 export const validators: {
-    [field: string]: (value: FormDataValue) => string | null;
+    [field: string]: ValidatorFunction;
 } = {
     name: (value) => {
         if (!value) return i18n.t("generics.errors.add.name.required");
@@ -98,6 +103,32 @@ export const validators: {
         if (typeof value !== "string") return null;
         if (!locationRegex.test(value))
             return i18n.t("generics.errors.add.location.value");
+        return null;
+    },
+    password: (value) => {
+        if (!value) return i18n.t("generics.errors.add.password.required");
+        if (typeof value !== "string") return null;
+        if (value.length < 12)
+            return i18n.t("generics.errors.add.password.min_length");
+        if (!/(?=.*[a-z])/.test(value))
+            return i18n.t("generics.errors.add.password.lowercase");
+        if (!/(?=.*[A-Z])/.test(value))
+            return i18n.t("generics.errors.add.password.uppercase");
+        if (!/(?=.*\d)/.test(value))
+            return i18n.t("generics.errors.add.password.number");
+        if (!/(?=.*[!@#$%^&*])/.test(value))
+            return i18n.t("generics.errors.add.password.special");
+        return null;
+    },
+    confirmPassword: (value, formData?: Record<string, FormDataValue>) => {
+        if (!value) return i18n.t("generics.errors.add.password.required");
+        if (typeof value !== "string") return null;
+
+        const passwordError = validators.password(value);
+        if (passwordError) return passwordError;
+
+        if (formData?.password !== value)
+            return i18n.t("generics.errors.add.password.mismatch");
         return null;
     },
 };

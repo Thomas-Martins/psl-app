@@ -267,6 +267,15 @@
                 "location": {
                     "required": "Location is required",
                     "value": "Location must be in the format 'A01-E01'"
+                },
+                "password": {
+                    "required": "Password is required",
+                    "min_length": "Password must be at least 12 characters long",
+                    "lowercase": "Password must contain at least one lowercase letter",
+                    "uppercase": "Password must contain at least one uppercase letter",
+                    "number": "Password must contain at least one number",
+                    "special": "Password must contain at least one special character (!@#$%^&*)",
+                    "mismatch": "Passwords do not match"
                 }
             },
             "edit": {
@@ -644,6 +653,29 @@
         },
         "my_account": {
             "title": "My account"
+        }
+    },
+    "account": {
+        "changePassword": {
+            "title": "Change Password",
+            "description": "Please enter your current password and the new password you wish to set.",
+            "newPassword": {
+                "label": "New Password",
+                "placeholder": "Your new password"
+            },
+            "confirmPassword": {
+                "label": "Confirm Password",
+                "placeholder": "Confirm Password"
+            },
+            "currentPassword": {
+                "label": "Current Password",
+                "placeholder": "Current Password"
+            },
+            "updateButton": "Update Password",
+            "alert": {
+                "success": "Your password has been successfully updated.",
+                "error": "An error occurred while updating your password. Please try again."
+            }
         }
     }
 }

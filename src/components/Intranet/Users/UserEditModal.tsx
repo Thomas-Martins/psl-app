@@ -66,31 +66,30 @@ export default function UserEditModal({
     }, [state?.user]);
 
     const fetchUser = useCallback(async () => {
+        if (!userId) return;
         try {
-            const response = await UsersProvider.getUser(Number(userId));
-            if (response?.data) {
-                setFormData({
-                    firstname: response.data.firstname || "",
-                    lastname: response.data.lastname || "",
-                    email: response.data.email || "",
-                    phone: response.data.phone || "",
-                    address: response.data.address || "",
-                    zipcode: response.data.zipcode || "",
-                    city: response.data.city || "",
-                });
-                setPreviewImage(response.data.image_url || "");
-            }
+            const response = await UsersProvider.getUser(userId);
+            setFormData({
+                firstname: response.data.firstname || "",
+                lastname: response.data.lastname || "",
+                email: response.data.email || "",
+                phone: response.data.phone || "",
+                address: response.data.address || "",
+                zipcode: response.data.zipcode || "",
+                city: response.data.city || "",
+            });
+            setPreviewImage(response.data.image_url || "");
         } catch (error) {
             console.error("Error fetching user:", error);
             addToast({
                 color: "danger",
-                title: t("users.edit.alert.error_loading"),
-                timeout: 2500,
+                title: t("generics.errors.surprise"),
                 shouldShowTimeoutProgress: true,
-                hideIcon: true,
+                timeout: 5000,
             });
+            navigate("/users");
         }
-    }, [userId, t]);
+    }, [userId, navigate, t]);
 
     useEffect(() => {
         if (state?.user) {

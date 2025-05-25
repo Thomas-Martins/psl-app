@@ -3,6 +3,7 @@ import { Button, Divider } from "@heroui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import ArrowLeftIcon from "@components/ui/icons/ArrowLeftIcon.tsx";
+import ChangePassword from "@components/MyAccount/ChangePassword.tsx";
 
 export default function MyAccountPage() {
     const { t } = useTranslation();
@@ -23,6 +24,8 @@ export default function MyAccountPage() {
             </div>
             <Divider />
             <MyAccountInformation />
+            <Divider />
+            <ChangePassword />
         </div>
     );
 }

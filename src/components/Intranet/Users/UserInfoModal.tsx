@@ -32,20 +32,8 @@ export default function UserInfoModal({
 
     const fetchUser = useCallback(async () => {
         if (!userId) return;
-        const id = parseInt(userId, 10);
-        if (isNaN(id)) {
-            console.error("userId is not a valid number:", userId);
-            navigate("/users");
-            addToast({
-                color: "danger",
-                title: t("generics.errors.surprise"),
-                shouldShowTimeoutProgress: true,
-                timeout: 5000,
-            });
-            return;
-        }
         try {
-            const response = await UsersProvider.getUser(id);
+            const response = await UsersProvider.getUser(userId);
             setUser(response.data);
         } catch (error) {
             console.error("Error fetching user:", error);
