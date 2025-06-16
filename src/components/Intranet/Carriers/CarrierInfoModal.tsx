@@ -1,10 +1,8 @@
 import {
     addToast,
-    Button,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
 } from "@heroui/react";
 import { useNavigate, useParams } from "react-router";
@@ -65,14 +63,6 @@ export default function CarrierInfoModal({
         onOpenChange(open);
     };
 
-    const handleEditClick = () => {
-        if (carrierId) {
-            navigate(`/carriers/${carrierId}/edit`, {
-                state: { carrier: carrier },
-            });
-        }
-    };
-
     useEffect(() => {
         if (carrierId) {
             (async () => {
@@ -124,7 +114,7 @@ export default function CarrierInfoModal({
                             <p> {t("carriers.add.inputs.email")}:</p>
                             <p> {t("carriers.add.inputs.phone")}:</p>
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-3">
                             <p>
                                 {carrier?.contact_person_firstname +
                                     " " +
@@ -135,11 +125,6 @@ export default function CarrierInfoModal({
                         </div>
                     </div>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onPress={handleEditClick}>
-                        {t("generics.edit")}
-                    </Button>
-                </ModalFooter>
             </ModalContent>
         </Modal>
     );

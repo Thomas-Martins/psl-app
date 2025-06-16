@@ -162,26 +162,15 @@ export default function UsersTableList({
                                     actions={[
                                         {
                                             label: t(
-                                                "users.table.actions.view",
-                                            ),
-                                            variant: "default",
-                                            onClick: async () => {
-                                                const { data } =
-                                                    await UsersProvider.getUser(
-                                                        user.id,
-                                                    );
-                                                console.log("Voir", data);
-                                            },
-                                        },
-                                        {
-                                            label: t(
                                                 "users.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
-                                                console.log(
-                                                    "Modifier",
-                                                    user.id,
+                                                navigate(
+                                                    `/users/${user.id}/edit`,
+                                                    {
+                                                        state: { user: user },
+                                                    },
                                                 ),
                                         },
                                         {

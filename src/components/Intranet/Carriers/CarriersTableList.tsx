@@ -152,26 +152,17 @@ export default function CarriersTableList({
                                     actions={[
                                         {
                                             label: t(
-                                                "carriers.table.actions.view",
-                                            ),
-                                            variant: "default",
-                                            onClick: async () => {
-                                                const { data } =
-                                                    await CarriersProvider.getCarrier(
-                                                        carrier.id,
-                                                    );
-                                                console.log("Voir", data);
-                                            },
-                                        },
-                                        {
-                                            label: t(
                                                 "carriers.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
-                                                console.log(
-                                                    "Modifier",
-                                                    carrier.id,
+                                                navigate(
+                                                    `/carriers/${carrier.id}/edit`,
+                                                    {
+                                                        state: {
+                                                            carrier: carrier,
+                                                        },
+                                                    },
                                                 ),
                                         },
                                         {

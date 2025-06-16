@@ -1,11 +1,4 @@
-import {
-    Button,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-} from "@heroui/react";
+import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
 import { useNavigate, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
@@ -62,14 +55,6 @@ export default function SupplierInfoModal({
         onOpenChange(open);
     };
 
-    const handleEditClick = () => {
-        if (supplierId) {
-            navigate(`/suppliers/${supplierId}/edit`, {
-                state: { supplier: supplier },
-            });
-        }
-    };
-
     useEffect(() => {
         if (supplierId) {
             (async () => {
@@ -123,7 +108,7 @@ export default function SupplierInfoModal({
                             <p> {t("suppliers.add.inputs.email")}:</p>
                             <p> {t("suppliers.add.inputs.phone")}:</p>
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-3">
                             <p>
                                 {[
                                     supplier?.contact_person_firstname,
@@ -137,11 +122,6 @@ export default function SupplierInfoModal({
                         </div>
                     </div>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onPress={handleEditClick}>
-                        {t("generics.edit")}
-                    </Button>
-                </ModalFooter>
             </ModalContent>
         </Modal>
     );
