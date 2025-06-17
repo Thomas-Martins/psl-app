@@ -25,9 +25,14 @@ export default function ChangePassword() {
     const [loading, setLoading] = useState(false);
 
     const validate = () => {
-        const currentPasswordError = !currentPassword ? t("account.changePassword.errors.currentPassword.required") : null;
+        const currentPasswordError = !currentPassword
+            ? t("account.changePassword.errors.currentPassword.required")
+            : null;
         const newPasswordError = validators.password(newPassword);
-        const confirmPasswordError = validators.confirmPassword(confirmPassword, { password: newPassword });
+        const confirmPasswordError = validators.confirmPassword(
+            confirmPassword,
+            { password: newPassword },
+        );
 
         const newErrors = {
             currentPassword: currentPasswordError || undefined,
@@ -42,7 +47,9 @@ export default function ChangePassword() {
     const handleUpdatePassword = useCallback(async () => {
         const validationErrors = validate();
 
-        if (Object.values(validationErrors).some(error => error !== undefined)) {
+        if (
+            Object.values(validationErrors).some((error) => error !== undefined)
+        ) {
             return;
         }
 
@@ -111,7 +118,9 @@ export default function ChangePassword() {
                             />
                         }
                         autoFocus
-                        aria-label={t("account.changePassword.newPassword.label")}
+                        aria-label={t(
+                            "account.changePassword.newPassword.label",
+                        )}
                     />
                     <Input
                         type={confirmPasswordVisible ? "text" : "password"}
@@ -136,7 +145,9 @@ export default function ChangePassword() {
                                 }
                             />
                         }
-                        aria-label={t("account.changePassword.confirmPassword.label")}
+                        aria-label={t(
+                            "account.changePassword.confirmPassword.label",
+                        )}
                     />
                 </div>
                 <Input
@@ -160,7 +171,9 @@ export default function ChangePassword() {
                             }
                         />
                     }
-                    aria-label={t("account.changePassword.currentPassword.label")}
+                    aria-label={t(
+                        "account.changePassword.currentPassword.label",
+                    )}
                 />
             </div>
             <div className="flex justify-end">

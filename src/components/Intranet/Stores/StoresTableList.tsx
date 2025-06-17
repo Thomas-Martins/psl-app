@@ -154,26 +154,15 @@ export default function StoresTableList({
                                     actions={[
                                         {
                                             label: t(
-                                                "stores.table.actions.view",
-                                            ),
-                                            variant: "default",
-                                            onClick: async () => {
-                                                const { data } =
-                                                    await StoresProvider.getStore(
-                                                        store.id,
-                                                    );
-                                                console.log("Voir", data);
-                                            },
-                                        },
-                                        {
-                                            label: t(
                                                 "stores.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
-                                                console.log(
-                                                    "Modifier",
-                                                    store.id,
+                                                navigate(
+                                                    `/stores/${store.id}/edit`,
+                                                    {
+                                                        state: { store: store },
+                                                    },
                                                 ),
                                         },
                                         {

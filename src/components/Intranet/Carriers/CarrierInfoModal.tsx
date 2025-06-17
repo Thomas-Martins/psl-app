@@ -1,10 +1,8 @@
 import {
     addToast,
-    Button,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
 } from "@heroui/react";
 import { useNavigate, useParams } from "react-router";
@@ -31,20 +29,8 @@ export default function CarrierInfoModal({
 
     const fetchCarrier = useCallback(async () => {
         if (!carrierId) return;
-        const id = parseInt(carrierId, 10);
-        if (isNaN(id)) {
-            console.error("carrierId is not a valid number:", carrierId);
-            navigate("/carriers");
-            addToast({
-                color: "danger",
-                title: t("carriers.errors.get_carrier"),
-                shouldShowTimeoutProgress: true,
-                timeout: 5000,
-            });
-            return;
-        }
         try {
-            const response = await CarriersProvider.getCarrier(id);
+            const response = await CarriersProvider.getCarrier(carrierId);
             setCarrier(response.data);
         } catch (error) {
             console.error("Error fetching carrier:", error);
@@ -63,14 +49,6 @@ export default function CarrierInfoModal({
             navigate("/carriers");
         }
         onOpenChange(open);
-    };
-
-    const handleEditClick = () => {
-        if (carrierId) {
-            navigate(`/carriers/${carrierId}/edit`, {
-                state: { carrier: carrier },
-            });
-        }
     };
 
     useEffect(() => {
@@ -124,7 +102,7 @@ export default function CarrierInfoModal({
                             <p> {t("carriers.add.inputs.email")}:</p>
                             <p> {t("carriers.add.inputs.phone")}:</p>
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-3">
                             <p>
                                 {carrier?.contact_person_firstname +
                                     " " +
@@ -135,11 +113,6 @@ export default function CarrierInfoModal({
                         </div>
                     </div>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onPress={handleEditClick}>
-                        {t("generics.edit")}
-                    </Button>
-                </ModalFooter>
             </ModalContent>
         </Modal>
     );

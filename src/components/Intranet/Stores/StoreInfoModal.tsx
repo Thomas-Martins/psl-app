@@ -1,11 +1,9 @@
 import StoresProvider from "@/core/api/Providers/StoresProvider";
 import {
     addToast,
-    Button,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
 } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
@@ -31,19 +29,8 @@ export default function StoreInfoModal({
 
     const fetchStore = useCallback(async () => {
         if (!storeId) return;
-        const id = parseInt(storeId, 10);
-        if (isNaN(id)) {
-            navigate("/stores");
-            addToast({
-                title: t("generics.errors.surprise"),
-                color: "danger",
-                timeout: 2500,
-                shouldShowTimeoutProgress: true,
-            });
-        }
-
         try {
-            const response = await StoresProvider.getStore(id);
+            const response = await StoresProvider.getStore(storeId);
             setStore(response.data.data);
         } catch (error) {
             console.error("Error fetching store:", error);
@@ -55,21 +42,13 @@ export default function StoreInfoModal({
                 shouldShowTimeoutProgress: true,
             });
         }
-    }, [storeId, navigate]);
+    }, [storeId, navigate, t]);
 
     const handleModalOpenChange = (open: boolean) => {
         if (!open) {
             navigate("/stores");
         }
         onOpenChange(open);
-    };
-
-    const handleEditClick = () => {
-        if (storeId) {
-            navigate(`/stores/${storeId}/edit`, {
-                state: { store: store },
-            });
-        }
     };
 
     useEffect(() => {
@@ -79,6 +58,7 @@ export default function StoreInfoModal({
             })();
         }
     }, [storeId, fetchStore]);
+
     return (
         <Modal isOpen={effectiveIsOpen} onOpenChange={handleModalOpenChange}>
             <ModalContent>
@@ -96,7 +76,7 @@ export default function StoreInfoModal({
                             <p> {t("stores.add.inputs.address")}:</p>
                             <p> {t("stores.add.inputs.siret")}:</p>
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-3">
                             <p>{store?.email}</p>
                             <p>{store?.phone}</p>
                             <p>{store?.full_address}</p>
@@ -104,11 +84,6 @@ export default function StoreInfoModal({
                         </div>
                     </div>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onPress={handleEditClick}>
-                        {t("generics.edit")}
-                    </Button>
-                </ModalFooter>
             </ModalContent>
         </Modal>
     );

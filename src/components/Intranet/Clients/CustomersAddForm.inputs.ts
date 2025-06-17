@@ -6,7 +6,7 @@ import StoresProvider from "@core/api/Providers/StoresProvider.ts";
 export const CustomersAddModalInputs = async (): Promise<FieldDefinition[]> => {
     try {
         const response = await StoresProvider.getStores();
-        const storesData = response.data as { id: number; name: string }[];
+        const storesData = response.data as { id: string; name: string }[];
         const storesOptions = storesData.map((store) => ({
             label: store.name,
             value: store.id,

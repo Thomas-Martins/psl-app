@@ -5,7 +5,7 @@ class StoresProvider {
         return api.get("/stores", { params: query });
     }
 
-    static getStore(id: number) {
+    static getStore(id: string) {
         return api.get(`/stores/${id}`);
     }
 
@@ -17,7 +17,7 @@ class StoresProvider {
         return api.put(`/stores/${id}`, payload);
     }
 
-    static deleteStore(id: number) {
+    static deleteStore(id: string) {
         return api.delete(`/stores/${id}`);
     }
 }

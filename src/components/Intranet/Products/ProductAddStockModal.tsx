@@ -20,7 +20,7 @@ export default function ProductAddStockModal({
 }: {
     isOpen: boolean;
     onOpenChange: () => void;
-    productId: number | null;
+    productId: string | null;
     onSuccess: () => void;
 }) {
     const { t } = useTranslation();

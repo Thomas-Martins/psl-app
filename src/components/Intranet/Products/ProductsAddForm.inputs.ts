@@ -7,7 +7,7 @@ import CategoriesProvider from "@core/api/Providers/CategoriesProvider.ts";
 export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
     const suppliersResponse = await SuppliersProvider.getSuppliers();
     const suppliersData = suppliersResponse.data as {
-        id: number;
+        id: string;
         name: string;
     }[];
     const suppliersOptions = suppliersData.map((supplier) => ({
@@ -17,7 +17,7 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
 
     const categoriesResponse = await CategoriesProvider.getCategories();
     const categoriesData = categoriesResponse.data as {
-        id: number;
+        id: string;
         name: string;
     }[];
     const categoriesOptions = [

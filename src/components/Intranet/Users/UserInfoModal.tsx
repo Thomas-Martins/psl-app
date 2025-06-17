@@ -1,11 +1,9 @@
 import {
     addToast,
     Avatar,
-    Button,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
 } from "@heroui/react";
 import { useNavigate, useParams } from "react-router";
@@ -34,7 +32,7 @@ export default function UserInfoModal({
         if (!userId) return;
         try {
             const response = await UsersProvider.getUser(userId);
-            setUser(response.data);
+            setUser(response.data.data);
         } catch (error) {
             console.error("Error fetching user:", error);
             addToast({
@@ -52,14 +50,6 @@ export default function UserInfoModal({
             navigate("/users");
         }
         onOpenChange(open);
-    };
-
-    const handleEditClick = () => {
-        if (userId) {
-            navigate(`/users/${userId}/edit`, {
-                state: { user: user },
-            });
-        }
     };
 
     useEffect(() => {
@@ -94,24 +84,13 @@ export default function UserInfoModal({
                             <p> {t("users.add.inputs.phone")}:</p>
                             <p> {t("users.add.inputs.address")}:</p>
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-3">
                             <p>{user?.email}</p>
                             <p>{user?.phone}</p>
-                            <p>
-                                {user?.address +
-                                    ", " +
-                                    user?.zipcode +
-                                    ", " +
-                                    user?.city}
-                            </p>
+                            <p>{user?.full_address}</p>
                         </div>
                     </div>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onPress={handleEditClick}>
-                        {t("generics.edit")}
-                    </Button>
-                </ModalFooter>
             </ModalContent>
         </Modal>
     );

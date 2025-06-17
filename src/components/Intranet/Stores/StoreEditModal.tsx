@@ -8,24 +8,29 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@heroui/react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useOutletContext, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
 import StoresProvider from "@/core/api/Providers/StoresProvider";
 import { useTranslation } from "react-i18next";
 import { validators } from "@utils/InputForm.validators";
+import { PaginatedStores } from "@/types/Stores.ts";
 
 interface StoreEditModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }
 
+interface OutletContext {
+    mutate: () => Promise<PaginatedStores | undefined>;
+}
+
 export default function StoreEditModal({
     isOpen,
     onOpenChange,
 }: StoreEditModalProps) {
+    const { mutate } = useOutletContext<OutletContext>();
     const { storeId } = useParams<{ storeId: string }>();
     const navigate = useNavigate();
-    const { state } = useLocation();
     const { t } = useTranslation();
     const effectiveIsOpen = Boolean(storeId) || isOpen;
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,24 +47,39 @@ export default function StoreEditModal({
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    const init = useCallback(() => {
-        if (!state?.store) return;
-        setFormData({
-            name: state?.store?.name || "",
-            email: state?.store?.email || "",
-            phone: state?.store?.phone || "",
-            address: state?.store?.address || "",
-            zipcode: state?.store?.zipcode || "",
-            city: state?.store?.city || "",
-            siret: state?.store?.siret || "",
-        });
-    }, [state?.store]);
+    const handleClose = useCallback(() => {
+        onOpenChange(false);
+        navigate("/stores");
+    }, [onOpenChange, navigate]);
+
+    const init = useCallback(async () => {
+        if (!storeId) return;
+        try {
+            const response = await StoresProvider.getStore(storeId);
+            setFormData({
+                name: response.data.data.name || "",
+                email: response.data.data.email || "",
+                phone: response.data.data.phone || "",
+                address: response.data.data.address || "",
+                zipcode: response.data.data.zipcode || "",
+                city: response.data.data.city || "",
+                siret: response.data.data.siret || "",
+            });
+        } catch (e) {
+            handleClose();
+            console.error("Error fetching store data:", e);
+            addToast({
+                color: "danger",
+                title: t("generics.errors.surprise"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
+            });
+        }
+    }, [handleClose, storeId, t]);
 
     useEffect(() => {
-        if (state?.store) {
-            init();
-        }
-    }, [state?.store, init]);
+        init();
+    }, [init]);
 
     const fieldValidatorMapping: Record<string, string> = {
         name: "name",
@@ -107,10 +127,9 @@ export default function StoreEditModal({
         if (!validateForm()) return;
         try {
             setIsSubmitting(true);
-            if (!storeId) {
-                return;
-            }
+            if (!storeId) return;
             await StoresProvider.updateStore(storeId, formData);
+            await mutate();
             addToast({
                 color: "success",
                 title: t("stores.edit.alert.success"),
@@ -125,16 +144,10 @@ export default function StoreEditModal({
                 title: t("stores.edit.alert.error"),
                 timeout: 2500,
                 shouldShowTimeoutProgress: true,
-                hideIcon: true,
             });
         } finally {
             setIsSubmitting(false);
         }
-    };
-
-    const handleClose = () => {
-        onOpenChange(false);
-        navigate("/stores");
     };
 
     return (

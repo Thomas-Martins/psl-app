@@ -1,7 +1,7 @@
 import { Order } from "./Orders";
 
 export interface Customer {
-    id: number;
+    id: string;
     firstname: string;
     lastname: string;
     identity: string;
@@ -13,7 +13,7 @@ export interface Customer {
     city: string;
     email_verified_at: string;
     store: {
-        id: number;
+        id: string;
         name: string;
     };
     orders_count: number;

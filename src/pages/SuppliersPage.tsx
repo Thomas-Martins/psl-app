@@ -157,7 +157,7 @@ export default function SuppliersPage() {
                 onSubmit={handleSupplierAddSubmit}
             />
 
-            <Outlet />
+            <Outlet context={{ mutate }} />
         </div>
     );
 }

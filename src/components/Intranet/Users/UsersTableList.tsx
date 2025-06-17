@@ -20,6 +20,8 @@ import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared"
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { InitialsLetter } from "@utils/utils.ts";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { RootState } from "@store/store.ts";
 
 interface UsersTableListProps {
     users: PaginatedUsers;
@@ -42,6 +44,7 @@ export default function UsersTableList({
     const navigate = useNavigate();
     const headers = UsersTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
+    const authenticatedUser = useSelector((state: RootState) => state.user);
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -162,27 +165,21 @@ export default function UsersTableList({
                                     actions={[
                                         {
                                             label: t(
-                                                "users.table.actions.view",
-                                            ),
-                                            variant: "default",
-                                            onClick: async () => {
-                                                const { data } =
-                                                    await UsersProvider.getUser(
-                                                        user.id,
-                                                    );
-                                                console.log("Voir", data);
-                                            },
-                                        },
-                                        {
-                                            label: t(
                                                 "users.table.actions.edit",
                                             ),
                                             variant: "default",
-                                            onClick: () =>
-                                                console.log(
-                                                    "Modifier",
-                                                    user.id,
-                                                ),
+                                            onClick: () => {
+                                                if (
+                                                    user.id ===
+                                                    authenticatedUser.id
+                                                ) {
+                                                    navigate("/my-account");
+                                                } else {
+                                                    navigate(
+                                                        `/users/${user.id}/edit`,
+                                                    );
+                                                }
+                                            },
                                         },
                                         {
                                             label: t(

@@ -65,7 +65,7 @@ export default function AddFormModal({
         try {
             const categoriesResponse = await CategoriesProvider.getCategories();
             const categoriesData = categoriesResponse.data as {
-                id: number;
+                id: string;
                 name: string;
             }[];
             const categoriesOptions = [

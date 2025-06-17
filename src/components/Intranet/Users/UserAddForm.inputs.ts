@@ -6,7 +6,7 @@ import { validators } from "@/utils/InputForm.validators.ts";
 import i18n from "i18next";
 
 export interface RoleData {
-    id: number;
+    id: string;
     name: Role;
 }
 

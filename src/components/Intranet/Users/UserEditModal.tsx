@@ -8,36 +8,34 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@heroui/react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { validators } from "@utils/InputForm.validators";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import UploadFileIcon from "@components/ui/icons/UploadFileIcon.tsx";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { updateUser } from "@/store/userSlice";
+import { PaginatedUsers } from "@/types/Users.ts";
 
 interface UserEditModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }
 
+interface OutletContext {
+    mutate: () => Promise<PaginatedUsers | undefined>;
+}
+
 export default function UserEditModal({
     isOpen,
     onOpenChange,
 }: UserEditModalProps) {
+    const { mutate } = useOutletContext<OutletContext>();
     const { userId } = useParams<{ userId: string }>();
-    const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { state } = useLocation();
     const { t } = useTranslation();
     const effectiveIsOpen = Boolean(userId) || isOpen;
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [previewImage, setPreviewImage] = useState<string>(
-        state?.user.image_url || "",
-    );
+    const [previewImage, setPreviewImage] = useState<string>("");
 
     const [formData, setFormData] = useState({
         firstname: "",
@@ -47,38 +45,27 @@ export default function UserEditModal({
         address: "",
         zipcode: "",
         city: "",
+        image_url: "",
     });
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [errors, setErrors] = useState<Record<string, string>>({});
-
-    const init = useCallback(() => {
-        if (!state?.user) return;
-        setFormData({
-            firstname: state?.user?.firstname || "",
-            lastname: state?.user?.lastname || "",
-            email: state?.user?.email || "",
-            phone: state?.user?.phone || "",
-            address: state?.user?.address || "",
-            zipcode: state?.user?.zipcode || "",
-            city: state?.user?.city || "",
-        });
-    }, [state?.user]);
 
     const fetchUser = useCallback(async () => {
         if (!userId) return;
         try {
             const response = await UsersProvider.getUser(userId);
             setFormData({
-                firstname: response.data.firstname || "",
-                lastname: response.data.lastname || "",
-                email: response.data.email || "",
-                phone: response.data.phone || "",
-                address: response.data.address || "",
-                zipcode: response.data.zipcode || "",
-                city: response.data.city || "",
+                firstname: response.data.data.firstname || "",
+                lastname: response.data.data.lastname || "",
+                email: response.data.data.email || "",
+                phone: response.data.data.phone || "",
+                address: response.data.data.address || "",
+                zipcode: response.data.data.zipcode || "",
+                city: response.data.data.city || "",
+                image_url: response.data.data.image_url || "",
             });
-            setPreviewImage(response.data.image_url || "");
+            setPreviewImage(response.data.data.image_url || "");
         } catch (error) {
             console.error("Error fetching user:", error);
             addToast({
@@ -92,14 +79,10 @@ export default function UserEditModal({
     }, [userId, navigate, t]);
 
     useEffect(() => {
-        if (state?.user) {
-            init();
-        } else if (userId) {
-            fetchUser().then((r) => {
-                console.log(r);
-            });
+        if (userId) {
+            fetchUser().then();
         }
-    }, [state?.user, init, userId, fetchUser]);
+    }, [userId, fetchUser]);
 
     useEffect(() => {
         return () => {
@@ -160,6 +143,7 @@ export default function UserEditModal({
                 return;
             }
             await UsersProvider.updateUser(userId, formData);
+            await mutate();
             addToast({
                 color: "success",
                 title: t("users.edit.alert.success"),
@@ -182,19 +166,18 @@ export default function UserEditModal({
     };
 
     const uploadProfileImage = async (file: File) => {
+        if (!userId) return;
         const formData = new FormData();
         formData.append("image", file);
-        const res = await UsersProvider.uploadUserImage(
-            state.user.id,
-            formData,
-        );
+        const res = await UsersProvider.uploadUserImage(userId, formData);
         if (!res || !res.data?.image_url) {
             throw new Error("UploadResponse invalide");
         }
+        await mutate();
         return res.data as { image_url: string };
     };
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -213,10 +196,7 @@ export default function UserEditModal({
         setPreviewImage(objectUrl);
 
         try {
-            const { image_url } = await uploadProfileImage(file);
-            if (user.id === state?.user?.id) {
-                dispatch(updateUser({ image_url }));
-            }
+            await uploadProfileImage(file);
             addToast({
                 title: t("users.add.inputs.image.success"),
                 color: "success",
@@ -231,7 +211,7 @@ export default function UserEditModal({
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
             });
-            setPreviewImage(state.user.image_url || "");
+            setPreviewImage(formData.image_url || "");
         }
     };
 

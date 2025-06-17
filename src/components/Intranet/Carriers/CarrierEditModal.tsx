@@ -1,4 +1,5 @@
 import {
+    addToast,
     Button,
     Input,
     Modal,
@@ -7,27 +8,30 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@heroui/react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useOutletContext, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useTranslation } from "react-i18next";
 import { validators } from "@utils/InputForm.validators";
+import { PaginatedCarriers } from "@/types/Carriers.ts";
 
 interface CarrierEditModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }
 
+interface OutletContext {
+    mutate: () => Promise<PaginatedCarriers | undefined>;
+}
+
 export default function CarrierEditModal({
     isOpen,
     onOpenChange,
 }: CarrierEditModalProps) {
+    const { mutate } = useOutletContext<OutletContext>();
     const { carrierId } = useParams<{ carrierId: string }>();
     const navigate = useNavigate();
-    const { state } = useLocation();
     const { t } = useTranslation();
-    const { setAlert } = useGlobalAlert();
     const effectiveIsOpen = Boolean(carrierId) || isOpen;
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,28 +50,44 @@ export default function CarrierEditModal({
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    const init = useCallback(() => {
-        setFormData({
-            name: state.carrier.name || "",
-            email: state.carrier.email || "",
-            phone: state.carrier.phone || "",
-            address: state.carrier.address || "",
-            zipcode: state.carrier.zipcode || "",
-            city: state.carrier.city || "",
-            contact_person_firstname:
-                state.carrier.contact_person_firstname || "",
-            contact_person_lastname:
-                state.carrier.contact_person_lastname || "",
-            contact_person_email: state.carrier.contact_person_email || "",
-            contact_person_phone: state.carrier.contact_person_phone || "",
-        });
-    }, [state?.carrier]);
+    const handleClose = useCallback(() => {
+        onOpenChange(false);
+        navigate("/carriers");
+    }, [onOpenChange, navigate]);
+
+    const init = useCallback(async () => {
+        if (!carrierId) return;
+        try {
+            const response = await CarriersProvider.getCarrier(carrierId);
+            setFormData({
+                name: response.data.name || "",
+                email: response.data.email || "",
+                phone: response.data.phone || "",
+                address: response.data.address || "",
+                zipcode: response.data.zipcode || "",
+                city: response.data.city || "",
+                contact_person_firstname:
+                    response.data.contact_person_firstname || "",
+                contact_person_lastname:
+                    response.data.contact_person_lastname || "",
+                contact_person_email: response.data.contact_person_email || "",
+                contact_person_phone: response.data.contact_person_phone || "",
+            });
+        } catch (e) {
+            handleClose();
+            console.error(e);
+            addToast({
+                color: "danger",
+                title: t("generics.errors.surprise"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
+            });
+        }
+    }, [carrierId, handleClose, t]);
 
     useEffect(() => {
-        if (state?.carrier) {
-            init();
-        }
-    }, [state?.carrier, init]);
+        init();
+    }, [init]);
 
     const fieldValidatorMapping: Record<string, string> = {
         name: "name",
@@ -112,33 +132,37 @@ export default function CarrierEditModal({
         });
         console.log("Erreurs après validation globale :", newErrors);
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        return newErrors;
     };
 
     const handleSubmit = async () => {
-        if (!validateForm()) return;
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
         try {
             setIsSubmitting(true);
-            await CarriersProvider.updateCarrier(state.carrier.id, formData);
-            setAlert({
-                type: "success",
+            if (!carrierId) return;
+            await CarriersProvider.updateCarrier(carrierId, formData);
+            await mutate();
+            addToast({
+                color: "success",
                 title: t("carriers.edit.alert.success"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
             });
             navigate(`/carriers/${carrierId}`);
         } catch (error) {
             console.error("Error updating carrier:", error);
-            setAlert({
-                type: "danger",
+            addToast({
+                color: "danger",
                 title: t("carriers.edit.alert.error"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
             });
         } finally {
             setIsSubmitting(false);
         }
-    };
-
-    const handleClose = () => {
-        onOpenChange(false);
-        navigate("/carriers");
     };
 
     return (

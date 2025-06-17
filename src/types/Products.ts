@@ -1,15 +1,15 @@
 export interface Product {
-    id: number;
+    id: string;
     name: string;
     description: string;
     reference: string;
     location: string;
     category: {
-        id: number;
+        id: string;
         name: string;
     };
     supplier: {
-        id: number;
+        id: string;
         name: string;
     };
     price: number;

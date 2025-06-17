@@ -158,7 +158,7 @@ export default function CarriersPage() {
                 onSubmit={handleCarrierAddSubmit}
             />
 
-            <Outlet />
+            <Outlet context={{ mutate }} />
         </div>
     );
 }

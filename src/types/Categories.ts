@@ -1,5 +1,5 @@
 export interface Category {
-    id: number;
+    id: string;
     name: string;
     products_count: number;
     image_url: string;

@@ -60,7 +60,7 @@ export default function ProductModal({
         let isMounted = true;
         setLoading(true);
 
-        ProductsProvider.getProduct(Number(id))
+        ProductsProvider.getProduct(id)
             .then(({ data }) => {
                 if (isMounted) setProduct(data.data);
             })
@@ -87,7 +87,7 @@ export default function ProductModal({
         return () => {
             isMounted = false;
         };
-    }, [id]);
+    }, [handleModalClose, id, t]);
 
     const handleAddToCart = () => {
         if (!product) {

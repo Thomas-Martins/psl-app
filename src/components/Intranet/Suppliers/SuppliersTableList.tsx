@@ -155,26 +155,12 @@ export default function SuppliersTableList({
                                     actions={[
                                         {
                                             label: t(
-                                                "suppliers.table.actions.view",
-                                            ),
-                                            variant: "default",
-                                            onClick: async () => {
-                                                const { data } =
-                                                    await SuppliersProvider.getSupplier(
-                                                        supplier.id,
-                                                    );
-                                                console.log("Voir", data);
-                                            },
-                                        },
-                                        {
-                                            label: t(
                                                 "suppliers.table.actions.edit",
                                             ),
                                             variant: "default",
                                             onClick: () =>
-                                                console.log(
-                                                    "Modifier",
-                                                    supplier.id,
+                                                navigate(
+                                                    `/suppliers/${supplier.id}/edit`,
                                                 ),
                                         },
                                         {
