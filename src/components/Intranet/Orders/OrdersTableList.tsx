@@ -86,8 +86,18 @@ export default function OrdersTableList({
         });
     }, [orderBy, orderWay]);
 
-    const handleStatusUpdate = () => {
-        mutate();
+    const handleStatusUpdate = async () => {
+        try {
+            await mutate();
+        } catch {
+            addToast({ 
+                title: t("generics.errors.surprise"), 
+                color: "danger",
+                timeout: 2000,
+                shouldShowTimeoutProgress: true,
+                hideIcon: true,
+            });
+        }
     };
 
     const openStatusModal = (order: Order) => {

@@ -17,7 +17,7 @@ import { addToast } from "@heroui/react";
 
 interface OrderStatusModalProps {
     isOpen: boolean;
-    onOpenChange: () => void;
+    onOpenChange: (isOpen: boolean) => void;
     orderId: string;
     currentStatus: OrderStatus;
     orderReference: string;
@@ -38,7 +38,7 @@ export default function OrderStatusModal({
 
     const handleStatusUpdate = async () => {
         if (selectedStatus === currentStatus) {
-            onOpenChange();
+            onOpenChange(false);
             return;
         }
 
@@ -60,7 +60,7 @@ export default function OrderStatusModal({
             });
             
             onStatusUpdated();
-            onOpenChange();
+            onOpenChange(false);
         } catch (error) {
             console.error("Error updating order status:", error);
             addToast({
@@ -68,6 +68,7 @@ export default function OrderStatusModal({
                 color: "danger",
                 timeout: 3000,
                 shouldShowTimeoutProgress: true,
+                hideIcon: true,
             });
         } finally {
             setIsLoading(false);
@@ -76,7 +77,7 @@ export default function OrderStatusModal({
 
     const handleClose = () => {
         setSelectedStatus(currentStatus);
-        onOpenChange();
+        onOpenChange(false);
     };
 
     return (

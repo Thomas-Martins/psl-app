@@ -68,6 +68,7 @@ export default function ProductEditModal({
                     color: "danger",
                     timeout: 2000,
                     shouldShowTimeoutProgress: true,
+                    hideIcon: true,
                 });
                 return;
             }
@@ -92,6 +93,7 @@ export default function ProductEditModal({
                 color: "danger",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
+                hideIcon: true,
             });
             handleClose();
         }
@@ -266,6 +268,7 @@ export default function ProductEditModal({
                 color: "danger",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
+                hideIcon: true,
             });
         }
     };

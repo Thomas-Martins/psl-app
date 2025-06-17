@@ -73,6 +73,7 @@ export default function UserEditModal({
                 title: t("generics.errors.surprise"),
                 shouldShowTimeoutProgress: true,
                 timeout: 5000,
+                hideIcon: true,
             });
             navigate("/users");
         }
@@ -210,6 +211,7 @@ export default function UserEditModal({
                 color: "danger",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
+                hideIcon: true,
             });
             setPreviewImage(formData.image_url || "");
         }
