@@ -25,8 +25,7 @@ export default function SupplierInfoModal({
 
     const fetchSupplier = useCallback(async () => {
         if (!supplierId) return;
-        const id = parseInt(supplierId, 10);
-        if (isNaN(id)) {
+        if (isNaN(Number(supplierId))) {
             console.error("supplierId is not a valid number:", supplierId);
             navigate("/suppliers");
             setAlert({
@@ -36,7 +35,7 @@ export default function SupplierInfoModal({
             return;
         }
         try {
-            const response = await SuppliersProvider.getSupplier(id);
+            const response = await SuppliersProvider.getSupplier(supplierId);
             setSupplier(response.data);
         } catch (error) {
             console.error("Error fetching supplier:", error);

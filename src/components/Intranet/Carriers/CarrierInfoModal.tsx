@@ -29,8 +29,7 @@ export default function CarrierInfoModal({
 
     const fetchCarrier = useCallback(async () => {
         if (!carrierId) return;
-        const id = parseInt(carrierId, 10);
-        if (isNaN(id)) {
+        if (isNaN(Number(carrierId))) {
             console.error("carrierId is not a valid number:", carrierId);
             navigate("/carriers");
             addToast({
@@ -42,7 +41,7 @@ export default function CarrierInfoModal({
             return;
         }
         try {
-            const response = await CarriersProvider.getCarrier(id);
+            const response = await CarriersProvider.getCarrier(carrierId);
             setCarrier(response.data);
         } catch (error) {
             console.error("Error fetching carrier:", error);

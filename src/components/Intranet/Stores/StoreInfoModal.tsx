@@ -29,8 +29,7 @@ export default function StoreInfoModal({
 
     const fetchStore = useCallback(async () => {
         if (!storeId) return;
-        const id = parseInt(storeId, 10);
-        if (isNaN(id)) {
+        if (isNaN(Number(storeId))) {
             navigate("/stores");
             addToast({
                 title: t("generics.errors.surprise"),
@@ -41,7 +40,7 @@ export default function StoreInfoModal({
         }
 
         try {
-            const response = await StoresProvider.getStore(id);
+            const response = await StoresProvider.getStore(storeId);
             setStore(response.data.data);
         } catch (error) {
             console.error("Error fetching store:", error);
