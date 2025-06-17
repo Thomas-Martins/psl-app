@@ -37,7 +37,7 @@ export default function UserAccountActivator({
                     products: cartItems,
                 });
             } else {
-                await CartsProvider.deleteCart(Number(user.id));
+                await CartsProvider.deleteCart(user.id);
             }
         } catch (error) {
             console.error("Erreur lors de la sauvegarde du panier :", error);

@@ -54,7 +54,7 @@ export default function UserEditModal({
     const fetchUser = useCallback(async () => {
         if (!userId) return;
         try {
-            const response = await UsersProvider.getUser(Number(userId));
+            const response = await UsersProvider.getUser(userId);
             setFormData({
                 firstname: response.data.data.firstname || "",
                 lastname: response.data.data.lastname || "",
@@ -142,7 +142,7 @@ export default function UserEditModal({
                 setIsSubmitting(false);
                 return;
             }
-            await UsersProvider.updateUser(Number(userId), formData);
+            await UsersProvider.updateUser(userId, formData);
             await mutate();
             addToast({
                 color: "success",
@@ -169,10 +169,7 @@ export default function UserEditModal({
         if (!userId) return;
         const formData = new FormData();
         formData.append("image", file);
-        const res = await UsersProvider.uploadUserImage(
-            Number(userId),
-            formData,
-        );
+        const res = await UsersProvider.uploadUserImage(userId, formData);
         if (!res || !res.data?.image_url) {
             throw new Error("UploadResponse invalide");
         }

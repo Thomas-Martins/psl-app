@@ -61,7 +61,7 @@ export default function ChangePassword() {
         setLoading(true);
         setErrors({});
         try {
-            await UsersProvider.updateUserPassword(Number(user.id), payload);
+            await UsersProvider.updateUserPassword(user.id, payload);
             addToast({
                 title: t("account.changePassword.alert.success"),
                 color: "success",

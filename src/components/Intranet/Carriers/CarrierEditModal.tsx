@@ -58,9 +58,7 @@ export default function CarrierEditModal({
     const init = useCallback(async () => {
         if (!carrierId) return;
         try {
-            const response = await CarriersProvider.getCarrier(
-                Number(carrierId),
-            );
+            const response = await CarriersProvider.getCarrier(carrierId);
             setFormData({
                 name: response.data.name || "",
                 email: response.data.email || "",
@@ -134,15 +132,18 @@ export default function CarrierEditModal({
         });
         console.log("Erreurs après validation globale :", newErrors);
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        return newErrors;
     };
 
     const handleSubmit = async () => {
-        if (!validateForm()) return;
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
         try {
             setIsSubmitting(true);
             if (!carrierId) return;
-            await CarriersProvider.updateCarrier(Number(carrierId), formData);
+            await CarriersProvider.updateCarrier(carrierId, formData);
             await mutate();
             addToast({
                 color: "success",

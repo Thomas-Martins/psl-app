@@ -38,7 +38,7 @@ export default function MyAccountInformation() {
         const formData = new FormData();
         formData.append("image", file);
         const res = await UsersProvider.uploadUserImage(
-            Number(user.id),
+            user.id,
             formData,
         );
         if (!res || !res.data?.image_url) {
@@ -149,7 +149,7 @@ export default function MyAccountInformation() {
 
         try {
             const res = await UsersProvider.updateUser(
-                Number(user.id),
+                user.id,
                 payload,
             );
             if (!res || !res.data) throw new Error("Response invalide");

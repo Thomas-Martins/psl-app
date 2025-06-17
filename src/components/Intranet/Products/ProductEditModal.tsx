@@ -71,9 +71,7 @@ export default function ProductEditModal({
                 });
                 return;
             }
-            const response = await ProductsProvider.getProduct(
-                Number(productId),
-            );
+            const response = await ProductsProvider.getProduct(productId);
             if (response?.data) {
                 setFormData({
                     name: response.data.data.name,
@@ -172,18 +170,18 @@ export default function ProductEditModal({
             }
         });
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        return newErrors;
     };
 
     const handleSubmit = async () => {
-        if (isSubmitting) return;
-        setIsSubmitting(true);
-        if (!validateForm()) {
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
             setIsSubmitting(false);
             return;
         }
         try {
-            await ProductsProvider.updateProduct(Number(productId), formData);
+            if (!productId) return;
+            await ProductsProvider.updateProduct(productId, formData);
             addToast({
                 title: t("products.edit.alert.success"),
                 color: "success",
@@ -227,10 +225,7 @@ export default function ProductEditModal({
         }
         const formData = new FormData();
         formData.append("image", file);
-        const res = await ProductsProvider.uploadProductImage(
-            Number(productId),
-            formData,
-        );
+        const res = await ProductsProvider.uploadProductImage(productId, formData);
         if (!res || !res.data?.image_url) {
             throw new Error("UploadResponse invalide");
         }

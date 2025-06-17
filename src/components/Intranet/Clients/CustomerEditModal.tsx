@@ -58,7 +58,7 @@ export default function CustomerEditModal({
     const fetchCustomer = useCallback(async () => {
         if (!customerId) return;
         try {
-            const response = await UsersProvider.getUser(Number(customerId));
+            const response = await UsersProvider.getUser(customerId);
             setFormData({
                 firstname: response.data.firstname || "",
                 lastname: response.data.lastname || "",
@@ -138,7 +138,7 @@ export default function CustomerEditModal({
         }
         try {
             if (!customerId) return;
-            await UsersProvider.updateUser(Number(customerId), formData);
+            await UsersProvider.updateUser(customerId, formData);
             addToast({
                 title: t("customer.edit.alert.success"),
                 color: "success",

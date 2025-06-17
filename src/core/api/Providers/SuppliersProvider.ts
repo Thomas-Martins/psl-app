@@ -6,7 +6,7 @@ class SuppliersProvider {
         return api.get("/suppliers", { params: query });
     }
 
-    static getSupplier(id: number) {
+    static getSupplier(id: string) {
         return api.get(`/suppliers/${id}`);
     }
 
@@ -14,11 +14,11 @@ class SuppliersProvider {
         return api.post("/suppliers", payload);
     }
 
-    static updateSupplier(id: number, payload: object) {
+    static updateSupplier(id: string, payload: object) {
         return api.put(`/suppliers/${id}`, payload);
     }
 
-    static deleteSupplier(id: number) {
+    static deleteSupplier(id: string) {
         return api.delete(`/suppliers/${id}`);
     }
 }

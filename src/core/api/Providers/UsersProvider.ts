@@ -6,7 +6,7 @@ class UsersProvider {
         return api.get("/users", { params: query });
     }
 
-    static getUser(id: number, query = {}) {
+    static getUser(id: string, query = {}) {
         return api.get(`/users/${id}`, { params: query });
     }
 
@@ -14,15 +14,15 @@ class UsersProvider {
         return api.post("/users", payload);
     }
 
-    static updateUser(id: number, payload: object) {
+    static updateUser(id: string, payload: object) {
         return api.put(`/users/${id}`, payload);
     }
 
-    static updateUserPassword(id: number, payload: object) {
+    static updateUserPassword(id: string, payload: object) {
         return api.put(`/users/${id}/update-password`, payload);
     }
 
-    static deleteUser(id: number) {
+    static deleteUser(id: string) {
         return api.delete(`/users/${id}`);
     }
 
@@ -31,7 +31,7 @@ class UsersProvider {
     }
 
     static uploadUserImage(
-        id: number,
+        id: string,
         formData: FormData,
         query: Record<string, never> = {},
     ) {

@@ -29,21 +29,8 @@ export default function CarrierInfoModal({
 
     const fetchCarrier = useCallback(async () => {
         if (!carrierId) return;
-        if (isNaN(Number(carrierId))) {
-            console.error("carrierId is not a valid number:", carrierId);
-            navigate("/carriers");
-            addToast({
-                color: "danger",
-                title: t("carriers.errors.get_carrier"),
-                shouldShowTimeoutProgress: true,
-                timeout: 5000,
-            });
-            return;
-        }
         try {
-            const response = await CarriersProvider.getCarrier(
-                Number(carrierId),
-            );
+            const response = await CarriersProvider.getCarrier(carrierId);
             setCarrier(response.data);
         } catch (error) {
             console.error("Error fetching carrier:", error);

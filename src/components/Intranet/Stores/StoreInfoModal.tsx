@@ -29,18 +29,8 @@ export default function StoreInfoModal({
 
     const fetchStore = useCallback(async () => {
         if (!storeId) return;
-        if (isNaN(Number(storeId))) {
-            navigate("/stores");
-            addToast({
-                title: t("generics.errors.surprise"),
-                color: "danger",
-                timeout: 2500,
-                shouldShowTimeoutProgress: true,
-            });
-        }
-
         try {
-            const response = await StoresProvider.getStore(Number(storeId));
+            const response = await StoresProvider.getStore(storeId);
             setStore(response.data.data);
         } catch (error) {
             console.error("Error fetching store:", error);

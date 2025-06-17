@@ -5,7 +5,7 @@ class OrdersProvider {
         return api.get("/orders", { params: query });
     }
 
-    static getOrder(id: number) {
+    static getOrder(id: string) {
         return api.get(`/orders/${id}`);
     }
 
@@ -13,15 +13,15 @@ class OrdersProvider {
         return api.post("/orders", payload, { params: query });
     }
 
-    static updateOrder(id: number, payload: object, query = {}) {
+    static updateOrder(id: string, payload: object, query = {}) {
         return api.put(`/orders/${id}`, payload, { params: query });
     }
 
-    static deleteOrder(id: number) {
+    static deleteOrder(id: string) {
         return api.delete(`/orders/${id}`);
     }
 
-    static downloadInvoice(id: number, query = {}, payload: object = {}) {
+    static downloadInvoice(id: string, query = {}, payload: object = {}) {
         return api.get(`/orders/${id}/invoice`, {
             params: query,
             responseType: "blob",

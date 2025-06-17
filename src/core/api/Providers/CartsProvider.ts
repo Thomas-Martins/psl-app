@@ -5,11 +5,11 @@ class CartsProvider {
         return api.post("/carts", payload, { params: query });
     }
 
-    static getCartByUserId(userId: number) {
+    static getCartByUserId(userId: string) {
         return api.get(`/carts/user/${userId}`);
     }
 
-    static deleteCart(userId: number) {
+    static deleteCart(userId: string) {
         return api.delete(`/carts/user/${userId}`);
     }
 }

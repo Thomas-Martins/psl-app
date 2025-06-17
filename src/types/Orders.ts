@@ -3,7 +3,7 @@ import { OrderStatus } from "@/types/OrderStatus.ts";
 import { User } from "@/types/Users.ts";
 
 export interface Order {
-    id: number;
+    id: string;
     reference: string;
     userId: string;
     status: OrderStatus;

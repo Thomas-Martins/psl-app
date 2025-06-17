@@ -16,7 +16,7 @@ class ProductsProvider {
         return api.get("/products", { params: flatParams });
     }
 
-    static getProduct(id: number) {
+    static getProduct(id: string) {
         return api.get(`/products/${id}`);
     }
 
@@ -24,16 +24,16 @@ class ProductsProvider {
         return api.post("/products", payload, { params: query });
     }
 
-    static updateProduct(id: number, payload: object, query = {}) {
+    static updateProduct(id: string, payload: object, query = {}) {
         return api.put(`/products/${id}`, payload, { params: query });
     }
 
-    static deleteProduct(id: number) {
+    static deleteProduct(id: string) {
         return api.delete(`/products/${id}`);
     }
 
     static uploadProductImage(
-        id: number,
+        id: string,
         formData: FormData,
         query: Record<string, never> = {},
     ) {
