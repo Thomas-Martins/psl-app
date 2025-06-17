@@ -31,8 +31,7 @@ export default function ProductInfoModal({
 
     const fetchProduct = useCallback(async () => {
         if (!productId) return;
-        const id = parseInt(productId, 10);
-        if (isNaN(id)) {
+        if (isNaN(Number(productId))) {
             console.error("productId is not a valid number:", productId);
             navigate("/stocks");
             addToast({
@@ -44,7 +43,7 @@ export default function ProductInfoModal({
             return;
         }
         try {
-            const response = await ProductsProvider.getProduct(id);
+            const response = await ProductsProvider.getProduct(productId);
             setProduct(response.data.data);
         } catch (error) {
             console.error("Error fetching product:", error);

@@ -190,7 +190,7 @@ export default function UsersPage() {
                 onSubmit={handleUserAddSubmit}
             />
 
-            <Outlet />
+            <Outlet context={{ mutate }} />
         </div>
     );
 }

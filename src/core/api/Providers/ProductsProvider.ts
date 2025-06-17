@@ -16,7 +16,7 @@ class ProductsProvider {
         return api.get("/products", { params: flatParams });
     }
 
-    static getProduct(id: number) {
+    static getProduct(id: string) {
         return api.get(`/products/${id}`);
     }
 
@@ -28,7 +28,7 @@ class ProductsProvider {
         return api.put(`/products/${id}`, payload, { params: query });
     }
 
-    static deleteProduct(id: number) {
+    static deleteProduct(id: string) {
         return api.delete(`/products/${id}`);
     }
 

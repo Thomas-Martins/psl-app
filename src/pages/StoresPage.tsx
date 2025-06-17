@@ -157,7 +157,7 @@ export default function StoresPage() {
                 onSubmit={handleStoresAddSubmit}
             />
 
-            <Outlet />
+            <Outlet context={{ mutate }} />
         </div>
     );
 }

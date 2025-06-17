@@ -161,11 +161,6 @@ export default function SuppliersTableList({
                                             onClick: () =>
                                                 navigate(
                                                     `/suppliers/${supplier.id}/edit`,
-                                                    {
-                                                        state: {
-                                                            supplier: supplier,
-                                                        },
-                                                    },
                                                 ),
                                         },
                                         {

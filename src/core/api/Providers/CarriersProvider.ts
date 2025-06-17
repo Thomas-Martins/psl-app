@@ -7,7 +7,7 @@ class CarriersProvider {
         return api.get("/carriers", { params: query });
     }
 
-    static getCarrier(id: number) {
+    static getCarrier(id: string) {
         return api.get(`/carriers/${id}`);
     }
 
@@ -15,11 +15,11 @@ class CarriersProvider {
         return api.post("/carriers", payload, { params: query });
     }
 
-    static updateCarrier(id: number, payload: object, query = {}) {
+    static updateCarrier(id: string, payload: object, query = {}) {
         return api.put(`/carriers/${id}`, payload, { params: query });
     }
 
-    static deleteCarrier(id: number) {
+    static deleteCarrier(id: string) {
         return api.delete(`/carriers/${id}`);
     }
 }

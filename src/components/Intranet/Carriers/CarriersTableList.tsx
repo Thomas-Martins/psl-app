@@ -158,11 +158,6 @@ export default function CarriersTableList({
                                             onClick: () =>
                                                 navigate(
                                                     `/carriers/${carrier.id}/edit`,
-                                                    {
-                                                        state: {
-                                                            carrier: carrier,
-                                                        },
-                                                    },
                                                 ),
                                         },
                                         {

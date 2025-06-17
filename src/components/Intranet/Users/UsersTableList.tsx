@@ -20,6 +20,8 @@ import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared"
 import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { InitialsLetter } from "@utils/utils.ts";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { RootState } from "@store/store.ts";
 
 interface UsersTableListProps {
     users: PaginatedUsers;
@@ -42,6 +44,7 @@ export default function UsersTableList({
     const navigate = useNavigate();
     const headers = UsersTableListHeaders(t);
     const { setAlert } = useGlobalAlert();
+    const authenticatedUser = useSelector((state: RootState) => state.user);
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -165,13 +168,18 @@ export default function UsersTableList({
                                                 "users.table.actions.edit",
                                             ),
                                             variant: "default",
-                                            onClick: () =>
-                                                navigate(
-                                                    `/users/${user.id}/edit`,
-                                                    {
-                                                        state: { user: user },
-                                                    },
-                                                ),
+                                            onClick: () => {
+                                                if (
+                                                    user.id ===
+                                                    authenticatedUser.id
+                                                ) {
+                                                    navigate("/my-account");
+                                                } else {
+                                                    navigate(
+                                                        `/users/${user.id}/edit`,
+                                                    );
+                                                }
+                                            },
                                         },
                                         {
                                             label: t(

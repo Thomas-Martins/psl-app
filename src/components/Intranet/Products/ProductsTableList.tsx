@@ -103,8 +103,8 @@ export default function ProductsTableList({
     const loadingState =
         isLoading || products.data.length === 0 ? "loading" : "idle";
 
-    const handleOpenAddStockModal = (productId: number) => {
-        setSelectedProductId(productId);
+    const handleOpenAddStockModal = (productId: string) => {
+        setSelectedProductId(Number(productId));
         onOpenChange();
     };
 
@@ -198,11 +198,6 @@ export default function ProductsTableList({
                                             onClick: () =>
                                                 navigate(
                                                     `/stocks/${product.id}/edit`,
-                                                    {
-                                                        state: {
-                                                            product: product,
-                                                        },
-                                                    },
                                                 ),
                                         },
                                         {

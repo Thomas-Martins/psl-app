@@ -1,4 +1,5 @@
 import {
+    addToast,
     Button,
     Input,
     Modal,
@@ -7,27 +8,30 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@heroui/react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useOutletContext, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useTranslation } from "react-i18next";
 import { validators } from "@utils/InputForm.validators";
 import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
+import { PaginatedSuppliers } from "@/types/Suppliers.ts";
 
 interface SupplierEditModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }
 
+interface OutletContext {
+    mutate: () => Promise<PaginatedSuppliers | undefined>;
+}
+
 export default function SupplierEditModal({
     isOpen,
     onOpenChange,
 }: SupplierEditModalProps) {
+    const { mutate } = useOutletContext<OutletContext>();
     const { supplierId } = useParams<{ supplierId: string }>();
     const navigate = useNavigate();
-    const { state } = useLocation();
     const { t } = useTranslation();
-    const { setAlert } = useGlobalAlert();
     const effectiveIsOpen = Boolean(supplierId) || isOpen;
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,29 +50,53 @@ export default function SupplierEditModal({
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    const init = useCallback(() => {
-        if (!state?.supplier) return;
-        setFormData({
-            name: state.supplier.name || "",
-            email: state.supplier.email || "",
-            phone: state.supplier.phone || "",
-            address: state.supplier.address || "",
-            zipcode: state.supplier.zipcode || "",
-            city: state.supplier.city || "",
-            contact_person_firstname:
-                state.supplier.contact_person_firstname || "",
-            contact_person_lastname:
-                state.supplier.contact_person_lastname || "",
-            contact_person_email: state.supplier.contact_person_email || "",
-            contact_person_phone: state.supplier.contact_person_phone || "",
-        });
-    }, [state?.supplier]);
+    const handleClose = useCallback(() => {
+        onOpenChange(false);
+        navigate("/suppliers");
+    }, [onOpenChange, navigate]);
+
+    const init = useCallback(async () => {
+        if (!supplierId) {
+            addToast({
+                color: "danger",
+                title: t("suppliers.edit.alert.error"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
+            });
+            handleClose();
+            return;
+        }
+        try {
+            const response = await SuppliersProvider.getSupplier(supplierId);
+            setFormData({
+                name: response.data.name || "",
+                email: response.data.email || "",
+                phone: response.data.phone || "",
+                address: response.data.address || "",
+                zipcode: response.data.zipcode || "",
+                city: response.data.city || "",
+                contact_person_firstname:
+                    response.data.contact_person_firstname || "",
+                contact_person_lastname:
+                    response.data.contact_person_lastname || "",
+                contact_person_email: response.data.contact_person_email || "",
+                contact_person_phone: response.data.contact_person_phone || "",
+            });
+        } catch (e) {
+            console.error("Error fetching supplier data:", e);
+            addToast({
+                color: "danger",
+                title: t("suppliers.edit.alert.error"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
+            });
+            handleClose();
+        }
+    }, [handleClose, supplierId, t]);
 
     useEffect(() => {
-        if (state?.supplier) {
-            init();
-        }
-    }, [state?.supplier, init]);
+        init();
+    }, [init]);
 
     const fieldValidatorMapping: Record<string, string> = {
         name: "name",
@@ -118,35 +146,37 @@ export default function SupplierEditModal({
 
     const handleSubmit = async () => {
         if (!validateForm()) return;
-        if (!state?.supplier?.id) {
-            setAlert({
-                type: "danger",
+        if (!supplierId) {
+            addToast({
+                color: "danger",
                 title: t("suppliers.edit.alert.error"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
             });
             return;
         }
         try {
             setIsSubmitting(true);
-            await SuppliersProvider.updateSupplier(state.supplier.id, formData);
-            setAlert({
-                type: "success",
+            await SuppliersProvider.updateSupplier(supplierId, formData);
+            await mutate();
+            addToast({
+                color: "success",
                 title: t("suppliers.edit.alert.success"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
             });
             navigate(`/suppliers/${supplierId}`);
         } catch (error) {
             console.error("Error updating supplier:", error);
-            setAlert({
-                type: "danger",
+            addToast({
+                color: "danger",
                 title: t("suppliers.edit.alert.error"),
+                timeout: 2500,
+                shouldShowTimeoutProgress: true,
             });
         } finally {
             setIsSubmitting(false);
         }
-    };
-
-    const handleClose = () => {
-        onOpenChange(false);
-        navigate("/suppliers");
     };
 
     return (

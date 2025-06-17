@@ -12,7 +12,7 @@ import {
     SelectItem,
     Textarea,
 } from "@heroui/react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ProductsProvider from "@core/api/Providers/ProductsProvider.ts";
 import { validators } from "@utils/InputForm.validators.ts";
@@ -35,7 +35,6 @@ export default function ProductEditModal({
     const { productId } = useParams<{ productId: string }>();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { state } = useLocation();
     const { mutate } = useProducts();
     const effectiveOpen = Boolean(productId) || isOpen;
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,34 +47,31 @@ export default function ProductEditModal({
         stock: 0,
         reference: "",
         location: "",
-        categoryId: "0",
-        supplierId: "",
+        category_id: "0",
+        supplier_id: "",
     });
     const [categories, setCategories] = useState<Category[]>([]);
     const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-    const [previewImage, setPreviewImage] = useState<string>(
-        state?.product.image_url || "",
-    );
+    const [previewImage, setPreviewImage] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const init = useCallback(() => {
-        setFormData({
-            name: state?.product.name || "",
-            description: state?.product.description || "",
-            price: state?.product.price || 0,
-            stock: state?.product.stock || 0,
-            reference: state?.product.reference || "",
-            location: state?.product.location || "",
-            categoryId: state?.product.category.id || "",
-            supplierId: state?.product.supplier.id || "",
-        });
-    }, [state?.product]);
+    const handleClose = useCallback(() => {
+        onOpenChange(false);
+        navigate("/stocks");
+    }, [onOpenChange, navigate]);
 
     const fetchProduct = useCallback(async () => {
         try {
-            const response = await ProductsProvider.getProduct(
-                Number(productId),
-            );
+            if (!productId) {
+                addToast({
+                    title: t("generics.errors.surprise"),
+                    color: "danger",
+                    timeout: 2000,
+                    shouldShowTimeoutProgress: true,
+                });
+                return;
+            }
+            const response = await ProductsProvider.getProduct(productId);
             if (response?.data) {
                 setFormData({
                     name: response.data.data.name,
@@ -84,14 +80,22 @@ export default function ProductEditModal({
                     stock: response.data.data.stock,
                     reference: response.data.data.reference,
                     location: response.data.data.location,
-                    categoryId: String(response.data.data.category.id),
-                    supplierId: String(response.data.data.supplier.id),
+                    category_id: String(response.data.data.category.id),
+                    supplier_id: String(response.data.data.supplier.id),
                 });
+                setPreviewImage(response.data.data.image_url || "");
             }
         } catch (e) {
             console.error(e);
+            addToast({
+                title: t("generics.errors.surprise"),
+                color: "danger",
+                timeout: 2000,
+                shouldShowTimeoutProgress: true,
+            });
+            handleClose();
         }
-    }, [productId]);
+    }, [handleClose, productId, t]);
 
     const fetchCategories = useCallback(async () => {
         try {
@@ -106,9 +110,14 @@ export default function ProductEditModal({
 
     const fetchSuppliers = useCallback(async () => {
         try {
-            const response = await SuppliersProvider.getSuppliers();
+            const response = await SuppliersProvider.getSuppliers({
+                paginate: true,
+                limit: -1,
+                orderBy: "name",
+                orderWay: "ASC",
+            });
             if (response?.data) {
-                setSuppliers(response.data);
+                setSuppliers(response.data.data);
             }
         } catch (e) {
             console.error(e);
@@ -116,21 +125,10 @@ export default function ProductEditModal({
     }, []);
 
     useEffect(() => {
-        if (state?.product) {
-            init();
-        } else if (!state?.product && productId) {
-            fetchProduct().then();
-        }
+        fetchProduct().then();
         fetchCategories().then();
         fetchSuppliers().then();
-    }, [
-        state?.product,
-        init,
-        productId,
-        fetchProduct,
-        fetchCategories,
-        fetchSuppliers,
-    ]);
+    }, [fetchProduct, fetchCategories, fetchSuppliers]);
 
     const fieldValidatorMapping: Record<string, string> = {
         name: "Name",
@@ -206,11 +204,6 @@ export default function ProductEditModal({
         }
     };
 
-    const handleClose = () => {
-        onOpenChange(false);
-        navigate("/stocks");
-    };
-
     const handleNumberChange = (field: "price" | "stock", value: number) => {
         setFormData((prev) => ({
             ...prev,
@@ -277,7 +270,6 @@ export default function ProductEditModal({
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
             });
-            setPreviewImage(state?.product.image_url || "");
         }
     };
 
@@ -412,11 +404,13 @@ export default function ProductEditModal({
                             <div className="flex gap-2">
                                 <Select
                                     label="Catégorie"
-                                    selectedKeys={[String(formData.categoryId)]}
+                                    selectedKeys={[
+                                        String(formData.category_id),
+                                    ]}
                                     onChange={(e) => {
                                         setFormData((prev) => ({
                                             ...prev,
-                                            categoryId: e.target.value,
+                                            category_id: e.target.value,
                                         }));
                                     }}
                                 >
@@ -428,11 +422,13 @@ export default function ProductEditModal({
                                 </Select>
                                 <Select
                                     label="Fournisseur"
-                                    selectedKeys={[String(formData.supplierId)]}
+                                    selectedKeys={[
+                                        String(formData.supplier_id),
+                                    ]}
                                     onChange={(e) => {
                                         setFormData((prev) => ({
                                             ...prev,
-                                            supplierId: e.target.value,
+                                            supplier_id: e.target.value,
                                         }));
                                     }}
                                 >
