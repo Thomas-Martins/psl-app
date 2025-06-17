@@ -73,6 +73,7 @@ export default function StoreEditModal({
                 title: t("generics.errors.surprise"),
                 timeout: 2500,
                 shouldShowTimeoutProgress: true,
+                hideIcon: true,
             });
         }
     }, [handleClose, storeId, t]);
@@ -144,6 +145,7 @@ export default function StoreEditModal({
                 title: t("stores.edit.alert.error"),
                 timeout: 2500,
                 shouldShowTimeoutProgress: true,
+                hideIcon: true,
             });
         } finally {
             setIsSubmitting(false);

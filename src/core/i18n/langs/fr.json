@@ -351,7 +351,16 @@
             "processing": "En préparation",
             "completed": "Prête à être expédiée",
             "shipped": "Expédiée",
-            "cancelled": "Annulée"
+            "cancelled": "Annulée",
+            "current": "Statut actuel",
+            "new": "Nouveau statut",
+            "update": {
+                "title": "Mettre à jour le statut de la commande",
+                "description": "Modifiez le statut de la commande #{{reference}}",
+                "button": "Mettre à jour",
+                "success": "Statut mis à jour avec succès",
+                "success_description": "Le statut de la commande #{{reference}} a été mis à jour vers {{status}}"
+            }
         },
         "table": {
             "actions": {

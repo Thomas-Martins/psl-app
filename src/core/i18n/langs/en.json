@@ -342,7 +342,16 @@
             "processing": "In preparation",
             "completed": "Ready to ship",
             "shipped": "Shipped",
-            "cancelled": "Cancelled"
+            "cancelled": "Cancelled",
+            "current": "Current status",
+            "new": "New status",
+            "update": {
+                "title": "Update order status",
+                "description": "Modify the status of order #{{reference}}",
+                "button": "Update",
+                "success": "Status updated successfully",
+                "success_description": "The status of order #{{reference}} has been updated to {{status}}"
+            }
         },
         "table": {
             "actions": {

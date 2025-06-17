@@ -1,4 +1,4 @@
-import { PaginatedOrders } from "@/types/Orders.ts";
+import { Order, PaginatedOrders } from "@/types/Orders.ts";
 import { useEffect, useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import { OrdersTableListHeaders } from "@components/Intranet/Orders/OrdersTableList.headers.ts";
@@ -13,6 +13,7 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    useDisclosure,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import {
@@ -24,6 +25,7 @@ import {
 import { useNavigate } from "react-router";
 import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
 import i18n from "@core/i18n/i18n.ts";
+import OrderStatusModal from "@components/Intranet/Orders/OrderStatusModal.tsx";
 
 interface OrdersTableListProps {
     orders: PaginatedOrders;
@@ -39,10 +41,14 @@ export default function OrdersTableList({
     onSortChange,
     orderBy,
     orderWay,
+    mutate,
 }: OrdersTableListProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const headers = OrdersTableListHeaders(t);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
@@ -79,6 +85,25 @@ export default function OrdersTableList({
             direction: orderWay === "ASC" ? "ascending" : "descending",
         });
     }, [orderBy, orderWay]);
+
+    const handleStatusUpdate = async () => {
+        try {
+            await mutate();
+        } catch {
+            addToast({ 
+                title: t("generics.errors.surprise"), 
+                color: "danger",
+                timeout: 2000,
+                shouldShowTimeoutProgress: true,
+                hideIcon: true,
+            });
+        }
+    };
+
+    const openStatusModal = (order: Order) => {
+        setSelectedOrder(order);
+        onOpen();
+    };
 
     return (
         <div>
@@ -146,10 +171,7 @@ export default function OrdersTableList({
                                             ),
                                             variant: "default",
                                             onClick: () => {
-                                                console.log(
-                                                    "Update status",
-                                                    order.id,
-                                                );
+                                                openStatusModal(order);
                                             },
                                         },
                                         {
@@ -196,14 +218,6 @@ export default function OrdersTableList({
                                                 }
                                             },
                                         },
-                                        {
-                                            label: t(
-                                                "users.table.actions.delete.title",
-                                            ),
-                                            variant: "danger",
-                                            onClick: () =>
-                                                console.log("delete"),
-                                        },
                                     ]}
                                 />
                             </TableCell>
@@ -211,6 +225,17 @@ export default function OrdersTableList({
                     ))}
                 </TableBody>
             </Table>
+
+            {selectedOrder && (
+                <OrderStatusModal
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    orderId={selectedOrder.id}
+                    currentStatus={selectedOrder.status}
+                    orderReference={selectedOrder.reference}
+                    onStatusUpdated={handleStatusUpdate}
+                />
+            )}
         </div>
     );
 }

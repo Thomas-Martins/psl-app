@@ -41,6 +41,7 @@ export default function ProductAddStockModal({
                 title: t("generics.errors.surprise"),
                 shouldShowTimeoutProgress: true,
                 timeout: 3000,
+                hideIcon: true,
             });
             return;
         }
