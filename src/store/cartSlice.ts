@@ -67,15 +67,24 @@ export const cartSlice = createSlice({
             if (existingItem) {
                 if (existingItem.quantity <= quantity) {
                     state.items = state.items.filter((item) => item.id !== id);
+                    state.totalPrice -=
+                        existingItem.price * existingItem.quantity;
                 } else {
                     existingItem.quantity -= quantity;
+                    state.totalPrice -= existingItem.price * quantity;
                 }
             }
         },
     },
 });
 
-export const { setCart, addItem, removeItem, updateItemQuantity, clearCart, removeFromCart } =
-    cartSlice.actions;
+export const {
+    setCart,
+    addItem,
+    removeItem,
+    updateItemQuantity,
+    clearCart,
+    removeFromCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
