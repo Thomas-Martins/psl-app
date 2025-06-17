@@ -35,7 +35,7 @@ export default function OrderDetail() {
             return;
         }
         setLoading(true);
-        OrdersProvider.getOrder(orderId)
+        OrdersProvider.getOrder(Number(orderId))
             .then((response) => {
                 setOrder(response.data.data);
                 setLoading(false);

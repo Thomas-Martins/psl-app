@@ -40,7 +40,7 @@ export default function StoreInfoModal({
         }
 
         try {
-            const response = await StoresProvider.getStore(storeId);
+            const response = await StoresProvider.getStore(Number(storeId));
             setStore(response.data.data);
         } catch (error) {
             console.error("Error fetching store:", error);

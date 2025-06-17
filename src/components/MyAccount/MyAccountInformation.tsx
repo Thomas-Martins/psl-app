@@ -37,7 +37,10 @@ export default function MyAccountInformation() {
     const uploadProfileImage = async (file: File) => {
         const formData = new FormData();
         formData.append("image", file);
-        const res = await UsersProvider.uploadUserImage(user.id, formData);
+        const res = await UsersProvider.uploadUserImage(
+            Number(user.id),
+            formData,
+        );
         if (!res || !res.data?.image_url) {
             throw new Error("UploadResponse invalide");
         }
@@ -145,7 +148,10 @@ export default function MyAccountInformation() {
         setLoading(true);
 
         try {
-            const res = await UsersProvider.updateUser(user.id, payload);
+            const res = await UsersProvider.updateUser(
+                Number(user.id),
+                payload,
+            );
             if (!res || !res.data) throw new Error("Response invalide");
             dispatch(updateUser(res.data));
             addToast({

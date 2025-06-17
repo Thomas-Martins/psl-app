@@ -58,7 +58,9 @@ export default function CarrierEditModal({
     const init = useCallback(async () => {
         if (!carrierId) return;
         try {
-            const response = await CarriersProvider.getCarrier(carrierId);
+            const response = await CarriersProvider.getCarrier(
+                Number(carrierId),
+            );
             setFormData({
                 name: response.data.name || "",
                 email: response.data.email || "",
@@ -140,7 +142,7 @@ export default function CarrierEditModal({
         try {
             setIsSubmitting(true);
             if (!carrierId) return;
-            await CarriersProvider.updateCarrier(carrierId, formData);
+            await CarriersProvider.updateCarrier(Number(carrierId), formData);
             await mutate();
             addToast({
                 color: "success",

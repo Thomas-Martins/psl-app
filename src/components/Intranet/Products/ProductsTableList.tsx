@@ -103,7 +103,7 @@ export default function ProductsTableList({
     const loadingState =
         isLoading || products.data.length === 0 ? "loading" : "idle";
 
-    const handleOpenAddStockModal = (productId: string) => {
+    const handleOpenAddStockModal = (productId: number) => {
         setSelectedProductId(Number(productId));
         onOpenChange();
     };

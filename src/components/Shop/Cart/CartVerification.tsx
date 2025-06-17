@@ -28,7 +28,7 @@ export default function CartVerification() {
     const handleValidateCart = async () => {
         setLoading(true);
         try {
-            await UsersProvider.updateUser(user.id, {
+            await UsersProvider.updateUser(Number(user.id), {
                 address: addr,
                 zipcode: zip,
                 city,

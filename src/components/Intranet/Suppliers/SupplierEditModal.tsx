@@ -67,7 +67,9 @@ export default function SupplierEditModal({
             return;
         }
         try {
-            const response = await SuppliersProvider.getSupplier(supplierId);
+            const response = await SuppliersProvider.getSupplier(
+                Number(supplierId),
+            );
             setFormData({
                 name: response.data.name || "",
                 email: response.data.email || "",
@@ -157,7 +159,10 @@ export default function SupplierEditModal({
         }
         try {
             setIsSubmitting(true);
-            await SuppliersProvider.updateSupplier(supplierId, formData);
+            await SuppliersProvider.updateSupplier(
+                Number(supplierId),
+                formData,
+            );
             await mutate();
             addToast({
                 color: "success",

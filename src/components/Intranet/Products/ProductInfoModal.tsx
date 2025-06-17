@@ -43,7 +43,9 @@ export default function ProductInfoModal({
             return;
         }
         try {
-            const response = await ProductsProvider.getProduct(productId);
+            const response = await ProductsProvider.getProduct(
+                Number(productId),
+            );
             setProduct(response.data.data);
         } catch (error) {
             console.error("Error fetching product:", error);

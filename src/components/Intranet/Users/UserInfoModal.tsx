@@ -31,7 +31,7 @@ export default function UserInfoModal({
     const fetchUser = useCallback(async () => {
         if (!userId) return;
         try {
-            const response = await UsersProvider.getUser(userId);
+            const response = await UsersProvider.getUser(Number(userId));
             setUser(response.data.data);
         } catch (error) {
             console.error("Error fetching user:", error);

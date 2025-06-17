@@ -171,7 +171,7 @@ export default function UsersTableList({
                                             onClick: () => {
                                                 if (
                                                     user.id ===
-                                                    authenticatedUser.id
+                                                    Number(authenticatedUser.id)
                                                 ) {
                                                     navigate("/my-account");
                                                 } else {

@@ -35,7 +35,9 @@ export default function SupplierInfoModal({
             return;
         }
         try {
-            const response = await SuppliersProvider.getSupplier(supplierId);
+            const response = await SuppliersProvider.getSupplier(
+                Number(supplierId),
+            );
             setSupplier(response.data);
         } catch (error) {
             console.error("Error fetching supplier:", error);

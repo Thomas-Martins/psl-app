@@ -60,7 +60,7 @@ export default function ProductModal({
         let isMounted = true;
         setLoading(true);
 
-        ProductsProvider.getProduct(id)
+        ProductsProvider.getProduct(Number(id))
             .then(({ data }) => {
                 if (isMounted) setProduct(data.data);
             })

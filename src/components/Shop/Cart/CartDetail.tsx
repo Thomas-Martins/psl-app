@@ -28,12 +28,12 @@ export default function CartDetail() {
     const tva = roundUp(totalHT * 0.2);
     const totalTTC = roundUp(totalHT + tva);
 
-    const handleRemoveItem = (itemId: string) => {
+    const handleRemoveItem = (itemId: number) => {
         dispatch(removeItem(itemId));
     };
 
     const handleQuantityChange = (
-        itemId: string,
+        itemId: number,
         value: number | ChangeEvent<HTMLInputElement>,
     ) => {
         let qty =

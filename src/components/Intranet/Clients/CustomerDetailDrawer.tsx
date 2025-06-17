@@ -24,7 +24,7 @@ export default function CustomerDetailDrawer() {
     const fetchCustomer = useCallback(async () => {
         if (!customerId) return;
         try {
-            const response = await UsersProvider.getUser(customerId, {
+            const response = await UsersProvider.getUser(Number(customerId), {
                 withOrders: true,
             });
             setCustomer(response.data.data);

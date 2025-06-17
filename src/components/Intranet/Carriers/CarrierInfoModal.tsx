@@ -41,7 +41,9 @@ export default function CarrierInfoModal({
             return;
         }
         try {
-            const response = await CarriersProvider.getCarrier(carrierId);
+            const response = await CarriersProvider.getCarrier(
+                Number(carrierId),
+            );
             setCarrier(response.data);
         } catch (error) {
             console.error("Error fetching carrier:", error);

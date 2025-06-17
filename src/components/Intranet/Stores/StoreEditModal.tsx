@@ -55,7 +55,7 @@ export default function StoreEditModal({
     const init = useCallback(async () => {
         if (!storeId) return;
         try {
-            const response = await StoresProvider.getStore(storeId);
+            const response = await StoresProvider.getStore(Number(storeId));
             setFormData({
                 name: response.data.data.name || "",
                 email: response.data.data.email || "",
@@ -128,7 +128,7 @@ export default function StoreEditModal({
         try {
             setIsSubmitting(true);
             if (!storeId) return;
-            await StoresProvider.updateStore(storeId, formData);
+            await StoresProvider.updateStore(Number(storeId), formData);
             await mutate();
             addToast({
                 color: "success",

@@ -71,7 +71,9 @@ export default function ProductEditModal({
                 });
                 return;
             }
-            const response = await ProductsProvider.getProduct(productId);
+            const response = await ProductsProvider.getProduct(
+                Number(productId),
+            );
             if (response?.data) {
                 setFormData({
                     name: response.data.data.name,
@@ -257,7 +259,7 @@ export default function ProductEditModal({
             const { image_url } = await uploadProductImage(file);
             setPreviewImage(image_url);
             addToast({
-                title: t("products.add.inputs.image.success"),
+                title: t("products.edit.alert.image.success"),
                 color: "success",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,

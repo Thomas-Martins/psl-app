@@ -26,7 +26,7 @@ export default function OrderDetailsPage() {
     const [order, setOrder] = useState<Order>();
 
     const fetchOrderDetails = async (orderId: string) => {
-        return await OrdersProvider.getOrder(orderId);
+        return await OrdersProvider.getOrder(Number(orderId));
     };
 
     useEffect(() => {
