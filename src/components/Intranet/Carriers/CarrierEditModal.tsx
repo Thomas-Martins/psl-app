@@ -193,7 +193,7 @@ export default function CarrierEditModal({
                                     errorMessage={errors.name}
                                     isInvalid={!!errors.name}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("carriers.add.inputs.email")}
                                         value={formData.email}
@@ -228,7 +228,7 @@ export default function CarrierEditModal({
                                     errorMessage={errors.address}
                                     isInvalid={!!errors.address}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("carriers.add.inputs.zipcode")}
                                         value={formData.zipcode}
@@ -254,7 +254,7 @@ export default function CarrierEditModal({
                                 <h3 className="underline font-medium">
                                     {t("carriers.add.inputs.subtitle")}
                                 </h3>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "carriers.add.inputs.contact_person_lastname",
@@ -294,7 +294,7 @@ export default function CarrierEditModal({
                                         }
                                     />
                                 </div>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "carriers.add.inputs.contact_person_email",

@@ -238,7 +238,7 @@ export default function UserEditModal({
                         </ModalHeader>
                         <ModalBody>
                             <div className="space-y-4">
-                                <div className="flex items-center gap-4">
+                                <div className="flex flex-col md:flex-row items-center gap-4">
                                     <div
                                         className="w-24 h-24 bg-black rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors"
                                         onClick={() =>
@@ -276,7 +276,7 @@ export default function UserEditModal({
                                 <h3 className="underline font-medium">
                                     {t("users.add.inputs.complementary_info")}
                                 </h3>
-                                <div className="flex gap-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("users.add.inputs.lastname")}
                                         value={formData.lastname}
@@ -302,7 +302,7 @@ export default function UserEditModal({
                                         isInvalid={!!errors.firstname}
                                     />
                                 </div>
-                                <div className="flex gap-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("users.add.inputs.email")}
                                         value={formData.email}
@@ -337,7 +337,7 @@ export default function UserEditModal({
                                     errorMessage={errors.address}
                                     isInvalid={!!errors.address}
                                 />
-                                <div className="flex gap-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("users.add.inputs.zipcode")}
                                         value={formData.zipcode}

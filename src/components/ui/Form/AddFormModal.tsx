@@ -335,7 +335,7 @@ export default function AddFormModal({
                                                             )
                                                             .join("-")
                                                     }
-                                                    className="mb-4 flex flex-row gap-4 w-full"
+                                                    className="mb-4 flex flex-col md:flex-row gap-4 w-full"
                                                 >
                                                     {field.elements.map(
                                                         (el) => (

@@ -180,7 +180,7 @@ export default function StoreEditModal({
                                     errorMessage={errors.name}
                                     isInvalid={!!errors.name}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("stores.add.inputs.email")}
                                         value={formData.email}
@@ -215,7 +215,7 @@ export default function StoreEditModal({
                                     errorMessage={errors.address}
                                     isInvalid={!!errors.address}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("stores.add.inputs.zipcode")}
                                         value={formData.zipcode}

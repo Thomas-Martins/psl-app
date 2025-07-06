@@ -179,7 +179,7 @@ export default function CustomerEditModal({
                     <>
                         <ModalHeader>{t("customer.edit.title")}</ModalHeader>
                         <ModalBody>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <Input
                                     label={t("customer.add.inputs.firstname")}
                                     value={formData.firstname}
@@ -202,7 +202,7 @@ export default function CustomerEditModal({
                                     isInvalid={!!errors.lastname}
                                 />
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <Input
                                     label={t("customer.add.inputs.email")}
                                     value={formData.email}
@@ -231,7 +231,7 @@ export default function CustomerEditModal({
                                 errorMessage={errors.address}
                                 isInvalid={!!errors.address}
                             />
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <Input
                                     label={t("customer.add.inputs.zipcode")}
                                     value={formData.zipcode}

@@ -207,7 +207,7 @@ export default function SupplierEditModal({
                                     errorMessage={errors.name}
                                     isInvalid={!!errors.name}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("suppliers.add.inputs.email")}
                                         value={formData.email}
@@ -242,7 +242,7 @@ export default function SupplierEditModal({
                                     errorMessage={errors.address}
                                     isInvalid={!!errors.address}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "suppliers.add.inputs.zipcode",
@@ -270,7 +270,7 @@ export default function SupplierEditModal({
                                 <h3 className="underline font-medium">
                                     {t("suppliers.add.inputs.subtitle")}
                                 </h3>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "suppliers.add.inputs.contact_person_lastname",
@@ -310,7 +310,7 @@ export default function SupplierEditModal({
                                         }
                                     />
                                 </div>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "suppliers.add.inputs.contact_person_email",
