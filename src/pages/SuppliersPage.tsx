@@ -140,20 +140,22 @@ export default function SuppliersPage() {
                 isLoading={isLoading}
                 mutate={mutate}
             />
-            <PaginateFooter
-                values={["10", "50", "100"]}
-                currentPage={currentPage}
-                handlePageChange={handlePageChange}
-                totalPages={suppliers?.last_page || 1}
-                totalItems={suppliers?.total || 0}
-                itemsPerPage={limit}
-                onLimitChange={(newLimit) =>
-                    handleLimitChange(
-                        newLimit,
-                        suppliers ? Number(suppliers.total) : 10,
-                    )
-                }
-            />
+            {suppliers && suppliers.data && suppliers.data.length > 0 && (
+                <PaginateFooter
+                    values={["10", "50", "100"]}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    totalPages={suppliers?.last_page || 1}
+                    totalItems={suppliers?.total || 0}
+                    itemsPerPage={limit}
+                    onLimitChange={(newLimit) =>
+                        handleLimitChange(
+                            newLimit,
+                            suppliers ? Number(suppliers.total) : 10,
+                        )
+                    }
+                />
+            )}
             <AddFormModal
                 title={t("suppliers.add.title")}
                 isOpen={isOpen}

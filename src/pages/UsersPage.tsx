@@ -171,20 +171,22 @@ export default function UsersPage() {
                 mutate={mutate}
             />
 
-            <PaginateFooter
-                values={["10", "50", "100"]}
-                currentPage={currentPage}
-                handlePageChange={handlePageChange}
-                totalPages={users?.last_page || 1}
-                totalItems={users?.total || 0}
-                itemsPerPage={limit}
-                onLimitChange={(newLimit) =>
-                    handleLimitChange(
-                        newLimit,
-                        users ? Number(users.total) : 10,
-                    )
-                }
-            />
+            {users && users.data && users.data.length > 0 && (
+                <PaginateFooter
+                    values={["10", "50", "100"]}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    totalPages={users?.last_page || 1}
+                    totalItems={users?.total || 0}
+                    itemsPerPage={limit}
+                    onLimitChange={(newLimit) =>
+                        handleLimitChange(
+                            newLimit,
+                            users ? Number(users.total) : 10,
+                        )
+                    }
+                />
+            )}
 
             <AddFormModal
                 title={t("users.add.title")}

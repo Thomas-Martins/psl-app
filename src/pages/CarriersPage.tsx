@@ -140,20 +140,22 @@ export default function CarriersPage() {
                 mutate={mutate}
             />
 
-            <PaginateFooter
-                values={["10", "50", "100"]}
-                totalPages={carriers?.last_page || 1}
-                currentPage={currentPage}
-                handlePageChange={handlePageChange}
-                itemsPerPage={limit}
-                totalItems={carriers?.total || 0}
-                onLimitChange={(newLimit) =>
-                    handleLimitChange(
-                        newLimit,
-                        carriers ? Number(carriers.total) : 10,
-                    )
-                }
-            />
+            {carriers && carriers.data && carriers.data.length > 0 && (
+                <PaginateFooter
+                    values={["10", "50", "100"]}
+                    totalPages={carriers?.last_page || 1}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    itemsPerPage={limit}
+                    totalItems={carriers?.total || 0}
+                    onLimitChange={(newLimit) =>
+                        handleLimitChange(
+                            newLimit,
+                            carriers ? Number(carriers.total) : 10,
+                        )
+                    }
+                />
+            )}
 
             <AddFormModal
                 title={t("carriers.add.title")}

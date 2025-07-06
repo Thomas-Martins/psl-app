@@ -137,20 +137,22 @@ export default function StoresPage() {
                 mutate={mutate}
             />
 
-            <PaginateFooter
-                values={["10", "50", "100"]}
-                currentPage={currentPage}
-                handlePageChange={handlePageChange}
-                totalPages={stores?.last_page || 1}
-                totalItems={stores?.total || 0}
-                itemsPerPage={limit}
-                onLimitChange={(newLimit) =>
-                    handleLimitChange(
-                        newLimit,
-                        stores ? Number(stores.total) : 10,
-                    )
-                }
-            />
+            {stores && stores.data && stores.data.length > 0 && (
+                <PaginateFooter
+                    values={["10", "50", "100"]}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    totalPages={stores?.last_page || 1}
+                    totalItems={stores?.total || 0}
+                    itemsPerPage={limit}
+                    onLimitChange={(newLimit) =>
+                        handleLimitChange(
+                            newLimit,
+                            stores ? Number(stores.total) : 10,
+                        )
+                    }
+                />
+            )}
 
             <AddFormModal
                 title={t("stores.add.title")}

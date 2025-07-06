@@ -117,7 +117,7 @@ export default function OrdersPage() {
                 orderWay={orderWay}
                 mutate={mutate}
             />
-            {orders.data.length > 0 && (
+            {orders && orders.data && orders.data.length > 0 && (
                 <PaginateFooter
                     values={["10", "50", "100"]}
                     currentPage={currentPage}

@@ -90,7 +90,9 @@ export default function CustomersTableList({
     };
 
     const loadingState =
-        isLoading || customers.data.length === 0 ? "loading" : "idle";
+        isLoading || !customers.data || customers.data.length === 0
+            ? "loading"
+            : "idle";
 
     useEffect(() => {
         setSortDescriptor({
@@ -119,7 +121,7 @@ export default function CustomersTableList({
                     ))}
                 </TableHeader>
                 <TableBody
-                    items={customers.data}
+                    items={customers.data || []}
                     loadingContent={
                         <CircularProgress
                             aria-label="loader"
@@ -128,7 +130,7 @@ export default function CustomersTableList({
                     }
                     loadingState={loadingState}
                 >
-                    {customers.data.map((customer) => (
+                    {(customers.data || []).map((customer) => (
                         <TableRow
                             key={customer.id}
                             className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"

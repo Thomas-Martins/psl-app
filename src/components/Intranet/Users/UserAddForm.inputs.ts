@@ -27,7 +27,7 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                     {
                         name: "image",
                         type: "file",
-                        label: i18n.t("users.add.inputs.image"),
+                        label: i18n.t("users.add.inputs.image.title"),
                         validators: [
                             (file: FormDataValue) => {
                                 if (

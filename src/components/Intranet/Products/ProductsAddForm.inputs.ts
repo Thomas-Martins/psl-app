@@ -39,7 +39,7 @@ export const ProductsAddFormInputs = async (): Promise<FieldDefinition[]> => {
                 {
                     name: "image",
                     type: "file",
-                    label: i18n.t("products.add.inputs.image"),
+                    label: i18n.t("products.add.inputs.image.title"),
                     validators: [
                         (file: FormDataValue) => {
                             if (

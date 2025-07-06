@@ -138,20 +138,22 @@ export default function CustomersPage() {
                     mutate={mutate}
                 />
 
-                <PaginateFooter
-                    values={["10", "50", "100"]}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                    totalPages={customers?.last_page || 1}
-                    totalItems={customers?.total || 0}
-                    itemsPerPage={limit}
-                    onLimitChange={(newLimit) =>
-                        handleLimitChange(
-                            newLimit,
-                            customers ? Number(customers.total) : 10,
-                        )
-                    }
-                />
+                {customers && customers.data && customers.data.length > 0 && (
+                    <PaginateFooter
+                        values={["10", "50", "100"]}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                        totalPages={customers?.last_page || 1}
+                        totalItems={customers?.total || 0}
+                        itemsPerPage={limit}
+                        onLimitChange={(newLimit) =>
+                            handleLimitChange(
+                                newLimit,
+                                customers ? Number(customers.total) : 10,
+                            )
+                        }
+                    />
+                )}
 
                 <AddFormModal
                     title={t("customer.add.title")}

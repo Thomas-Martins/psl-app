@@ -69,8 +69,8 @@ export default function PaginateFooter({
     };
 
     return (
-        <div className="flex flex-col w-full items-center gap-4">
-            <div className="w-full flex justify-center lg:justify-start">
+        <div className="flex flex-col justify-start md:flex-row w-full md:justify-between items-center gap-4">
+            <div className="w-full md:w-auto flex justify-start md:justify-start">
                 <Pagination
                     isCompact
                     showControls
@@ -81,7 +81,7 @@ export default function PaginateFooter({
                     onChange={handlePageChange}
                 />
             </div>
-            <div className="flex flex-row w-full max-w-xs lg:max-w-none items-center gap-4 justify-center lg:justify-start">
+            <div className="flex flex-row w-full max-w-xs md:max-w-none items-center gap-4 justify-start md:justify-end">
                 <Select
                     aria-label="items-per-page"
                     size="md"
@@ -100,7 +100,7 @@ export default function PaginateFooter({
                         </SelectItem>
                     </>
                 </Select>
-                <span className="text-sm whitespace-nowrap text-center lg:text-left">
+                <span className="text-sm whitespace-nowrap text-left md:text-left">
                     {itemsPerPage > totalItems ? totalItems : itemsPerPage} sur{" "}
                     {totalItems}
                 </span>
