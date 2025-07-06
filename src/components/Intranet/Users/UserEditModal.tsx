@@ -15,6 +15,7 @@ import { validators } from "@utils/InputForm.validators";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import UploadFileIcon from "@components/ui/icons/UploadFileIcon.tsx";
 import { PaginatedUsers } from "@/types/Users.ts";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
 
 interface UserEditModalProps {
     isOpen: boolean;
@@ -36,6 +37,7 @@ export default function UserEditModal({
     const effectiveIsOpen = Boolean(userId) || isOpen;
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [previewImage, setPreviewImage] = useState<string>("");
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     const [formData, setFormData] = useState({
         firstname: "",
@@ -224,7 +226,7 @@ export default function UserEditModal({
 
     return (
         <Modal
-            size="2xl"
+            size={isMobile ? "full" : "2xl"}
             isOpen={effectiveIsOpen}
             onOpenChange={(open) => {
                 if (!open) handleClose();
@@ -236,7 +238,11 @@ export default function UserEditModal({
                         <ModalHeader>
                             <h2>{t("users.edit.title")}</h2>
                         </ModalHeader>
-                        <ModalBody>
+                        <ModalBody
+                            className={
+                                isMobile ? "max-h-[80vh] overflow-y-auto" : ""
+                            }
+                        >
                             <div className="space-y-4">
                                 <div className="flex flex-col md:flex-row items-center gap-4">
                                     <div

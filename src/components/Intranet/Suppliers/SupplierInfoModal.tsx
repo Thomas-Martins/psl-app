@@ -1,11 +1,11 @@
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
 import { useNavigate, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useTranslation } from "react-i18next";
 import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
 import { Supplier } from "@/types/Suppliers.ts";
 import { CircularProgress } from "@heroui/react";
+import { addToast } from "@heroui/react";
 
 interface SupplierInfoModalProps {
     isOpen: boolean;
@@ -17,7 +17,6 @@ export default function SupplierInfoModal({
     onOpenChange,
 }: SupplierInfoModalProps) {
     const { supplierId } = useParams<{ supplierId: string }>();
-    const { setAlert } = useGlobalAlert();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const effectiveIsOpen = Boolean(supplierId) || isOpen;
@@ -34,14 +33,14 @@ export default function SupplierInfoModal({
         } catch (error) {
             console.error("Error fetching supplier:", error);
             navigate("/suppliers");
-            setAlert({
-                type: "danger",
+            addToast({
                 title: t("suppliers.errors.get_supplier"),
+                color: "danger",
             });
         } finally {
             setIsLoading(false);
         }
-    }, [supplierId, navigate, setAlert, t]);
+    }, [supplierId, navigate, t]);
 
     const handleModalOpenChange = (open: boolean) => {
         if (!open) {

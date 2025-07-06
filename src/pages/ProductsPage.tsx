@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Button, useDisclosure } from "@heroui/react";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import { Button, useDisclosure, Image } from "@heroui/react";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import { PaginatedProducts } from "@/types/Products.ts";
@@ -16,6 +15,13 @@ import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import ProductsTableList from "@components/Intranet/Products/ProductsTableList.tsx";
 import { Outlet } from "react-router";
 import { ProductsContext } from "@/contexts/Products/ProductsContext";
+import GenericAccordionListMobile from "@components/ui/global/GenericAccordionListMobile";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
+import { useNavigate } from "react-router";
+import { addToast } from "@heroui/react";
+import ProductAddStockModal from "@components/Intranet/Products/ProductAddStockModal";
+import { Action } from "@utils/Action";
+import ImageIcon from "@components/ui/icons/ImageIcon";
 
 const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
     const params = JSON.parse(key);
@@ -32,7 +38,6 @@ const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
 export default function ProductsPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const { setAlert } = useGlobalAlert();
     const { orderWay, orderBy, handleSortChange } = useSort("name", "ASC");
     const { currentPage, limit, handlePageChange, handleLimitChange } =
         usePagination(1, 10);
@@ -74,15 +79,19 @@ export default function ProductsPage() {
             await ProductsProvider.createProduct(payload);
             await mutate();
             onOpenChange();
-            setAlert({
+            addToast({
+                color: "success",
                 title: t("products.add.alert.success"),
-                type: "success",
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         } catch (e) {
             console.error(e);
-            setAlert({
+            addToast({
+                color: "danger",
                 title: t("products.add.alert.error"),
-                type: "danger",
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         }
     };
@@ -94,25 +103,58 @@ export default function ProductsPage() {
         })();
     }, []);
 
+    const isMobile = useMediaQuery("(max-width: 768px)");
+    const navigate = useNavigate();
+    const [isAddStockOpen, setIsAddStockOpen] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<string | null>(
+        null,
+    );
+
+    const handleOpenAddStockModal = (productId: string) => {
+        setSelectedProductId(productId);
+        setIsAddStockOpen(true);
+    };
+
+    const handleDeleteProduct = async (product) => {
+        try {
+            await ProductsProvider.deleteProduct(product.id);
+            await mutate();
+            addToast({
+                color: "success",
+                title: t("products.table.actions.delete.success"),
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
+            });
+        } catch (error) {
+            console.error(error);
+            addToast({
+                color: "danger",
+                title: t("products.table.actions.delete.error"),
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
+            });
+        }
+    };
+
     if (error) return <div>{t("error.message")}</div>;
 
     return (
         <ProductsContext.Provider value={{ mutate }}>
             <div className="space-y-5">
-                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
-                    <div className="w-full lg:w-1/4">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                    <div className="w-full md:w-1/4">
                         <SearchInput
                             setSearch={setSearch}
                             classNames={"w-full"}
                         />
                     </div>
-                    <div className="w-full lg:w-auto">
+                    <div className="w-full md:w-auto">
                         <Button
                             aria-label="add"
                             color="primary"
                             size="md"
                             onPress={onOpen}
-                            className="w-full lg:w-auto"
+                            className="w-full md:w-auto"
                         >
                             <AddSquareIcon size={24} color="white" />
                             {t("suppliers.add.button")}
@@ -120,22 +162,128 @@ export default function ProductsPage() {
                     </div>
                 </div>
 
-                <ProductsTableList
-                    products={
-                        products || {
-                            current_page: 1,
-                            data: [],
-                            per_page: 10,
-                            total: 0,
-                            last_page: 1,
+                {isMobile ? (
+                    <GenericAccordionListMobile
+                        items={products?.data || []}
+                        isLoading={isLoading}
+                        getKey={(product) => product.id}
+                        getHeaderContent={(product) => (
+                            <div className="flex items-center gap-3">
+                                {product.image_url ? (
+                                    <Image
+                                        src={product.image_url}
+                                        alt={product.name}
+                                        className="w-12 h-12 rounded-lg object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-12 h-12 bg-zinc-500 bg-opacity-20 rounded-lg flex justify-center items-center">
+                                        <ImageIcon color="gray" size={24} />
+                                    </div>
+                                )}
+                                <div>
+                                    <span className="font-semibold text-base">
+                                        {product.name}
+                                    </span>
+                                    <div className="text-xs text-gray-500 mt-0.5">
+                                        {product.reference}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        getBodyContent={(product) => (
+                            <div>
+                                <div>
+                                    <span className="font-medium">
+                                        {t("products.table.headers.location")}
+                                        :{" "}
+                                    </span>
+                                    {product.location}
+                                </div>
+                                <div>
+                                    <span className="font-medium">
+                                        {t("products.table.headers.stock")}
+                                        :{" "}
+                                    </span>
+                                    {product.stock}
+                                </div>
+                                <div>
+                                    <span className="font-medium">
+                                        {t("products.table.headers.price")}
+                                        :{" "}
+                                    </span>
+                                    {product.price} €
+                                </div>
+                                <div>
+                                    <span className="font-medium">
+                                        {t("products.table.headers.name")}:{" "}
+                                    </span>
+                                    {product.category?.name}
+                                </div>
+                                <div className="text-xs text-light-400 mt-1">
+                                    {product.description}
+                                </div>
+                            </div>
+                        )}
+                        getActions={(product) => [
+                            {
+                                label: t("products.table.actions.edit"),
+                                variant: "default",
+                                onClick: () => {
+                                    navigate(`/stocks/${product.id}/edit`);
+                                },
+                            },
+                            {
+                                label: t("products.table.actions.add_stocks"),
+                                variant: "default",
+                                onClick: () => {
+                                    handleOpenAddStockModal(product.id);
+                                },
+                            },
+                            {
+                                label: t("products.table.actions.delete.title"),
+                                variant: "danger",
+                                onClick: Action.create(async () => {
+                                    await handleDeleteProduct(product);
+                                })
+                                    .confirm(
+                                        t(
+                                            "products.table.actions.delete.dialog.title",
+                                        ),
+                                        t(
+                                            "products.table.actions.delete.dialog.message",
+                                            { name: product.name },
+                                        ),
+                                        "danger",
+                                        t(
+                                            "products.table.actions.delete.dialog.confirm",
+                                        ),
+                                        t("generics.cancel"),
+                                    )
+                                    .build(),
+                            },
+                        ]}
+                        showViewButton={true}
+                        onView={(product) => navigate(`/stocks/${product.id}`)}
+                        mutate={mutate}
+                    />
+                ) : (
+                    <ProductsTableList
+                        products={
+                            products || {
+                                current_page: 1,
+                                data: [],
+                                per_page: 10,
+                                total: 0,
+                                last_page: 1,
+                            }
                         }
-                    }
-                    onSortChange={handleSortChange}
-                    orderBy={orderBy}
-                    orderWay={orderWay}
-                    isLoading={isLoading}
-                    mutate={mutate}
-                />
+                        onSortChange={handleSortChange}
+                        orderBy={orderBy}
+                        orderWay={orderWay}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                    />
+                )}
 
                 {products && products.data && products.data.length > 0 && (
                     <PaginateFooter

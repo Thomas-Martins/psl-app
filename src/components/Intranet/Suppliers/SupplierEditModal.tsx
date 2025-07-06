@@ -186,14 +186,16 @@ export default function SupplierEditModal({
             onOpenChange={(open) => {
                 if (!open) handleClose();
             }}
+            className="sm:max-w-2xl w-full max-w-full m-0 sm:m-auto"
+            style={{ height: "100%", maxHeight: "100dvh" }}
         >
-            <ModalContent>
+            <ModalContent className="h-[100dvh] sm:h-auto flex flex-col">
                 {(onClose) => (
                     <>
                         <ModalHeader>
                             <h2>{t("suppliers.edit.title")}</h2>
                         </ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="overflow-y-auto flex-1">
                             <div className="space-y-4">
                                 <h3 className="underline font-medium">
                                     {t("suppliers.add.inputs.title")}

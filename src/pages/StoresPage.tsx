@@ -1,7 +1,7 @@
 import { PaginatedStores } from "@/types/Stores.ts";
 import StoresProvider from "@core/api/Providers/StoresProvider.ts";
 import { useTranslation } from "react-i18next";
-import { Button, useDisclosure } from "@heroui/react";
+import { Button, useDisclosure, addToast } from "@heroui/react";
 import { useEffect, useState } from "react";
 import type { FormValues } from "@/types/FormTypes.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
@@ -12,10 +12,11 @@ import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import StoresTableList from "@components/Intranet/Stores/StoresTableList.tsx";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
+import StoresAccordionListMobile from "@components/Intranet/Stores/StoresAccordionListMobile";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import { Outlet } from "react-router";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
 
 const fetchStores = async (key: string): Promise<PaginatedStores> => {
     const params = JSON.parse(key);
@@ -35,7 +36,6 @@ const fetchStores = async (key: string): Promise<PaginatedStores> => {
 export default function StoresPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const { setAlert } = useGlobalAlert();
     const { orderBy, orderWay, handleSortChange } = useSort("name", "ASC");
     const { currentPage, limit, handlePageChange, handleLimitChange } =
         usePagination(1, 10);
@@ -76,15 +76,15 @@ export default function StoresPage() {
         try {
             await StoresProvider.createStore(payload);
             await mutate();
-            setAlert({
+            addToast({
                 title: t("stores.add.alert.success"),
-                type: "success",
+                color: "success",
             });
         } catch (error) {
             console.error(error);
-            setAlert({
+            addToast({
                 title: t("stores.add.alert.error"),
-                type: "danger",
+                color: "danger",
             });
         }
     };
@@ -96,23 +96,25 @@ export default function StoresPage() {
         })();
     }, []);
 
+    const isMobile = useMediaQuery("(max-width: 768px)");
+
     if (error) {
         return <div>{t("errors.message")}</div>;
     }
 
     return (
         <div className="space-y-5">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
-                <div className="w-full lg:w-1/4">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                <div className="w-full md:w-1/4">
                     <SearchInput setSearch={setSearch} classNames={"w-full"} />
                 </div>
-                <div className="w-full lg:w-auto">
+                <div className="w-full md:w-auto">
                     <Button
                         aria-label="add"
                         color="primary"
                         size="md"
                         onPress={onOpen}
-                        className="w-full lg:w-auto"
+                        className="w-full md:w-auto"
                     >
                         <AddSquareIcon size={24} color="white" />
                         {t("stores.add.button")}
@@ -120,22 +122,30 @@ export default function StoresPage() {
                 </div>
             </div>
 
-            <StoresTableList
-                stores={
-                    stores || {
-                        current_page: 1,
-                        data: [],
-                        per_page: 10,
-                        total: 0,
-                        last_page: 1,
+            {isMobile ? (
+                <StoresAccordionListMobile
+                    stores={stores?.data || []}
+                    isLoading={isLoading}
+                    mutate={mutate}
+                />
+            ) : (
+                <StoresTableList
+                    stores={
+                        stores || {
+                            current_page: 1,
+                            data: [],
+                            per_page: 10,
+                            total: 0,
+                            last_page: 1,
+                        }
                     }
-                }
-                isLoading={isLoading}
-                onSortChange={handleSortChange}
-                orderBy={orderBy}
-                orderWay={orderWay}
-                mutate={mutate}
-            />
+                    isLoading={isLoading}
+                    onSortChange={handleSortChange}
+                    orderBy={orderBy}
+                    orderWay={orderWay}
+                    mutate={mutate}
+                />
+            )}
 
             {stores && stores.data && stores.data.length > 0 && (
                 <PaginateFooter

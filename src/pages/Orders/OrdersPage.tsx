@@ -79,31 +79,29 @@ export default function OrdersPage() {
 
     return (
         <div className="space-y-5">
-            <div className="flex items-center justify-between">
-                <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-5 w-full">
-                    <Select
-                        aria-label="order-status-filter"
-                        className="w-full md:w-1/4"
-                        radius="md"
-                        defaultSelectedKeys={["all"]}
-                        onChange={(e) => handleStatusChange(e.target.value)}
-                    >
-                        {[
-                            <SelectItem key="all">
-                                {t("orders.status.all")}
-                            </SelectItem>,
-                            ...orderStatus.map((status) => (
-                                <SelectItem key={status}>
-                                    {orderStatusName(status)}
-                                </SelectItem>
-                            )),
-                        ]}
-                    </Select>
-                    <SearchInput
-                        setSearch={setSearch}
-                        classNames={"w-full md:w-1/4"}
-                    />
-                </div>
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5 w-full">
+                <Select
+                    aria-label="order-status-filter"
+                    className="w-full md:w-1/4"
+                    radius="md"
+                    defaultSelectedKeys={["all"]}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                >
+                    {[
+                        <SelectItem key="all">
+                            {t("orders.status.all")}
+                        </SelectItem>,
+                        ...orderStatus.map((status) => (
+                            <SelectItem key={status}>
+                                {orderStatusName(status)}
+                            </SelectItem>
+                        )),
+                    ]}
+                </Select>
+                <SearchInput
+                    setSearch={setSearch}
+                    classNames={"w-full md:w-1/4"}
+                />
             </div>
             {isMobile ? (
                 <OrdersAccordionListMobile

@@ -1,7 +1,7 @@
 import { PaginatedCustomers } from "@/types/Customers.ts";
 import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
 import { useTranslation } from "react-i18next";
-import { Button, useDisclosure } from "@heroui/react";
+import { Button, useDisclosure, addToast } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { FieldDefinition, FormValues } from "@/types/FormTypes.ts";
 import useSWR from "swr";
@@ -12,12 +12,13 @@ import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import CustomersTableList from "@components/Intranet/Clients/CustomersTableList.tsx";
 import { CustomersAddModalInputs } from "@components/Intranet/Clients/CustomersAddForm.inputs.ts";
 import UsersProvider from "@core/api/Providers/UsersProvider.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import i18n from "@/core/i18n/i18n";
 import { Outlet } from "react-router";
 import { CustomersContext } from "@/contexts/Customers/CustomersContext";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
+import CustomersAccordionListMobile from "@components/Intranet/Clients/CustomersAccordionListMobile";
 
 const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
     const params = JSON.parse(key);
@@ -38,7 +39,6 @@ const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
 export default function CustomersPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const { setAlert } = useGlobalAlert();
     const { orderBy, orderWay, handleSortChange } = useSort("identity", "ASC");
     const { currentPage, limit, handlePageChange, handleLimitChange } =
         usePagination(1, 10);
@@ -73,15 +73,15 @@ export default function CustomersPage() {
             await UsersProvider.createUser(formData);
             await mutate();
             onOpenChange();
-            setAlert({
+            addToast({
                 title: t("customer.add.alert.success"),
-                type: "success",
+                color: "success",
             });
         } catch (e) {
             console.error(e);
-            setAlert({
+            addToast({
                 title: t("customer.add.alert.error"),
-                type: "danger",
+                color: "danger",
             });
         }
     };
@@ -93,6 +93,8 @@ export default function CustomersPage() {
         })();
     }, []);
 
+    const isMobile = useMediaQuery("(max-width: 768px)");
+
     if (error) {
         return <div>{t("error.message")}</div>;
     }
@@ -100,20 +102,20 @@ export default function CustomersPage() {
     return (
         <CustomersContext.Provider value={{ mutate }}>
             <div className="space-y-5">
-                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
-                    <div className="w-full lg:w-1/4">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                    <div className="w-full md:w-1/4">
                         <SearchInput
                             setSearch={setSearch}
                             classNames={"w-full"}
                         />
                     </div>
-                    <div className="w-full lg:w-auto">
+                    <div className="w-full md:w-auto">
                         <Button
                             aria-label="add"
                             color="primary"
                             size="md"
                             onPress={onOpen}
-                            className="w-full lg:w-auto"
+                            className="w-full md:w-auto"
                         >
                             <AddSquareIcon size={24} color="white" />
                             {t("users.add.button")}
@@ -121,22 +123,30 @@ export default function CustomersPage() {
                     </div>
                 </div>
 
-                <CustomersTableList
-                    customers={
-                        customers || {
-                            current_page: 1,
-                            data: [],
-                            per_page: 10,
-                            total: 0,
-                            last_page: 1,
+                {isMobile ? (
+                    <CustomersAccordionListMobile
+                        customers={customers?.data || []}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                    />
+                ) : (
+                    <CustomersTableList
+                        customers={
+                            customers || {
+                                current_page: 1,
+                                data: [],
+                                per_page: 10,
+                                total: 0,
+                                last_page: 1,
+                            }
                         }
-                    }
-                    isLoading={isLoading}
-                    onSortChange={handleSortChange}
-                    orderBy={orderBy}
-                    orderWay={orderWay}
-                    mutate={mutate}
-                />
+                        isLoading={isLoading}
+                        onSortChange={handleSortChange}
+                        orderBy={orderBy}
+                        orderWay={orderWay}
+                        mutate={mutate}
+                    />
+                )}
 
                 {customers && customers.data && customers.data.length > 0 && (
                     <PaginateFooter

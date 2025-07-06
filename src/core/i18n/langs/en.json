@@ -20,6 +20,7 @@
                 "name": "Carrier",
                 "contact": "Contact",
                 "address": "Address",
+                "phone": "Phone",
                 "actions": "Actions"
             },
             "empty": "No carriers found."
@@ -490,13 +491,18 @@
                         "confirm": "Delete"
                     },
                     "success": "The supplier was successfully deleted.",
-                    "error": "An error occurred while deleting the supplier."
+                    "error": "An error occurred while deleting the supplier.",
+                    "alert": {
+                        "success": "The supplier was successfully deleted.",
+                        "error": "An error occurred while deleting the supplier."
+                    }
                 }
             },
             "headers": {
                 "name": "Supplier",
                 "contact": "Contact",
                 "address": "Address",
+                "phone": "Phone",
                 "actions": "Actions"
             },
             "empty": "No suppliers found."
