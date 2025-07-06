@@ -11,6 +11,8 @@ import { Select, SelectItem } from "@heroui/react";
 import { orderStatusName } from "@utils/utils.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
 import { useState } from "react";
+import OrdersAccordionListMobile from "@components/Intranet/Orders/OrdersAccordionListMobile";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
 
 const fetchOrders = async (key: string): Promise<PaginatedOrders> => {
     const params = JSON.parse(key);
@@ -64,6 +66,8 @@ export default function OrdersPage() {
 
     const orderStatus = data?.status ?? [];
 
+    const isMobile = useMediaQuery("(max-width: 768px)");
+
     const handleStatusChange = (statusValue: string) => {
         setSelectedStatus(statusValue);
         handlePageChange(1);
@@ -101,22 +105,21 @@ export default function OrdersPage() {
                     />
                 </div>
             </div>
-            <OrdersTableList
-                orders={
-                    orders || {
-                        current_page: 1,
-                        data: [],
-                        per_page: 10,
-                        total: 0,
-                        last_page: 1,
-                    }
-                }
-                isLoading={isLoading}
-                onSortChange={handleSortChange}
-                orderBy={orderBy}
-                orderWay={orderWay}
-                mutate={mutate}
-            />
+            {isMobile ? (
+                <OrdersAccordionListMobile
+                    orders={orders}
+                    isLoading={isLoading}
+                />
+            ) : (
+                <OrdersTableList
+                    orders={orders}
+                    isLoading={isLoading}
+                    onSortChange={handleSortChange}
+                    orderBy={orderBy}
+                    orderWay={orderWay}
+                    mutate={mutate}
+                />
+            )}
             {orders && orders.data && orders.data.length > 0 && (
                 <PaginateFooter
                     values={["10", "50", "100"]}
