@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Store } from "@/types/Stores.ts";
 import { useTranslation } from "react-i18next";
+import { CircularProgress } from "@heroui/react";
 
 interface StoresInfoModalProps {
     isOpen: boolean;
@@ -26,6 +27,8 @@ export default function StoreInfoModal({
     const effectiveIsOpen = Boolean(storeId) || isOpen;
 
     const [store, setStore] = useState<Store | null>(null);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
     const fetchStore = useCallback(async () => {
         if (!storeId) return;
@@ -59,31 +62,53 @@ export default function StoreInfoModal({
         }
     }, [storeId, fetchStore]);
 
+    useEffect(() => {
+        setImageLoaded(false);
+        setImageError(false);
+    }, [storeId]);
+
+    useEffect(() => {
+        if (store && store.image_url && !imageLoaded && !imageError) {
+            const timeout = setTimeout(() => setImageLoaded(true), 1000); // 1s
+            return () => clearTimeout(timeout);
+        }
+    }, [store, imageLoaded, imageError]);
+
+    const isLoading = !store || (store.image_url && !imageLoaded);
+
     return (
         <Modal isOpen={effectiveIsOpen} onOpenChange={handleModalOpenChange}>
             <ModalContent>
-                <ModalHeader className="flex flex-row items-center gap-3">
-                    <h2>{store?.name}</h2>
-                </ModalHeader>
-                <ModalBody>
-                    <h3 className="underline font-medium">
-                        {t("stores.add.inputs.title")}
-                    </h3>
-                    <div className="text-light-500 text-sm flex flex-row gap-8">
-                        <div className="space-y-2">
-                            <p> {t("stores.add.inputs.email")}:</p>
-                            <p> {t("stores.add.inputs.phone")}:</p>
-                            <p> {t("stores.add.inputs.address")}:</p>
-                            <p> {t("stores.add.inputs.siret")}:</p>
-                        </div>
-                        <div className="space-y-2 mb-3">
-                            <p>{store?.email}</p>
-                            <p>{store?.phone}</p>
-                            <p>{store?.full_address}</p>
-                            <p>{store?.siret}</p>
-                        </div>
+                {isLoading ? (
+                    <div className="flex justify-center items-center h-60">
+                        <CircularProgress />
                     </div>
-                </ModalBody>
+                ) : (
+                    <>
+                        <ModalHeader>
+                            <h2>{store?.name}</h2>
+                        </ModalHeader>
+                        <ModalBody>
+                            <h3 className="underline font-medium">
+                                {t("stores.add.inputs.title")}
+                            </h3>
+                            <div className="text-light-500 text-sm flex flex-row gap-8">
+                                <div className="space-y-2">
+                                    <p> {t("stores.add.inputs.email")}:</p>
+                                    <p> {t("stores.add.inputs.phone")}:</p>
+                                    <p> {t("stores.add.inputs.address")}:</p>
+                                    <p> {t("stores.add.inputs.siret")}:</p>
+                                </div>
+                                <div className="space-y-2 mb-3">
+                                    <p>{store?.email}</p>
+                                    <p>{store?.phone}</p>
+                                    <p>{store?.full_address}</p>
+                                    <p>{store?.siret}</p>
+                                </div>
+                            </div>
+                        </ModalBody>
+                    </>
+                )}
             </ModalContent>
         </Modal>
     );

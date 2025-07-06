@@ -28,15 +28,18 @@ export default function ProductInfoModal({
     const effectiveIsOpen = Boolean(productId) || isOpen;
 
     const [product, setProduct] = useState<Product | null>(null);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
     const fetchProduct = useCallback(async () => {
         if (!productId) return;
         try {
             const response = await ProductsProvider.getProduct(productId);
             setProduct(response.data.data);
+            // Si pas d'image, on considère l'image comme chargée
+            if (!response.data.data.image_url) setImageLoaded(true);
         } catch (error) {
             console.error("Error fetching product:", error);
-            console.error("Error fetching user:", error);
             addToast({
                 color: "danger",
                 title: t("generics.errors.surprise"),
@@ -56,82 +59,112 @@ export default function ProductInfoModal({
 
     useEffect(() => {
         if (productId) {
+            setImageLoaded(false);
+            setImageError(false);
             (async () => {
                 await fetchProduct();
             })();
         }
     }, [productId, fetchProduct]);
 
+    useEffect(() => {
+        if (product && product.image_url && !imageLoaded && !imageError) {
+            const timeout = setTimeout(() => setImageLoaded(true), 1000); // 1s
+            return () => clearTimeout(timeout);
+        }
+    }, [product, imageLoaded, imageError]);
+
+    const isLoading = !product || (product.image_url && !imageLoaded);
+
     return (
         <Modal isOpen={effectiveIsOpen} onOpenChange={handleModalOpenChange}>
             <ModalContent>
                 <ModalBody className="py-6">
-                    {!product && (
+                    {isLoading ? (
                         <div className="flex justify-center items-center h-60">
                             <CircularProgress />
                         </div>
-                    )}
-                    {product && product.image_url ? (
-                        <Image
-                            src={product?.image_url}
-                            height={240}
-                            width="100%"
-                            className="object-cover"
-                        />
                     ) : (
-                        <div className="bg-zinc-500 bg-opacity-20 flex flex-col justify-center items-center w-full h-60 rounded-lg">
-                            <ImageIcon size={50} color={"white"} />
-                        </div>
-                    )}
-                    <div className="space-y-2">
-                        <div className="flex justify-between items-baseline">
-                            <div className="flex gap-2 items-baseline">
-                                <h2 className="text-xl font-bold">
-                                    {product?.name}
-                                </h2>
-                                <p className="text-zinc-500 text-sm">
-                                    {product?.category?.name}
-                                </p>
-                            </div>
-                            <p className="text-zinc-500 text-sm">
-                                {product?.price} €
-                            </p>
-                        </div>
+                        <>
+                            {product && product.image_url && !imageError ? (
+                                <div className="w-full h-60 flex items-center justify-center bg-zinc-500 bg-opacity-20 rounded-lg overflow-hidden mb-4">
+                                    <Image
+                                        src={product.image_url}
+                                        alt={product.name}
+                                        className="object-cover w-full h-full"
+                                        onLoad={() => {
+                                            setImageLoaded(true);
+                                        }}
+                                        onError={() => {
+                                            setImageLoaded(true);
+                                            setImageError(true);
+                                        }}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="w-full h-60 flex items-center justify-center bg-zinc-500 bg-opacity-20 rounded-lg mb-4">
+                                    <ImageIcon size={50} color="white" />
+                                </div>
+                            )}
+                            <div className="space-y-2">
+                                <div className="flex justify-between items-baseline">
+                                    <div className="flex gap-2 items-baseline">
+                                        <h2 className="text-xl font-bold">
+                                            {product?.name}
+                                        </h2>
+                                        <p className="text-zinc-500 text-sm">
+                                            {product?.category?.name}
+                                        </p>
+                                    </div>
+                                    <p className="text-zinc-500 text-sm">
+                                        {product?.price} €
+                                    </p>
+                                </div>
 
-                        <div className="space-y-1">
-                            <div className="flex justify-between">
-                                <p className="text-sm">
-                                    {t("products.table.headers.reference") +
-                                        " : " +
-                                        product?.reference}
-                                </p>
-                                <p className="text-sm">
-                                    {t("products.table.headers.location") +
-                                        " : " +
-                                        product?.location}
-                                </p>
+                                <div className="space-y-1">
+                                    <div className="flex justify-between">
+                                        <p className="text-sm">
+                                            {t(
+                                                "products.table.headers.reference",
+                                            ) +
+                                                " : " +
+                                                product?.reference}
+                                        </p>
+                                        <p className="text-sm">
+                                            {t(
+                                                "products.table.headers.location",
+                                            ) +
+                                                " : " +
+                                                product?.location}
+                                        </p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p className="text-sm">
+                                            {t(
+                                                "products.table.headers.supplier",
+                                            ) +
+                                                " : " +
+                                                product?.supplier?.name}
+                                        </p>
+                                        <p className="text-sm">
+                                            {t("products.table.headers.stock") +
+                                                " : " +
+                                                product?.stock}{" "}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-sm">
+                                        {t(
+                                            "products.table.headers.description",
+                                        ) +
+                                            " : " +
+                                            product?.description}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="flex justify-between">
-                                <p className="text-sm">
-                                    {t("products.table.headers.supplier") +
-                                        " : " +
-                                        product?.supplier?.name}
-                                </p>
-                                <p className="text-sm">
-                                    {t("products.table.headers.stock") +
-                                        " : " +
-                                        product?.stock}{" "}
-                                </p>
-                            </div>
-                        </div>
-                        <div>
-                            <p className="text-sm">
-                                {t("products.table.headers.description") +
-                                    " : " +
-                                    product?.description}
-                            </p>
-                        </div>
-                    </div>
+                        </>
+                    )}
                 </ModalBody>
             </ModalContent>
         </Modal>

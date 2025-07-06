@@ -5,6 +5,7 @@ import {
     ModalBody,
     ModalContent,
     ModalHeader,
+    CircularProgress,
 } from "@heroui/react";
 import { useNavigate, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
@@ -27,6 +28,8 @@ export default function UserInfoModal({
     const effectiveIsOpen = Boolean(userId) || isOpen;
 
     const [user, setUser] = useState<User | null>(null);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
     const fetchUser = useCallback(async () => {
         if (!userId) return;
@@ -60,37 +63,68 @@ export default function UserInfoModal({
         }
     }, [userId, fetchUser]);
 
+    useEffect(() => {
+        setImageLoaded(false);
+        setImageError(false);
+    }, [userId]);
+
+    useEffect(() => {
+        if (user && user.image_url && !imageLoaded && !imageError) {
+            const timeout = setTimeout(() => setImageLoaded(true), 1000); // 1s
+            return () => clearTimeout(timeout);
+        }
+    }, [user, imageLoaded, imageError]);
+
+    const isLoading = !user || (user.image_url && !imageLoaded);
+
     return (
         <Modal isOpen={effectiveIsOpen} onOpenChange={handleModalOpenChange}>
             <ModalContent>
-                <ModalHeader className="flex flex-row items-center gap-3">
-                    <Avatar
-                        className="h-20 w-20"
-                        src={user?.image_url}
-                        name={user?.identity}
-                    />
-                    <div>
-                        <h2>{user?.identity}</h2>
-                        {user?.role && <RoleChip role={user?.role} />}
+                {isLoading ? (
+                    <div className="flex justify-center items-center h-60">
+                        <CircularProgress />
                     </div>
-                </ModalHeader>
-                <ModalBody>
-                    <h3 className="underline font-medium">
-                        {t("users.add.inputs.complementary_info")}
-                    </h3>
-                    <div className="text-light-500 text-sm flex flex-row gap-8">
-                        <div className="space-y-2">
-                            <p> {t("users.add.inputs.email")}:</p>
-                            <p> {t("users.add.inputs.phone")}:</p>
-                            <p> {t("users.add.inputs.address")}:</p>
-                        </div>
-                        <div className="space-y-2 mb-3">
-                            <p>{user?.email}</p>
-                            <p>{user?.phone}</p>
-                            <p>{user?.full_address}</p>
-                        </div>
-                    </div>
-                </ModalBody>
+                ) : (
+                    <>
+                        <ModalHeader className="flex flex-row items-center gap-3">
+                            {user && user.image_url && !imageError ? (
+                                <Avatar
+                                    className="h-20 w-20"
+                                    src={user.image_url}
+                                    name={user.identity}
+                                    onError={() => setImageError(true)}
+                                />
+                            ) : (
+                                <div className="h-20 w-20 flex items-center justify-center bg-zinc-500 bg-opacity-20 rounded-full">
+                                    <span className="text-white text-2xl">
+                                        {user?.identity?.[0] || "?"}
+                                    </span>
+                                </div>
+                            )}
+                            <div>
+                                <h2>{user?.identity}</h2>
+                                {user?.role && <RoleChip role={user?.role} />}
+                            </div>
+                        </ModalHeader>
+                        <ModalBody>
+                            <h3 className="underline font-medium">
+                                {t("users.add.inputs.complementary_info")}
+                            </h3>
+                            <div className="text-light-500 text-sm flex flex-row gap-8">
+                                <div className="space-y-2">
+                                    <p> {t("users.add.inputs.email")}:</p>
+                                    <p> {t("users.add.inputs.phone")}:</p>
+                                    <p> {t("users.add.inputs.address")}:</p>
+                                </div>
+                                <div className="space-y-2 mb-3">
+                                    <p>{user?.email}</p>
+                                    <p>{user?.phone}</p>
+                                    <p>{user?.full_address}</p>
+                                </div>
+                            </div>
+                        </ModalBody>
+                    </>
+                )}
             </ModalContent>
         </Modal>
     );
