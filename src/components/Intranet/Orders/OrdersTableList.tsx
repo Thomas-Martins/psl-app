@@ -115,12 +115,14 @@ export default function OrdersTableList({
                 onRowAction={(id) => {
                     navigate(`/orders/${id}`);
                 }}
+                className="w-full text-xs"
             >
                 <TableHeader>
                     {headers.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}
+                            className="px-2 py-1"
                         >
                             {header.label}
                         </TableColumn>
@@ -142,8 +144,10 @@ export default function OrdersTableList({
                             key={order.id}
                             className="hover:bg-foreground-50 cursor-pointer"
                         >
-                            <TableCell>#{order.reference}</TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1">
+                                #{order.reference}
+                            </TableCell>
+                            <TableCell className="px-2 py-1">
                                 <Chip
                                     color={orderStatusColor(order.status)}
                                     variant="flat"
@@ -151,18 +155,24 @@ export default function OrdersTableList({
                                     {orderStatusName(order.status)}
                                 </Chip>
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1">
                                 {order.estimated_delivery_date
                                     ? order.estimated_delivery_date
                                     : "-"}
                             </TableCell>
-                            <TableCell>{order.user.store.address}</TableCell>
-                            <TableCell>{order.user.identity}</TableCell>
-                            <TableCell>{order.total_quantity}</TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1 break-words">
+                                {order.user.store.address}
+                            </TableCell>
+                            <TableCell className="px-2 py-1 break-words">
+                                {order.user.identity}
+                            </TableCell>
+                            <TableCell className="px-2 py-1">
+                                {order.total_quantity}
+                            </TableCell>
+                            <TableCell className="px-2 py-1">
                                 {totalHtToTtc(order.total_price, 20)}€
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1">
                                 <ThreeDotMenu
                                     actions={[
                                         {

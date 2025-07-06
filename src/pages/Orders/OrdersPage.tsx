@@ -80,10 +80,10 @@ export default function OrdersPage() {
     return (
         <div className="space-y-5">
             <div className="flex items-center justify-between">
-                <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 lg:space-x-5 w-full">
+                <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-5 w-full">
                     <Select
                         aria-label="order-status-filter"
-                        className="w-full lg:w-1/4"
+                        className="w-full md:w-1/4"
                         radius="md"
                         defaultSelectedKeys={["all"]}
                         onChange={(e) => handleStatusChange(e.target.value)}
@@ -101,7 +101,7 @@ export default function OrdersPage() {
                     </Select>
                     <SearchInput
                         setSearch={setSearch}
-                        classNames={"w-full lg:w-1/4"}
+                        classNames={"w-full md:w-1/4"}
                     />
                 </div>
             </div>
@@ -109,6 +109,7 @@ export default function OrdersPage() {
                 <OrdersAccordionListMobile
                     orders={orders}
                     isLoading={isLoading}
+                    mutate={mutate}
                 />
             ) : (
                 <OrdersTableList
