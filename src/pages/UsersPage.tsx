@@ -113,11 +113,11 @@ export default function UsersPage() {
 
     return (
         <div className="space-y-5">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-5 w-full">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
+                <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-5 lg:w-2/3">
                     <Select
                         aria-label="role-filter"
-                        className="w-1/4"
+                        className="w-full sm:w-1/4"
                         size="md"
                         defaultSelectedKeys={["all"]}
                         onChange={(e) => handleRoleChange(e.target.value)}
@@ -135,14 +135,18 @@ export default function UsersPage() {
                             {t("users.table.filter.role.logisticien")}
                         </SelectItem>
                     </Select>
-                    <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
+                    <SearchInput
+                        setSearch={setSearch}
+                        classNames={"w-full sm:w-1/4"}
+                    />
                 </div>
-                <div>
+                <div className="w-full lg:w-auto">
                     <Button
                         aria-label="add"
                         color="primary"
                         size="md"
                         onPress={onOpen}
+                        className="w-full lg:w-auto"
                     >
                         <AddSquareIcon size={24} color="white" />
                         {t("users.add.button")}

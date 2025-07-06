@@ -105,17 +105,22 @@ export default function CarriersPage() {
     if (error) return <div>{t("error.message")}</div>;
     return (
         <div className="space-y-5">
-            <div className="flex items-center justify-between">
-                <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
-                <Button
-                    aria-label="add"
-                    color="primary"
-                    size="md"
-                    onPress={onOpen}
-                >
-                    <AddSquareIcon size={24} color="white" />
-                    {t("suppliers.add.button")}
-                </Button>
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
+                <div className="w-full lg:w-1/4">
+                    <SearchInput setSearch={setSearch} classNames={"w-full"} />
+                </div>
+                <div className="w-full lg:w-auto">
+                    <Button
+                        aria-label="add"
+                        color="primary"
+                        size="md"
+                        onPress={onOpen}
+                        className="w-full lg:w-auto"
+                    >
+                        <AddSquareIcon size={24} color="white" />
+                        {t("suppliers.add.button")}
+                    </Button>
+                </div>
             </div>
 
             <CarriersTableList

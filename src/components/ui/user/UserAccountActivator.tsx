@@ -53,7 +53,7 @@ export default function UserAccountActivator({
             <DropdownTrigger>
                 <div className="flex flex-row items-center gap-6 cursor-pointer">
                     {!customer && (
-                        <div>
+                        <div className="hidden lg:block">
                             <p className="text-white">
                                 {user.firstname + " " + user.lastname}
                             </p>
@@ -66,6 +66,14 @@ export default function UserAccountActivator({
                         size="md"
                         src={user.image_url}
                     />
+                    {!customer && (
+                        <div className="lg:hidden flex flex-col items-start">
+                            <p className="text-white text-sm font-medium">
+                                {user.firstname + " " + user.lastname}
+                            </p>
+                            <RoleChip role={user.role as Role} />
+                        </div>
+                    )}
                 </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="solid">

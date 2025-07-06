@@ -100,19 +100,20 @@ export default function CustomersPage() {
     return (
         <CustomersContext.Provider value={{ mutate }}>
             <div className="space-y-5">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-5 w-full">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
+                    <div className="w-full lg:w-1/4">
                         <SearchInput
                             setSearch={setSearch}
-                            classNames={"w-1/4"}
+                            classNames={"w-full"}
                         />
                     </div>
-                    <div>
+                    <div className="w-full lg:w-auto">
                         <Button
                             aria-label="add"
                             color="primary"
                             size="md"
                             onPress={onOpen}
+                            className="w-full lg:w-auto"
                         >
                             <AddSquareIcon size={24} color="white" />
                             {t("users.add.button")}
