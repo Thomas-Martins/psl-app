@@ -17,7 +17,6 @@ import {
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import {
-    downloadPDF,
     orderStatusColor,
     orderStatusName,
     totalHtToTtc,
@@ -26,6 +25,7 @@ import { useNavigate } from "react-router";
 import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
 import i18n from "@core/i18n/i18n.ts";
 import OrderStatusModal from "@components/Intranet/Orders/OrderStatusModal.tsx";
+import { saveAs } from "file-saver";
 
 interface OrdersTableListProps {
     orders: PaginatedOrders;
@@ -90,8 +90,8 @@ export default function OrdersTableList({
         try {
             await mutate();
         } catch {
-            addToast({ 
-                title: t("generics.errors.surprise"), 
+            addToast({
+                title: t("generics.errors.surprise"),
                 color: "danger",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
@@ -202,7 +202,16 @@ export default function OrdersTableList({
                                                             {},
                                                             payload,
                                                         );
-                                                    downloadPDF(response.data);
+                                                    const blob = new Blob(
+                                                        [response.data],
+                                                        {
+                                                            type: "application/pdf",
+                                                        },
+                                                    );
+                                                    saveAs(
+                                                        blob,
+                                                        `facture-${order.reference}.pdf`,
+                                                    );
                                                 } catch (e) {
                                                     console.error(e);
                                                     addToast({
