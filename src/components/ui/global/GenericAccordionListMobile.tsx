@@ -34,6 +34,7 @@ interface GenericAccordionListMobileProps<T> {
     getKey: (item: T) => string;
     showViewButton?: boolean;
     onView?: (item: T) => void;
+    emptyContent?: string;
 }
 
 export default function GenericAccordionListMobile<T>({
@@ -45,6 +46,7 @@ export default function GenericAccordionListMobile<T>({
     getKey,
     showViewButton = false,
     onView,
+    emptyContent,
 }: GenericAccordionListMobileProps<T>) {
     const [loadingId, setLoadingId] = useState<string | null>(null);
 
@@ -61,7 +63,9 @@ export default function GenericAccordionListMobile<T>({
 
     if (!items || items.length === 0) {
         return (
-            <div className="text-center text-gray-500 py-8">Aucune donnée</div>
+            <div className="text-center text-gray-500 py-8">
+                {emptyContent || "Aucune donnée"}
+            </div>
         );
     }
 

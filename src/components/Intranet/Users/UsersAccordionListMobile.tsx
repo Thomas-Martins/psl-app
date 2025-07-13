@@ -45,6 +45,7 @@ export default function UsersAccordionListMobile({
         <GenericAccordionListMobile
             items={users}
             isLoading={isLoading}
+            emptyContent={t("users.empty")}
             getKey={(user) => user.id}
             getHeaderContent={(user) => (
                 <div className="flex items-center gap-3">
@@ -66,12 +67,6 @@ export default function UsersAccordionListMobile({
                             {t("users.table.headers.role")}:{" "}
                         </span>
                         <RoleChip role={user.role} />
-                    </div>
-                    <div>
-                        <span className="font-medium">
-                            {t("users.table.headers.address")}:{" "}
-                        </span>
-                        {user.address} {user.zipcode} {user.city}
                     </div>
                     <div>
                         <span className="font-medium">

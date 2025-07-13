@@ -19,7 +19,6 @@ import GenericAccordionListMobile from "@components/ui/global/GenericAccordionLi
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
 import { useNavigate } from "react-router";
 import { addToast } from "@heroui/react";
-import ProductAddStockModal from "@components/Intranet/Products/ProductAddStockModal";
 import { Action } from "@utils/Action";
 import ImageIcon from "@components/ui/icons/ImageIcon";
 
@@ -166,6 +165,7 @@ export default function ProductsPage() {
                     <GenericAccordionListMobile
                         items={products?.data || []}
                         isLoading={isLoading}
+                        emptyContent={t("products.empty")}
                         getKey={(product) => product.id}
                         getHeaderContent={(product) => (
                             <div className="flex items-center gap-3">

@@ -45,6 +45,7 @@ export default function CarriersAccordionListMobile({
         <GenericAccordionListMobile
             items={carriers}
             isLoading={isLoading}
+            emptyContent={t("carriers.empty")}
             getKey={(carrier) => carrier.id}
             getHeaderContent={(carrier) => (
                 <div>

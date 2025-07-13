@@ -114,12 +114,10 @@ export default function UserInfoModal({
                                 <div className="space-y-2">
                                     <p> {t("users.add.inputs.email")}:</p>
                                     <p> {t("users.add.inputs.phone")}:</p>
-                                    <p> {t("users.add.inputs.address")}:</p>
                                 </div>
                                 <div className="space-y-2 mb-3">
                                     <p>{user?.email}</p>
                                     <p>{user?.phone}</p>
-                                    <p>{user?.full_address}</p>
                                 </div>
                             </div>
                         </ModalBody>

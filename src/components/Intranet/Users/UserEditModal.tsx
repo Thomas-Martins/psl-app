@@ -44,9 +44,6 @@ export default function UserEditModal({
         lastname: "",
         email: "",
         phone: "",
-        address: "",
-        zipcode: "",
-        city: "",
         image_url: "",
     });
 
@@ -62,9 +59,6 @@ export default function UserEditModal({
                 lastname: response.data.data.lastname || "",
                 email: response.data.data.email || "",
                 phone: response.data.data.phone || "",
-                address: response.data.data.address || "",
-                zipcode: response.data.data.zipcode || "",
-                city: response.data.data.city || "",
                 image_url: response.data.data.image_url || "",
             });
             setPreviewImage(response.data.data.image_url || "");
@@ -100,9 +94,6 @@ export default function UserEditModal({
         lastname: "lastname",
         email: "email",
         phone: "phone",
-        address: "address",
-        zipcode: "zipcode",
-        city: "city",
     };
 
     const handleChange = (field: keyof typeof formData, value: string) => {
@@ -332,38 +323,6 @@ export default function UserEditModal({
                                         }
                                         errorMessage={errors.phone}
                                         isInvalid={!!errors.phone}
-                                    />
-                                </div>
-                                <Input
-                                    label={t("users.add.inputs.address")}
-                                    value={formData.address}
-                                    onChange={(e) =>
-                                        handleChange("address", e.target.value)
-                                    }
-                                    errorMessage={errors.address}
-                                    isInvalid={!!errors.address}
-                                />
-                                <div className="flex flex-col md:flex-row gap-4">
-                                    <Input
-                                        label={t("users.add.inputs.zipcode")}
-                                        value={formData.zipcode}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                "zipcode",
-                                                e.target.value,
-                                            )
-                                        }
-                                        errorMessage={errors.zipcode}
-                                        isInvalid={!!errors.zipcode}
-                                    />
-                                    <Input
-                                        label={t("users.add.inputs.city")}
-                                        value={formData.city}
-                                        onChange={(e) =>
-                                            handleChange("city", e.target.value)
-                                        }
-                                        errorMessage={errors.city}
-                                        isInvalid={!!errors.city}
                                     />
                                 </div>
                             </div>

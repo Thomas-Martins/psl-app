@@ -34,6 +34,7 @@ export default function OrdersAccordionListMobile({
             <GenericAccordionListMobile
                 items={orders.data || []}
                 isLoading={isLoading}
+                emptyContent={t("orders.empty")}
                 getKey={(order) => order.id}
                 getHeaderContent={(order) => (
                     <div className="flex flex-col items-start">

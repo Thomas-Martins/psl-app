@@ -148,16 +148,16 @@ export default function UsersTableList({
                                 />
                                 <div>
                                     <h3 className="text-md">{user.identity}</h3>
-                                    <p className="text-sm text-light-400">
-                                        {user.email} - {user.phone}
-                                    </p>
                                 </div>
                             </TableCell>
                             <TableCell>
-                                <RoleChip role={user.role} />
+                                <p className="text-sm">{user.email}</p>
                             </TableCell>
                             <TableCell>
-                                {user.address} {user.zipcode} {user.city}
+                                <p className="text-sm">{user.phone}</p>
+                            </TableCell>
+                            <TableCell>
+                                <RoleChip role={user.role} />
                             </TableCell>
                             <TableCell>
                                 <ThreeDotMenu
