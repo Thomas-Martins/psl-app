@@ -172,6 +172,7 @@ export default function CarrierEditModal({
             onOpenChange={(open) => {
                 if (!open) handleClose();
             }}
+            scrollBehavior="inside"
             className="sm:max-w-2xl w-full max-w-full m-0 sm:m-auto"
             style={{ height: "100%", maxHeight: "100dvh" }}
         >

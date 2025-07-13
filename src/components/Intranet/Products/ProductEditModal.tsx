@@ -291,12 +291,13 @@ export default function ProductEditModal({
                 if (!open) handleClose();
             }}
             size="xl"
+            scrollBehavior="inside"
         >
             <ModalContent>
                 {(onClose) => (
                     <>
                         <ModalHeader>{t("products.edit.title")}</ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="max-h-[60vh] overflow-y-auto">
                             <div className="space-y-4">
                                 <div className="flex flex-col md:flex-row items-center gap-4">
                                     <div

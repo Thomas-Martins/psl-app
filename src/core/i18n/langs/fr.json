@@ -572,6 +572,7 @@
             "headers": {
                 "name": "Point de vente",
                 "address": "Adresse",
+                "phone": "Téléphone",
                 "customers_count": "Nombre de clients",
                 "actions": "Actions"
             },

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Button, useDisclosure, Image } from "@heroui/react";
+import { Button, useDisclosure } from "@heroui/react";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import { PaginatedProducts } from "@/types/Products.ts";
@@ -13,14 +13,12 @@ import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import ProductsTableList from "@components/Intranet/Products/ProductsTableList.tsx";
+import ProductsAccordionListMobile from "@components/Intranet/Products/ProductsAccordionListMobile.tsx";
 import { Outlet } from "react-router";
 import { ProductsContext } from "@/contexts/Products/ProductsContext";
-import GenericAccordionListMobile from "@components/ui/global/GenericAccordionListMobile";
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
-import { useNavigate } from "react-router";
 import { addToast } from "@heroui/react";
-import { Action } from "@utils/Action";
-import ImageIcon from "@components/ui/icons/ImageIcon";
+import ProductAddStockModal from "@components/Intranet/Products/ProductAddStockModal";
 
 const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
     const params = JSON.parse(key);
@@ -103,7 +101,6 @@ export default function ProductsPage() {
     }, []);
 
     const isMobile = useMediaQuery("(max-width: 768px)");
-    const navigate = useNavigate();
     const [isAddStockOpen, setIsAddStockOpen] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<string | null>(
         null,
@@ -112,27 +109,6 @@ export default function ProductsPage() {
     const handleOpenAddStockModal = (productId: string) => {
         setSelectedProductId(productId);
         setIsAddStockOpen(true);
-    };
-
-    const handleDeleteProduct = async (product) => {
-        try {
-            await ProductsProvider.deleteProduct(product.id);
-            await mutate();
-            addToast({
-                color: "success",
-                title: t("products.table.actions.delete.success"),
-                shouldShowTimeoutProgress: true,
-                timeout: 5000,
-            });
-        } catch (error) {
-            console.error(error);
-            addToast({
-                color: "danger",
-                title: t("products.table.actions.delete.error"),
-                shouldShowTimeoutProgress: true,
-                timeout: 5000,
-            });
-        }
     };
 
     if (error) return <div>{t("errors.message")}</div>;
@@ -162,109 +138,11 @@ export default function ProductsPage() {
                 </div>
 
                 {isMobile ? (
-                    <GenericAccordionListMobile
-                        items={products?.data || []}
+                    <ProductsAccordionListMobile
+                        products={products?.data || []}
                         isLoading={isLoading}
-                        emptyContent={t("products.empty")}
-                        getKey={(product) => product.id}
-                        getHeaderContent={(product) => (
-                            <div className="flex items-center gap-3">
-                                {product.image_url ? (
-                                    <Image
-                                        src={product.image_url}
-                                        alt={product.name}
-                                        className="w-12 h-12 rounded-lg object-cover"
-                                    />
-                                ) : (
-                                    <div className="w-12 h-12 bg-zinc-500 bg-opacity-20 rounded-lg flex justify-center items-center">
-                                        <ImageIcon color="gray" size={24} />
-                                    </div>
-                                )}
-                                <div>
-                                    <span className="font-semibold text-base">
-                                        {product.name}
-                                    </span>
-                                    <div className="text-xs text-gray-500 mt-0.5">
-                                        {product.reference}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        getBodyContent={(product) => (
-                            <div>
-                                <div>
-                                    <span className="font-medium">
-                                        {t("products.table.headers.location")}
-                                        :{" "}
-                                    </span>
-                                    {product.location}
-                                </div>
-                                <div>
-                                    <span className="font-medium">
-                                        {t("products.table.headers.stock")}
-                                        :{" "}
-                                    </span>
-                                    {product.stock}
-                                </div>
-                                <div>
-                                    <span className="font-medium">
-                                        {t("products.table.headers.price")}
-                                        :{" "}
-                                    </span>
-                                    {product.price} €
-                                </div>
-                                <div>
-                                    <span className="font-medium">
-                                        {t("products.table.headers.name")}:{" "}
-                                    </span>
-                                    {product.category?.name}
-                                </div>
-                                <div className="text-xs text-light-400 mt-1">
-                                    {product.description}
-                                </div>
-                            </div>
-                        )}
-                        getActions={(product) => [
-                            {
-                                label: t("products.table.actions.edit"),
-                                variant: "default",
-                                onClick: () => {
-                                    navigate(`/stocks/${product.id}/edit`);
-                                },
-                            },
-                            {
-                                label: t("products.table.actions.add_stocks"),
-                                variant: "default",
-                                onClick: () => {
-                                    handleOpenAddStockModal(product.id);
-                                },
-                            },
-                            {
-                                label: t("products.table.actions.delete.title"),
-                                variant: "danger",
-                                onClick: Action.create(async () => {
-                                    await handleDeleteProduct(product);
-                                })
-                                    .confirm(
-                                        t(
-                                            "products.table.actions.delete.dialog.title",
-                                        ),
-                                        t(
-                                            "products.table.actions.delete.dialog.message",
-                                            { name: product.name },
-                                        ),
-                                        "danger",
-                                        t(
-                                            "products.table.actions.delete.dialog.confirm",
-                                        ),
-                                        t("generics.cancel"),
-                                    )
-                                    .build(),
-                            },
-                        ]}
-                        showViewButton={true}
-                        onView={(product) => navigate(`/stocks/${product.id}`)}
                         mutate={mutate}
+                        onOpenAddStockModal={handleOpenAddStockModal}
                     />
                 ) : (
                     <ProductsTableList
@@ -308,6 +186,17 @@ export default function ProductsPage() {
                     onOpenChange={onOpenChange}
                     fields={inputs}
                     onSubmit={handleProductsAddSubmit}
+                />
+
+                <ProductAddStockModal
+                    isOpen={isAddStockOpen}
+                    onOpenChange={() => setIsAddStockOpen(false)}
+                    productId={selectedProductId}
+                    onSuccess={async () => {
+                        await mutate();
+                        setIsAddStockOpen(false);
+                        setSelectedProductId(null);
+                    }}
                 />
 
                 <Outlet />

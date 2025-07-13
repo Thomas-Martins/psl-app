@@ -161,12 +161,13 @@ export default function CustomerEditModal({
                 if (!open) handleClose();
             }}
             size="xl"
+            scrollBehavior="inside"
         >
             <ModalContent>
                 {(onClose) => (
                     <>
                         <ModalHeader>{t("customer.edit.title")}</ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="max-h-[60vh] overflow-y-auto">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <Input
                                     label={t("customer.add.inputs.firstname")}

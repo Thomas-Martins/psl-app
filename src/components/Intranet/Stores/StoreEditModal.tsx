@@ -159,6 +159,7 @@ export default function StoreEditModal({
             onOpenChange={(open) => {
                 if (!open) handleClose();
             }}
+            scrollBehavior="inside"
         >
             <ModalContent>
                 {(onClose) => (
@@ -166,7 +167,7 @@ export default function StoreEditModal({
                         <ModalHeader>
                             <h2>{t("stores.edit.title")}</h2>
                         </ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="max-h-[60vh] overflow-y-auto">
                             <div className="space-y-4">
                                 <h3 className="underline font-medium">
                                     {t("stores.add.inputs.title")}
