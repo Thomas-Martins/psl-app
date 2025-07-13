@@ -74,7 +74,7 @@ export default function OrdersPage() {
     };
 
     if (error) {
-        return <div>{t("error.message")}</div>;
+        return <div>{t("errors.message")}</div>;
     }
 
     return (

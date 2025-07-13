@@ -136,7 +136,7 @@ export default function ProductsPage() {
         }
     };
 
-    if (error) return <div>{t("error.message")}</div>;
+    if (error) return <div>{t("errors.message")}</div>;
 
     return (
         <ProductsContext.Provider value={{ mutate }}>

@@ -15,6 +15,7 @@ export interface Customer {
     store: {
         id: string;
         name: string;
+        full_address: string;
     };
     orders_count: number;
     orders: Order[];

@@ -109,7 +109,7 @@ export default function SuppliersPage() {
         })();
     }, []);
 
-    if (error) return <div>{t("error.message")}</div>;
+    if (error) return <div>{t("errors.message")}</div>;
 
     return (
         <div className="space-y-5">

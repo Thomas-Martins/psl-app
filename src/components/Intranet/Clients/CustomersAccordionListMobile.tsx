@@ -66,7 +66,7 @@ export default function CustomersAccordionListMobile({
                         <span className="font-medium">
                             {t("customer.table.headers.address")}:{" "}
                         </span>
-                        {customer.full_address}
+                        {customer.store?.full_address}
                     </div>
                     <div>
                         <span className="font-medium">

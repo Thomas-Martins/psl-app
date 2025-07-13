@@ -108,7 +108,7 @@ export default function CarriersPage() {
         })();
     }, []);
 
-    if (error) return <div>{t("error.message")}</div>;
+    if (error) return <div>{t("errors.message")}</div>;
     return (
         <div className="space-y-5">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">

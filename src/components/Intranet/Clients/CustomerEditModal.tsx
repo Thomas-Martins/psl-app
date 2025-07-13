@@ -38,9 +38,6 @@ export default function CustomerEditModal({
         lastname: "",
         email: "",
         phone: "",
-        address: "",
-        zipcode: "",
-        city: "",
     });
 
     const init = useCallback(() => {
@@ -49,9 +46,6 @@ export default function CustomerEditModal({
             lastname: state?.customer?.lastname || "",
             email: state?.customer?.email || "",
             phone: state?.customer?.phone || "",
-            address: state?.customer?.address || "",
-            zipcode: state?.customer?.zipcode || "",
-            city: state?.customer?.city || "",
         });
     }, [state?.customer]);
 
@@ -64,9 +58,6 @@ export default function CustomerEditModal({
                 lastname: response.data.lastname || "",
                 email: response.data.email || "",
                 phone: response.data.phone || "",
-                address: response.data.address || "",
-                zipcode: response.data.zipcode || "",
-                city: response.data.city || "",
             });
         } catch (error) {
             console.error("Error fetching customer:", error);
@@ -93,9 +84,6 @@ export default function CustomerEditModal({
         lastname: "Name",
         email: "Email",
         phone: "Phone",
-        address: "Address",
-        zipcode: "PostalCode",
-        city: "City",
     };
 
     const handleChange = (field: keyof typeof formData, value: string) => {
@@ -220,35 +208,6 @@ export default function CustomerEditModal({
                                     }
                                     errorMessage={errors.phone}
                                     isInvalid={!!errors.phone}
-                                />
-                            </div>
-                            <Input
-                                label={t("customer.add.inputs.address")}
-                                value={formData.address}
-                                onChange={(e) =>
-                                    handleChange("address", e.target.value)
-                                }
-                                errorMessage={errors.address}
-                                isInvalid={!!errors.address}
-                            />
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <Input
-                                    label={t("customer.add.inputs.zipcode")}
-                                    value={formData.zipcode}
-                                    onChange={(e) =>
-                                        handleChange("zipcode", e.target.value)
-                                    }
-                                    errorMessage={errors.zipcode}
-                                    isInvalid={!!errors.zipcode}
-                                />
-                                <Input
-                                    label={t("customer.add.inputs.city")}
-                                    value={formData.city}
-                                    onChange={(e) =>
-                                        handleChange("city", e.target.value)
-                                    }
-                                    errorMessage={errors.city}
-                                    isInvalid={!!errors.city}
                                 />
                             </div>
                         </ModalBody>

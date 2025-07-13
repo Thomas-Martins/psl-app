@@ -146,12 +146,12 @@ export default function CustomersTableList({
                             </TableCell>
                             <TableCell>
                                 <h3 className="text-md">
-                                    {customer.store.name}
+                                    {customer.store?.name}
                                 </h3>
                             </TableCell>
                             <TableCell>
                                 <p className="text-md">
-                                    {customer.full_address}
+                                    {customer.store?.full_address}
                                 </p>
                             </TableCell>
                             <TableCell>

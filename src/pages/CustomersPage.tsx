@@ -96,7 +96,7 @@ export default function CustomersPage() {
     const isMobile = useMediaQuery("(max-width: 768px)");
 
     if (error) {
-        return <div>{t("error.message")}</div>;
+        return <div>{t("errors.message")}</div>;
     }
 
     return (
