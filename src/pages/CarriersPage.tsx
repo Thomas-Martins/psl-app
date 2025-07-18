@@ -124,7 +124,7 @@ export default function CarriersPage() {
                         className="w-full md:w-auto"
                     >
                         <AddSquareIcon size={24} color="white" />
-                        {t("suppliers.add.button")}
+                        {t("carriers.add.button")}
                     </Button>
                 </div>
             </div>

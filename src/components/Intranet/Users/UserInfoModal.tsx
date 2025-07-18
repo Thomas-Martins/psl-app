@@ -75,7 +75,7 @@ export default function UserInfoModal({
         }
     }, [user, imageLoaded, imageError]);
 
-    const isLoading = !user || (user.image_url && !imageLoaded);
+    const isLoading = !user || (user.image_url && !imageLoaded && !imageError);
 
     return (
         <Modal isOpen={effectiveIsOpen} onOpenChange={handleModalOpenChange}>

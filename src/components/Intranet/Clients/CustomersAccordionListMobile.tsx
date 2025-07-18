@@ -43,7 +43,7 @@ export default function CustomersAccordionListMobile({
         <GenericAccordionListMobile
             items={customers}
             isLoading={isLoading}
-            emptyContent={t("customers.empty")}
+            emptyContent={t("customer.table.empty")}
             getKey={(customer) => customer.id}
             getHeaderContent={(customer) => (
                 <div>

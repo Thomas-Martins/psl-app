@@ -45,7 +45,7 @@ export default function UsersAccordionListMobile({
         <GenericAccordionListMobile
             items={users}
             isLoading={isLoading}
-            emptyContent={t("users.empty")}
+            emptyContent={t("users.table.empty")}
             getKey={(user) => user.id}
             getHeaderContent={(user) => (
                 <div className="flex items-center gap-3">

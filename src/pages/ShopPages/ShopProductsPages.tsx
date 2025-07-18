@@ -45,6 +45,27 @@ export default function ShopProductsPages() {
             try {
                 const params = JSON.parse(key);
 
+                // Filtrer les paramètres vides avant de les envoyer à l'API
+                const cleanFilters = Object.entries(
+                    params.filters || {},
+                ).reduce(
+                    (acc, [key, value]) => {
+                        // Exclure les tableaux vides et les chaînes vides
+                        if (Array.isArray(value) && value.length > 0) {
+                            acc[key] = value;
+                        } else if (
+                            typeof value === "string" &&
+                            value.trim() !== ""
+                        ) {
+                            acc[key] = value;
+                        } else if (typeof value === "number") {
+                            acc[key] = value;
+                        }
+                        return acc;
+                    },
+                    {} as Record<string, unknown>,
+                );
+
                 const response = await ProductsProvider.getProducts({
                     paginate: true,
                     page: params.page,
@@ -52,7 +73,7 @@ export default function ShopProductsPages() {
                     orderBy: params.orderBy,
                     orderWay: params.orderWay,
                     search: params.search,
-                    ...(params.filters || {}),
+                    ...cleanFilters,
                 });
                 return response.data;
             } catch (e) {
@@ -164,7 +185,6 @@ export default function ShopProductsPages() {
                         />
                     </div>
 
-                    {/* Drawer pour les filtres sur mobile */}
                     {isMobile && (
                         <Drawer
                             isOpen={isOpen}
@@ -179,13 +199,9 @@ export default function ShopProductsPages() {
                                     </h2>
                                 </DrawerHeader>
                                 <DrawerBody className="p-0 flex flex-col">
-                                    <ProductFiltersContext.Provider
-                                        value={{ filters, setFilters }}
-                                    >
-                                        <MobileFiltersDrawer
-                                            onClose={() => onOpenChange()}
-                                        />
-                                    </ProductFiltersContext.Provider>
+                                    <MobileFiltersDrawer
+                                        onClose={() => onOpenChange()}
+                                    />
                                 </DrawerBody>
                             </DrawerContent>
                         </Drawer>

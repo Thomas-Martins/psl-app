@@ -7,6 +7,7 @@ import {
     CheckboxGroup,
     Divider,
     Slider,
+    CircularProgress,
 } from "@heroui/react";
 import CategoriesProvider from "@core/api/Providers/CategoriesProvider.ts";
 import { useCallback, useEffect, useState } from "react";
@@ -22,16 +23,30 @@ export default function MobileFiltersDrawer({
 }: MobileFiltersDrawerProps) {
     const { t } = useTranslation();
     const [categories, setCategories] = useState<Category[]>([]);
+    const [isLoadingCategories, setIsLoadingCategories] = useState(false);
     const { filters, setFilters } = useProductFilters();
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
 
+    useEffect(() => {
+        setSelectedCategories(filters.categories || []);
+        setPriceRange(filters.priceRange || [0, 1000]);
+    }, [filters.categories, filters.priceRange]);
+
     const fetchCategories = useCallback(async () => {
-        const response = await CategoriesProvider.getCategories({
-            paginate: false,
-            products_count: true,
-        });
-        return response.data;
+        setIsLoadingCategories(true);
+        try {
+            const response = await CategoriesProvider.getCategories({
+                paginate: false,
+                products_count: true,
+            });
+            return response.data || [];
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+            return [];
+        } finally {
+            setIsLoadingCategories(false);
+        }
     }, []);
 
     useEffect(() => {
@@ -43,7 +58,7 @@ export default function MobileFiltersDrawer({
     const handleApplyFilters = useCallback(() => {
         setFilters({
             ...filters,
-            categories: selectedCategories,
+            categories: selectedCategories, // Maintenant ce sont des IDs
             priceRange: priceRange,
         });
         onClose(); // Fermer le drawer après avoir appliqué les filtres
@@ -60,24 +75,42 @@ export default function MobileFiltersDrawer({
                         className="overflow-visible"
                     >
                         <div className="max-h-80 overflow-y-auto">
-                            <CheckboxGroup
-                                value={selectedCategories}
-                                onChange={setSelectedCategories}
-                            >
-                                {categories?.map((category) => (
-                                    <Checkbox
-                                        key={category.id}
-                                        value={category.name}
-                                    >
-                                        <p className="text-sm break-words">
-                                            {category.name}{" "}
-                                            <span className="text-xs text-light-300">
-                                                ({category.products_count})
-                                            </span>
-                                        </p>
-                                    </Checkbox>
-                                ))}
-                            </CheckboxGroup>
+                            {isLoadingCategories ? (
+                                <div className="flex justify-center py-4">
+                                    <CircularProgress
+                                        size="sm"
+                                        aria-label="Loading categories..."
+                                    />
+                                </div>
+                            ) : categories.length === 0 ? (
+                                <div className="text-center py-4 text-gray-500">
+                                    {t("categories.errors.get_categories")}
+                                </div>
+                            ) : (
+                                <CheckboxGroup
+                                    value={selectedCategories}
+                                    onChange={setSelectedCategories}
+                                >
+                                    {categories?.map((category) => (
+                                        <Checkbox
+                                            key={category.id}
+                                            value={category.id}
+                                            isDisabled={
+                                                category.products_count === 0
+                                            }
+                                        >
+                                            <p className="text-sm break-words">
+                                                {category.name}{" "}
+                                                <span
+                                                    className={`text-xs ${category.products_count === 0 ? "text-gray-400" : "text-light-300"}`}
+                                                >
+                                                    ({category.products_count})
+                                                </span>
+                                            </p>
+                                        </Checkbox>
+                                    ))}
+                                </CheckboxGroup>
+                            )}
                         </div>
                     </AccordionItem>
                 </Accordion>
@@ -89,7 +122,7 @@ export default function MobileFiltersDrawer({
                         label: "font-medium text-default-700 text-medium",
                         value: "text-light-400 text-small",
                     }}
-                    defaultValue={[0, 1000]}
+                    value={priceRange}
                     disableThumbScale={true}
                     formatOptions={{ style: "currency", currency: "EUR" }}
                     label={t("products.shop.price")}

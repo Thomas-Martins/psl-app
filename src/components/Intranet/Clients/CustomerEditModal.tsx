@@ -92,11 +92,17 @@ export default function CustomerEditModal({
                 setStores(response.data || []);
             } catch (error) {
                 console.error("Error fetching stores:", error);
+                addToast({
+                    color: "danger",
+                    title: t("generics.errors.surprise"),
+                    shouldShowTimeoutProgress: true,
+                    timeout: 5000,
+                });
             }
         };
 
         fetchStores();
-    }, []);
+    }, [t]);
 
     const initFormData = useCallback(
         (customerData: Customer | CustomerResponse) => {

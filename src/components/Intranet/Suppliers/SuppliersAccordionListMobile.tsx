@@ -45,7 +45,7 @@ export default function SuppliersAccordionListMobile({
         <GenericAccordionListMobile
             items={suppliers}
             isLoading={isLoading}
-            emptyContent={t("suppliers.empty")}
+            emptyContent={t("suppliers.table.empty")}
             getKey={(supplier) => supplier.id}
             getHeaderContent={(supplier) => (
                 <div>

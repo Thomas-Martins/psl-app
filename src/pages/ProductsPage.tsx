@@ -132,7 +132,7 @@ export default function ProductsPage() {
                             className="w-full md:w-auto"
                         >
                             <AddSquareIcon size={24} color="white" />
-                            {t("suppliers.add.button")}
+                            {t("products.add.button")}
                         </Button>
                     </div>
                 </div>

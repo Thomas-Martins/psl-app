@@ -7,14 +7,19 @@ import { saveAs } from "file-saver";
 import { useState } from "react";
 import OrderStatusModal from "@components/Intranet/Orders/OrderStatusModal";
 import GenericAccordionListMobile from "@components/ui/global/GenericAccordionListMobile";
-import { Chip } from "@heroui/react";
+import { Chip, addToast } from "@heroui/react";
 import { useNavigate } from "react-router";
+import { OrderStatus } from "@/types/OrderStatus";
 
 interface OrdersAccordionListMobileProps {
     orders: PaginatedOrders;
     isLoading: boolean;
     mutate: () => Promise<PaginatedOrders | undefined>;
 }
+
+const isValidOrderStatus = (status: string): status is OrderStatus => {
+    return Object.values(OrderStatus).includes(status as OrderStatus);
+};
 
 export default function OrdersAccordionListMobile({
     orders,
@@ -83,9 +88,23 @@ export default function OrdersAccordionListMobile({
                         label: t("orders.table.actions.update_status"),
                         variant: "default",
                         onClick: () => {
+                            if (!isValidOrderStatus(order.status)) {
+                                console.error(
+                                    "Invalid order status:",
+                                    order.status,
+                                );
+                                addToast({
+                                    title: t("generics.errors.surprise"),
+                                    color: "danger",
+                                    hideIcon: true,
+                                    timeout: 5000,
+                                });
+                                return;
+                            }
+
                             setStatusModalOrder({
                                 id: order.id,
-                                status: order.status as import("@/types/OrderStatus").OrderStatus,
+                                status: order.status,
                                 reference: order.reference,
                             });
                         },
@@ -114,7 +133,14 @@ export default function OrdersAccordionListMobile({
                                 });
                                 saveAs(blob, `facture-${order.reference}.pdf`);
                             } catch {
-                                // Optionally: show error toast
+                                addToast({
+                                    title: t(
+                                        "orders.table.actions.download.error",
+                                    ),
+                                    color: "danger",
+                                    hideIcon: true,
+                                    timeout: 5000,
+                                });
                             }
                         },
                     },

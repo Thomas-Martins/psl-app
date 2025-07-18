@@ -6,6 +6,7 @@ import {
     Button,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu";
+import { t } from "i18next";
 
 export type AccordionActionVariant =
     | "default"
@@ -34,7 +35,7 @@ interface GenericAccordionListMobileProps<T> {
     getKey: (item: T) => string;
     showViewButton?: boolean;
     onView?: (item: T) => void;
-    emptyContent?: string;
+    emptyContent: string;
 }
 
 export default function GenericAccordionListMobile<T>({
@@ -63,9 +64,7 @@ export default function GenericAccordionListMobile<T>({
 
     if (!items || items.length === 0) {
         return (
-            <div className="text-center text-gray-500 py-8">
-                {emptyContent || "Aucune donnée"}
-            </div>
+            <div className="text-center text-gray-500 py-8">{emptyContent}</div>
         );
     }
 
@@ -86,7 +85,7 @@ export default function GenericAccordionListMobile<T>({
                                         onView(item);
                                     }}
                                 >
-                                    Voir
+                                    {t("generics.actions.view")}
                                 </Button>
                             )}
                             <div>

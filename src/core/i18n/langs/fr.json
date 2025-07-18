@@ -206,6 +206,15 @@
         "message": "Une erreur est survenue. Veuillez réessayer plus tard."
     },
     "generics": {
+        "actions": {
+            "view": "Voir",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "add": "Ajouter",
+            "update": "Mettre à jour",
+            "download": "Télécharger",
+            "print": "Imprimer"
+        },
         "email": "Email",
         "password": "Mot de passe",
         "login_btn": "Se connecter",
@@ -343,7 +352,8 @@
         },
         "download": {
             "title": "Télécharger la facture",
-            "button": "Télécharger"
+            "button": "Télécharger",
+            "error": "Erreur lors du téléchargement de la facture"
         },
         "empty": "Vous n'avez pas de commandes.",
         "status": {
@@ -370,6 +380,9 @@
                 "print": {
                     "invoice": "Imprimer la facture",
                     "products_lists": "Imprimer la liste des produits"
+                },
+                "download": {
+                    "error": "Erreur lors du téléchargement de la facture"
                 }
             },
             "headers": {

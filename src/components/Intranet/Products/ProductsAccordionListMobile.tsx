@@ -51,7 +51,7 @@ export default function ProductsAccordionListMobile({
         <GenericAccordionListMobile
             items={products}
             isLoading={isLoading}
-            emptyContent={t("products.empty")}
+            emptyContent={t("products.table.empty")}
             getKey={(product) => product.id}
             getHeaderContent={(product) => (
                 <div className="flex items-center gap-3">
