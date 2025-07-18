@@ -7,13 +7,7 @@ import TrashIcon from "@components/ui/icons/TrashIcon.tsx";
 import { useTranslation } from "react-i18next";
 import { ChangeEvent } from "react";
 
-interface CartDetailProps {
-    showDeliveryAddress?: boolean;
-}
-
-export default function CartDetail({
-    showDeliveryAddress = false,
-}: CartDetailProps) {
+export default function CartDetail() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -111,27 +105,6 @@ export default function CartDetail({
                         ))}
                     </div>
                     <div className="flex flex-col gap-4 mt-4">
-                        {showDeliveryAddress && userStore && (
-                            <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-                                <h4 className="text-sm font-semibold mb-2 text-gray-700">
-                                    {t("cart.delivery_address")}
-                                </h4>
-                                <div className="text-xs text-gray-600 space-y-1">
-                                    <p className="font-medium">
-                                        {userStore.name}
-                                    </p>
-                                    <p>{userStore.address}</p>
-                                    <p>
-                                        {userStore.zipcode} {userStore.city}
-                                    </p>
-                                    {userStore.phone && (
-                                        <p>
-                                            {t("cart.phone")}: {userStore.phone}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        )}
                         <div className="flex justify-between items-center">
                             <p>{t("cart.total_ht")}</p>
                             <p>€{formatPrice(totalHT)}</p>
