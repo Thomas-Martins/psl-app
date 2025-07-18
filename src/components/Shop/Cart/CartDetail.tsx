@@ -11,7 +11,6 @@ export default function CartDetail() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cart.items);
-    const userStore = useSelector((state: RootState) => state.user.store);
 
     const roundUp = (value: number) => {
         return Math.ceil(value * 100) / 100;

@@ -123,7 +123,7 @@ export default function CartVerification() {
 
             <div className="bg-white w-full lg:col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between lg:h-full gap-5">
                 <h1 className="text-2xl font-medium">{t("cart.your_cart")}</h1>
-                <CartDetail showDeliveryAddress={true} />
+                <CartDetail />
                 <Button
                     color="primary"
                     size="lg"
