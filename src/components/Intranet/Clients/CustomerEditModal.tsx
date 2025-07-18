@@ -7,58 +7,121 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Select,
+    SelectItem,
+    Spinner,
 } from "@heroui/react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useCallback, useEffect, useState } from "react";
-import UsersProvider from "@core/api/Providers/UsersProvider.ts";
-import { validators } from "@utils/InputForm.validators.ts";
 import { useTranslation } from "react-i18next";
+
+import UsersProvider from "@core/api/Providers/UsersProvider.ts";
+import StoresProvider from "@core/api/Providers/StoresProvider.ts";
+import { validators } from "@utils/InputForm.validators.ts";
 import { useCustomers } from "@/contexts/Customers/CustomersContext.tsx";
+import { Store } from "@/types/Stores.ts";
+import { Customer } from "@/types/Customers.ts";
+
+type TranslationFunction = (key: string) => string;
+
+interface CustomerResponse {
+    data?: Customer;
+}
 
 interface CustomerEditModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }
 
+interface FormData {
+    firstname: string;
+    lastname: string;
+    email: string;
+    phone: string;
+    store_id: string;
+}
+
+interface ComponentProps {
+    formData: FormData;
+    errors: Record<string, string>;
+    handleChange: (field: keyof FormData, value: string) => void;
+    t: TranslationFunction;
+}
+
+interface StoreComponentProps extends ComponentProps {
+    stores: Store[];
+}
+
+const INITIAL_FORM_DATA: FormData = {
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    store_id: "",
+};
+
+const FIELD_VALIDATOR_MAPPING: Record<keyof FormData, string> = {
+    firstname: "Name",
+    lastname: "Name",
+    email: "Email",
+    phone: "Phone",
+    store_id: "store",
+};
+
 export default function CustomerEditModal({
     isOpen,
     onOpenChange,
 }: CustomerEditModalProps) {
     const { customerId } = useParams();
-    const { state } = useLocation();
     const { t } = useTranslation();
     const { mutate } = useCustomers();
     const navigate = useNavigate();
+
     const effectiveOpen = Boolean(customerId) || isOpen;
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
+    const [stores, setStores] = useState<Store[]>([]);
 
-    const [formData, setFormData] = useState({
-        firstname: "",
-        lastname: "",
-        email: "",
-        phone: "",
-    });
+    // Récupération des stores
+    useEffect(() => {
+        const fetchStores = async () => {
+            try {
+                const response = await StoresProvider.getStores();
+                setStores(response.data || []);
+            } catch (error) {
+                console.error("Error fetching stores:", error);
+            }
+        };
 
-    const init = useCallback(() => {
-        setFormData({
-            firstname: state?.customer?.firstname || "",
-            lastname: state?.customer?.lastname || "",
-            email: state?.customer?.email || "",
-            phone: state?.customer?.phone || "",
-        });
-    }, [state?.customer]);
+        fetchStores();
+    }, []);
+
+    const initFormData = useCallback(
+        (customerData: Customer | CustomerResponse) => {
+            const customer =
+                (customerData as CustomerResponse)?.data ||
+                (customerData as Customer);
+
+            setFormData({
+                firstname: customer.firstname || "",
+                lastname: customer.lastname || "",
+                email: customer.email || "",
+                phone: customer.phone || "",
+                store_id: customer.store?.id?.toString() || "",
+            });
+        },
+        [],
+    );
 
     const fetchCustomer = useCallback(async () => {
         if (!customerId) return;
+
+        setIsLoading(true);
         try {
             const response = await UsersProvider.getUser(customerId);
-            setFormData({
-                firstname: response.data.firstname || "",
-                lastname: response.data.lastname || "",
-                email: response.data.email || "",
-                phone: response.data.phone || "",
-            });
+            initFormData(response.data);
         } catch (error) {
             console.error("Error fetching customer:", error);
             addToast({
@@ -68,64 +131,56 @@ export default function CustomerEditModal({
                 timeout: 5000,
             });
             navigate("/customers");
+        } finally {
+            setIsLoading(false);
         }
-    }, [customerId, navigate, t]);
+    }, [customerId, navigate, t, initFormData]);
 
     useEffect(() => {
-        if (state?.customer) {
-            init();
-        } else if (!state?.customer && customerId) {
-            fetchCustomer().then();
+        if (customerId && effectiveOpen) {
+            fetchCustomer();
         }
-    }, [customerId, fetchCustomer, init, state?.customer]);
+    }, [customerId, effectiveOpen, fetchCustomer]);
 
-    const fieldValidatorMapping: Record<string, string> = {
-        firstname: "Name",
-        lastname: "Name",
-        email: "Email",
-        phone: "Phone",
-    };
+    const handleChange = useCallback((field: keyof FormData, value: string) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
 
-    const handleChange = (field: keyof typeof formData, value: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-        const validatorKey = fieldValidatorMapping[field];
+        const validatorKey = FIELD_VALIDATOR_MAPPING[field];
         if (validatorKey && validators[validatorKey]) {
             const error = validators[validatorKey](value);
-            setErrors((prev) => ({
-                ...prev,
-                [field]: error || "",
-            }));
+            setErrors((prev) => ({ ...prev, [field]: error || "" }));
         }
-    };
+    }, []);
 
-    const validateForm = () => {
+    const validateForm = useCallback(() => {
         const newErrors: Record<string, string> = {};
-        Object.keys(formData).forEach((field) => {
-            const validatorKey = fieldValidatorMapping[field];
+
+        (Object.keys(formData) as Array<keyof FormData>).forEach((field) => {
+            const validatorKey = FIELD_VALIDATOR_MAPPING[field];
             if (validatorKey && validators[validatorKey]) {
-                const value = formData[field as keyof typeof formData];
+                const value = formData[field];
                 const error = validators[validatorKey](value);
                 if (error) {
                     newErrors[field] = error;
                 }
             }
         });
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
-    };
+    }, [formData]);
 
-    const handleSubmit = async () => {
-        if (isSubmitting) return;
+    const handleSubmit = useCallback(async () => {
+        if (isSubmitting || !customerId) return;
+
         setIsSubmitting(true);
+
         if (!validateForm()) {
             setIsSubmitting(false);
             return;
         }
+
         try {
-            if (!customerId) return;
             await UsersProvider.updateUser(customerId, formData);
             addToast({
                 title: t("customer.edit.alert.success"),
@@ -147,11 +202,93 @@ export default function CustomerEditModal({
         } finally {
             setIsSubmitting(false);
         }
-    };
+    }, [isSubmitting, customerId, validateForm, formData, t, mutate, navigate]);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         onOpenChange(false);
         navigate("/customers");
+    }, [onOpenChange, navigate]);
+
+    const BasicFields = ({
+        formData,
+        errors,
+        handleChange,
+        t,
+    }: ComponentProps) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+                label={t("customer.add.inputs.firstname")}
+                value={formData.firstname}
+                onChange={(e) => handleChange("firstname", e.target.value)}
+                errorMessage={errors.firstname}
+                isInvalid={!!errors.firstname}
+            />
+            <Input
+                label={t("customer.add.inputs.lastname")}
+                value={formData.lastname}
+                onChange={(e) => handleChange("lastname", e.target.value)}
+                errorMessage={errors.lastname}
+                isInvalid={!!errors.lastname}
+            />
+        </div>
+    );
+
+    const ContactFields = ({
+        formData,
+        errors,
+        handleChange,
+        t,
+    }: ComponentProps) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+                label={t("customer.add.inputs.email")}
+                value={formData.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                errorMessage={errors.email}
+                isInvalid={!!errors.email}
+            />
+            <Input
+                label={t("customer.add.inputs.phone")}
+                value={formData.phone}
+                onChange={(e) => handleChange("phone", e.target.value)}
+                errorMessage={errors.phone}
+                isInvalid={!!errors.phone}
+            />
+        </div>
+    );
+
+    const StoreSelector = ({
+        formData,
+        errors,
+        handleChange,
+        stores,
+        t,
+    }: StoreComponentProps) => {
+        const selectedKeys =
+            formData.store_id &&
+            stores.find((s) => s.id.toString() === formData.store_id)
+                ? new Set<string>([formData.store_id])
+                : new Set<string>();
+
+        return (
+            <div className="grid grid-cols-1 gap-4">
+                <Select
+                    label={t("customer.add.inputs.store.title")}
+                    placeholder={t("customer.add.inputs.store.placeholder")}
+                    selectedKeys={selectedKeys}
+                    onSelectionChange={(keys) => {
+                        const selectedKey = Array.from(keys)[0];
+                        handleChange("store_id", selectedKey?.toString() || "");
+                    }}
+                    errorMessage={errors.store_id}
+                    isInvalid={!!errors.store_id}
+                >
+                    {stores.map((store) => (
+                        <SelectItem key={store.id}>{store.name}</SelectItem>
+                    ))}
+                </Select>
+            </div>
+        );
     };
 
     return (
@@ -168,49 +305,33 @@ export default function CustomerEditModal({
                     <>
                         <ModalHeader>{t("customer.edit.title")}</ModalHeader>
                         <ModalBody className="max-h-[60vh] overflow-y-auto">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <Input
-                                    label={t("customer.add.inputs.firstname")}
-                                    value={formData.firstname}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "firstname",
-                                            e.target.value,
-                                        )
-                                    }
-                                    errorMessage={errors.firstname}
-                                    isInvalid={!!errors.firstname}
-                                />
-                                <Input
-                                    label={t("customer.add.inputs.lastname")}
-                                    value={formData.lastname}
-                                    onChange={(e) =>
-                                        handleChange("lastname", e.target.value)
-                                    }
-                                    errorMessage={errors.lastname}
-                                    isInvalid={!!errors.lastname}
-                                />
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <Input
-                                    label={t("customer.add.inputs.email")}
-                                    value={formData.email}
-                                    onChange={(e) =>
-                                        handleChange("email", e.target.value)
-                                    }
-                                    errorMessage={errors.email}
-                                    isInvalid={!!errors.email}
-                                />
-                                <Input
-                                    label={t("customer.add.inputs.phone")}
-                                    value={formData.phone}
-                                    onChange={(e) =>
-                                        handleChange("phone", e.target.value)
-                                    }
-                                    errorMessage={errors.phone}
-                                    isInvalid={!!errors.phone}
-                                />
-                            </div>
+                            {isLoading ? (
+                                <div className="flex justify-center items-center py-8">
+                                    <Spinner size="lg" />
+                                </div>
+                            ) : (
+                                <>
+                                    <BasicFields
+                                        formData={formData}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        t={t}
+                                    />
+                                    <ContactFields
+                                        formData={formData}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        t={t}
+                                    />
+                                    <StoreSelector
+                                        formData={formData}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        stores={stores}
+                                        t={t}
+                                    />
+                                </>
+                            )}
                         </ModalBody>
                         <ModalFooter>
                             <Button
@@ -226,7 +347,7 @@ export default function CustomerEditModal({
                             <Button
                                 color="primary"
                                 onPress={handleSubmit}
-                                isDisabled={isSubmitting}
+                                isDisabled={isSubmitting || isLoading}
                                 isLoading={isSubmitting}
                             >
                                 {t("generics.save")}

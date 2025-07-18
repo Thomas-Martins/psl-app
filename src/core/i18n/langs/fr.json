@@ -65,6 +65,7 @@
         "_name": "Panier",
         "your_cart": "Votre panier",
         "empty": "Votre panier est vide.",
+        "delivery_address": "Adresse de livraison",
         "total_ttc": "Total TTC",
         "total_ht": "Total HT",
         "tva": "TVA",

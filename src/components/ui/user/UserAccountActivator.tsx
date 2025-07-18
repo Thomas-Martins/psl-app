@@ -60,6 +60,13 @@ export default function UserAccountActivator({
                             <RoleChip role={user.role as Role} />
                         </div>
                     )}
+                    {customer && (
+                        <div className="hidden lg:block">
+                            <p className="text-white">
+                                {user.firstname + " " + user.lastname}
+                            </p>
+                        </div>
+                    )}
                     <Avatar
                         className="transition-transform"
                         name={user.firstname}
@@ -74,6 +81,13 @@ export default function UserAccountActivator({
                             <RoleChip role={user.role as Role} />
                         </div>
                     )}
+                    {customer && (
+                        <div className="lg:hidden flex flex-col items-start">
+                            <p className="text-white text-sm font-medium">
+                                {user.firstname + " " + user.lastname}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="solid">
@@ -83,14 +97,6 @@ export default function UserAccountActivator({
                 >
                     {t("global.links.my_account")}
                 </DropdownItem>
-                {customer ? (
-                    <DropdownItem
-                        key="orders"
-                        onPress={() => navigate("/user/orders")}
-                    >
-                        {t("global.links.my_orders")}
-                    </DropdownItem>
-                ) : null}
                 <DropdownItem
                     key="logout"
                     color="danger"

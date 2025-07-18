@@ -188,9 +188,8 @@ export default function SupplierEditModal({
             }}
             scrollBehavior="inside"
             className="sm:max-w-2xl w-full max-w-full m-0 sm:m-auto"
-            style={{ height: "100%", maxHeight: "100dvh" }}
         >
-            <ModalContent className="h-[100dvh] sm:h-auto flex flex-col">
+            <ModalContent className="max-h-[90vh] sm:max-h-[80vh] flex flex-col">
                 {(onClose) => (
                     <>
                         <ModalHeader>

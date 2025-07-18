@@ -13,7 +13,13 @@ import { useCallback, useEffect, useState } from "react";
 import { Category } from "@/types/Categories.ts";
 import { useTranslation } from "react-i18next";
 
-export default function ProductsAsideMenu() {
+interface MobileFiltersDrawerProps {
+    onClose: () => void;
+}
+
+export default function MobileFiltersDrawer({
+    onClose,
+}: MobileFiltersDrawerProps) {
     const { t } = useTranslation();
     const [categories, setCategories] = useState<Category[]>([]);
     const { filters, setFilters } = useProductFilters();
@@ -40,22 +46,20 @@ export default function ProductsAsideMenu() {
             categories: selectedCategories,
             priceRange: priceRange,
         });
-    }, [filters, priceRange, selectedCategories, setFilters]);
+        onClose(); // Fermer le drawer après avoir appliqué les filtres
+    }, [filters, priceRange, selectedCategories, setFilters, onClose]);
 
     return (
         <div className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto min-h-0">
-                <h1 className="mb-2 px-2">
-                    {t("products.shop.filters._name")}
-                </h1>
-                <Divider />
+            {/* Contenu scrollable */}
+            <div className="flex-1 overflow-y-auto px-4 py-2">
                 <Accordion isCompact>
                     <AccordionItem
                         aria-label={t("categories._name")}
                         title={t("categories._name")}
                         className="overflow-visible"
                     >
-                        <div className="max-h-96 overflow-y-auto">
+                        <div className="max-h-80 overflow-y-auto">
                             <CheckboxGroup
                                 value={selectedCategories}
                                 onChange={setSelectedCategories}
@@ -77,43 +81,39 @@ export default function ProductsAsideMenu() {
                         </div>
                     </AccordionItem>
                 </Accordion>
-                <Divider />
-                <div className="overflow-hidden">
-                    <Slider
-                        classNames={{
-                            base: "p-2",
-                            labelWrapper: "mb-2",
-                            label: "font-medium text-default-700 text-medium",
-                            value: "text-light-400 text-small",
-                            track: "max-w-full",
-                            filler: "max-w-full",
-                        }}
-                        defaultValue={[0, 1000]}
-                        disableThumbScale={true}
-                        formatOptions={{ style: "currency", currency: "EUR" }}
-                        label={t("products.shop.price")}
-                        maxValue={1000}
-                        minValue={0}
-                        showOutline={true}
-                        showSteps={true}
-                        showTooltip={true}
-                        step={100}
-                        tooltipProps={{
-                            offset: 5,
-                            placement: "bottom",
-                        }}
-                        tooltipValueFormatOptions={{
-                            style: "currency",
-                            currency: "EUR",
-                            maximumFractionDigits: 0,
-                        }}
-                        size="sm"
-                        onChange={(value) => setPriceRange(value as number[])}
-                    />
-                </div>
+                <Divider className="my-4" />
+                <Slider
+                    classNames={{
+                        base: "px-2 pb-4",
+                        labelWrapper: "mb-2",
+                        label: "font-medium text-default-700 text-medium",
+                        value: "text-light-400 text-small",
+                    }}
+                    defaultValue={[0, 1000]}
+                    disableThumbScale={true}
+                    formatOptions={{ style: "currency", currency: "EUR" }}
+                    label={t("products.shop.price")}
+                    maxValue={1000}
+                    minValue={0}
+                    showOutline={true}
+                    showSteps={true}
+                    showTooltip={true}
+                    step={100}
+                    tooltipProps={{
+                        offset: 5,
+                        placement: "bottom",
+                    }}
+                    tooltipValueFormatOptions={{
+                        style: "currency",
+                        currency: "EUR",
+                        maximumFractionDigits: 0,
+                    }}
+                    size="sm"
+                    onChange={(value) => setPriceRange(value as number[])}
+                />
             </div>
 
-            <div className="shrink-0 pt-4 mt-auto">
+            <div className="shrink-0 p-4">
                 <Button className="w-full" onPress={handleApplyFilters}>
                     {t("products.shop.filters.button")}
                 </Button>

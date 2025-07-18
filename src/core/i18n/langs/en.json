@@ -65,6 +65,7 @@
         "_name": "Cart",
         "your_cart": "Your cart",
         "empty": "Your cart is empty.",
+        "delivery_address": "Delivery address",
         "total_ttc": "Total (incl. tax)",
         "total_ht": "Total (excl. tax)",
         "tva": "VAT",

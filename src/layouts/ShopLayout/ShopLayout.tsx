@@ -16,20 +16,24 @@ export default function ShopLayout() {
 
     // Détermine dynamiquement les classes CSS
     const gridClass = showAside
-        ? "grid grid-cols-12 gap-5 mb-5"
+        ? "grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-5 mb-5"
         : "grid grid-cols-1 mb-5";
 
     const mainContentClass = showAside
-        ? "col-span-9 p-5 overflow-x-scroll md:overflow-x-hidden"
-        : "col-span-1 p-5 overflow-x-scroll md:overflow-x-hidden";
+        ? "md:col-span-9 p-3 md:p-5 overflow-x-scroll md:overflow-x-hidden"
+        : "col-span-1 p-3 md:p-5 overflow-x-scroll md:overflow-x-hidden";
 
     return (
-        <div className="relative z-10 px-3 md:px-6 lg:px-8 ">
+        <div className="relative z-10 px-2 md:px-6 lg:px-8 ">
             <Navbar />
-            <div className={`${gridClass} max-w-screen-xl mx-auto mt-5`}>
+            <div
+                className={`${gridClass} max-w-screen-xl mx-auto mt-3 md:mt-5`}
+            >
                 {showAside && (
-                    <Card className="md:col-span-3 p-5 max-h-[885px] min-h-[885px]">
-                        {asideContent}
+                    <Card className="md:col-span-3 p-3 md:p-5 max-h-[400px] md:max-h-[885px] min-h-[400px] md:min-h-[885px] mb-3 md:mb-0 overflow-x-hidden w-full max-w-full">
+                        <div className="w-full max-w-full overflow-x-hidden h-full">
+                            {asideContent}
+                        </div>
                     </Card>
                 )}
                 <Card className={mainContentClass}>

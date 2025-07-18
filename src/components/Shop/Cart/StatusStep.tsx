@@ -24,44 +24,55 @@ export default function StatusStep({ status }: StatusStepProps) {
 
     const circleClass = (stepNumber: number) =>
         clsx(
-            "p-5 rounded-full shadow w-24 h-24 flex justify-center items-center",
+            "p-2 md:p-5 rounded-full shadow w-12 h-12 md:w-24 md:h-24 flex justify-center items-center",
             currentStep >= stepNumber && "bg-green-500",
         );
 
     return (
-        <div className="flex justify-between items-center px-32 gap-2">
-            <div className="flex flex-col items-center gap-2">
+        <div className="grid grid-cols-5 items-center gap-0 px-1 md:px-32">
+            <div className="flex flex-col items-center gap-1 md:gap-2">
                 <div className={circleClass(1)}>
-                    <CartCheckIcon size={50} color="black" />
+                    <CartCheckIcon
+                        size={20}
+                        className="md:w-[50px] md:h-[50px]"
+                        color="black"
+                    />
                 </div>
-                <p className="text-xs text-nowrap">
+                <p className="text-[10px] md:text-sm text-center leading-tight md:text-nowrap">
                     {t("orders.status.pending")}
                 </p>
             </div>
 
-            <div className="w-full">
-                <Divider />
+            <div className="flex justify-center">
+                <Divider className="w-full" />
             </div>
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-1 md:gap-2">
                 <div className={circleClass(2)}>
-                    <PackageIcon size={50} color="black" />
+                    <PackageIcon
+                        size={20}
+                        className="md:w-[50px] md:h-[50px]"
+                        color="black"
+                    />
                 </div>
-                <p className="text-xs text-nowrap">
-                    {" "}
+                <p className="text-[10px] md:text-sm text-center leading-tight md:text-nowrap">
                     {t("orders.status.processing")}
                 </p>
             </div>
 
-            <div className="w-full">
-                <Divider />
+            <div className="flex justify-center">
+                <Divider className="w-full" />
             </div>
-            <div className="flex flex-col items-center gap-2">
+
+            <div className="flex flex-col items-center gap-1 md:gap-2">
                 <div className={circleClass(3)}>
-                    <DoubleCheckIcon size={50} color="black" />
+                    <DoubleCheckIcon
+                        size={20}
+                        className="md:w-[50px] md:h-[50px]"
+                        color="black"
+                    />
                 </div>
-                <p className="text-xs text-nowrap">
-                    {" "}
+                <p className="text-[10px] md:text-sm text-center leading-tight md:text-nowrap">
                     {t("orders.status.shipped")}
                 </p>
             </div>

@@ -68,15 +68,15 @@ export default function CartVerification() {
     };
 
     return (
-        <div className="grid grid-cols-5 gap-4 items-start h-full">
-            <div className="bg-white w-full col-span-3 p-5 rounded-2xl flex flex-col gap-3 shadow">
+        <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4 items-start h-full">
+            <div className="bg-white w-full lg:col-span-3 p-5 rounded-2xl flex flex-col gap-3 shadow">
                 <h1 className="text-2xl font-medium">
                     {t("cart.info_confirmation")}
                 </h1>
                 <p className="text-xl mb-4">
                     {t("stores._name")} : {user.store?.name}
                 </p>
-                <div className="flex gap-3 mb-3">
+                <div className="flex flex-col sm:flex-row gap-3 mb-3">
                     <Input
                         type="text"
                         label={t("users.add.inputs.address")}
@@ -94,7 +94,7 @@ export default function CartVerification() {
                         onChange={(e) => setZip(e.target.value)}
                     />
                 </div>
-                <div className="flex gap-3 mb-3">
+                <div className="flex flex-col sm:flex-row gap-3 mb-3">
                     <Input
                         type="text"
                         label={t("users.add.inputs.city")}
@@ -121,9 +121,9 @@ export default function CartVerification() {
                 />
             </div>
 
-            <div className="bg-white w-full col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between h-full gap-5">
+            <div className="bg-white w-full lg:col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between lg:h-full gap-5">
                 <h1 className="text-2xl font-medium">{t("cart.your_cart")}</h1>
-                <CartDetail />
+                <CartDetail showDeliveryAddress={true} />
                 <Button
                     color="primary"
                     size="lg"
