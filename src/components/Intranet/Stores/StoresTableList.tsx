@@ -12,10 +12,10 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    addToast,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useNavigate } from "react-router";
 
 interface StoresTableListProps {
@@ -38,7 +38,6 @@ export default function StoresTableList({
     const { t } = useTranslation();
     const navigate = useNavigate();
     const headers = StoresTableListHeaders(t);
-    const { setAlert } = useGlobalAlert();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
@@ -75,15 +74,15 @@ export default function StoresTableList({
         try {
             await StoresProvider.deleteStore(store.id);
             await mutate();
-            setAlert({
+            addToast({
                 title: t("stores.table.actions.delete.success"),
-                type: "success",
+                color: "success",
             });
         } catch (error) {
             console.error(error);
-            setAlert({
+            addToast({
                 title: t("stores.table.actions.delete.error"),
-                type: "danger",
+                color: "danger",
             });
         }
     };

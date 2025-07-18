@@ -55,7 +55,6 @@ export default function CustomerDetailDrawer() {
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 size="xl"
-                hideCloseButton={true}
                 onClose={() => {
                     navigate(-1);
                 }}
@@ -89,7 +88,7 @@ export default function CustomerDetailDrawer() {
                                         <span>
                                             {t("customer.details.address")} :
                                         </span>
-                                        {" " + customer.full_address}
+                                        {" " + customer.store?.full_address}
                                     </p>
                                 </div>
                             </div>

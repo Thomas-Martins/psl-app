@@ -227,7 +227,10 @@ export default function ProductEditModal({
         }
         const formData = new FormData();
         formData.append("image", file);
-        const res = await ProductsProvider.uploadProductImage(productId, formData);
+        const res = await ProductsProvider.uploadProductImage(
+            productId,
+            formData,
+        );
         if (!res || !res.data?.image_url) {
             throw new Error("UploadResponse invalide");
         }
@@ -288,14 +291,15 @@ export default function ProductEditModal({
                 if (!open) handleClose();
             }}
             size="xl"
+            scrollBehavior="inside"
         >
             <ModalContent>
                 {(onClose) => (
                     <>
                         <ModalHeader>{t("products.edit.title")}</ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="max-h-[60vh] overflow-y-auto">
                             <div className="space-y-4">
-                                <div className="flex items-center gap-4">
+                                <div className="flex flex-col md:flex-row items-center gap-4">
                                     <div
                                         className="w-36 h-32 bg-black rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors"
                                         onClick={() =>
@@ -352,7 +356,7 @@ export default function ProductEditModal({
                                 errorMessage={errors.name}
                                 isInvalid={!!errors.name}
                             />
-                            <div className="flex gap-2">
+                            <div className="flex flex-col md:flex-row gap-4">
                                 <Input
                                     label={t("products.add.inputs.reference")}
                                     value={formData.reference}
@@ -376,7 +380,7 @@ export default function ProductEditModal({
                                 />
                             </div>
 
-                            <div className="flex gap-2">
+                            <div className="flex flex-col md:flex-row gap-4">
                                 <NumberInput
                                     label={t("products.add.inputs.price")}
                                     value={formData.price}
@@ -401,7 +405,7 @@ export default function ProductEditModal({
                                     isInvalid={!!errors.stock}
                                 />
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex flex-col md:flex-row gap-4">
                                 <Select
                                     label="Catégorie"
                                     selectedKeys={[

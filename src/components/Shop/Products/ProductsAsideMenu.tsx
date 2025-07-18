@@ -65,7 +65,7 @@ export default function ProductsAsideMenu() {
                                         key={category.id}
                                         value={category.name}
                                     >
-                                        <p>
+                                        <p className="text-sm break-words">
                                             {category.name}{" "}
                                             <span className="text-xs text-light-300">
                                                 ({category.products_count})
@@ -78,38 +78,42 @@ export default function ProductsAsideMenu() {
                     </AccordionItem>
                 </Accordion>
                 <Divider />
-                <Slider
-                    classNames={{
-                        base: "p-2",
-                        labelWrapper: "mb-2",
-                        label: "font-medium text-default-700 text-medium",
-                        value: "text-light-400 text-small",
-                    }}
-                    defaultValue={[0, 1000]}
-                    disableThumbScale={true}
-                    formatOptions={{ style: "currency", currency: "EUR" }}
-                    label={t("products.shop.price")}
-                    maxValue={1000}
-                    minValue={0}
-                    showOutline={true}
-                    showSteps={true}
-                    showTooltip={true}
-                    step={100}
-                    tooltipProps={{
-                        offset: 5,
-                        placement: "bottom",
-                    }}
-                    tooltipValueFormatOptions={{
-                        style: "currency",
-                        currency: "EUR",
-                        maximumFractionDigits: 0,
-                    }}
-                    size="sm"
-                    onChange={(value) => setPriceRange(value as number[])}
-                />
+                <div className="overflow-hidden">
+                    <Slider
+                        classNames={{
+                            base: "p-2",
+                            labelWrapper: "mb-2",
+                            label: "font-medium text-default-700 text-medium",
+                            value: "text-light-400 text-small",
+                            track: "max-w-full",
+                            filler: "max-w-full",
+                        }}
+                        defaultValue={[0, 1000]}
+                        disableThumbScale={true}
+                        formatOptions={{ style: "currency", currency: "EUR" }}
+                        label={t("products.shop.price")}
+                        maxValue={1000}
+                        minValue={0}
+                        showOutline={true}
+                        showSteps={true}
+                        showTooltip={true}
+                        step={100}
+                        tooltipProps={{
+                            offset: 5,
+                            placement: "bottom",
+                        }}
+                        tooltipValueFormatOptions={{
+                            style: "currency",
+                            currency: "EUR",
+                            maximumFractionDigits: 0,
+                        }}
+                        size="sm"
+                        onChange={(value) => setPriceRange(value as number[])}
+                    />
+                </div>
             </div>
 
-            <div className="shrink-0 pt-4">
+            <div className="shrink-0 pt-4 mt-auto">
                 <Button className="w-full" onPress={handleApplyFilters}>
                     {t("products.shop.filters.button")}
                 </Button>

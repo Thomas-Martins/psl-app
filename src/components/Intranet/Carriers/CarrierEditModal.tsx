@@ -172,14 +172,16 @@ export default function CarrierEditModal({
             onOpenChange={(open) => {
                 if (!open) handleClose();
             }}
+            scrollBehavior="inside"
+            className="sm:max-w-2xl w-full max-w-full m-0 sm:m-auto"
         >
-            <ModalContent>
+            <ModalContent className="max-h-[90vh] sm:max-h-[80vh] flex flex-col">
                 {(onClose) => (
                     <>
                         <ModalHeader>
                             <h2>{t("carriers.edit.title")}</h2>
                         </ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="overflow-y-auto flex-1">
                             <div className="space-y-4">
                                 <h3 className="underline font-medium">
                                     {t("carriers.add.inputs.title")}
@@ -193,7 +195,7 @@ export default function CarrierEditModal({
                                     errorMessage={errors.name}
                                     isInvalid={!!errors.name}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("carriers.add.inputs.email")}
                                         value={formData.email}
@@ -228,7 +230,7 @@ export default function CarrierEditModal({
                                     errorMessage={errors.address}
                                     isInvalid={!!errors.address}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("carriers.add.inputs.zipcode")}
                                         value={formData.zipcode}
@@ -254,7 +256,7 @@ export default function CarrierEditModal({
                                 <h3 className="underline font-medium">
                                     {t("carriers.add.inputs.subtitle")}
                                 </h3>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "carriers.add.inputs.contact_person_lastname",
@@ -294,7 +296,7 @@ export default function CarrierEditModal({
                                         }
                                     />
                                 </div>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "carriers.add.inputs.contact_person_email",

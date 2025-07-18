@@ -1,4 +1,4 @@
-import { Button, useDisclosure } from "@heroui/react";
+import { Button, useDisclosure, addToast } from "@heroui/react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
@@ -6,16 +6,17 @@ import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import { PaginatedSuppliers } from "@/types/Suppliers.ts";
 import { useTranslation } from "react-i18next";
 import SuppliersTableList from "@components/Intranet/Suppliers/SuppliersTableList.tsx";
+import SuppliersAccordionListMobile from "@components/Intranet/Suppliers/SuppliersAccordionListMobile";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import type { FormValues } from "@/types/FormTypes.ts";
 import { FieldDefinition } from "@/types/FormTypes.ts";
 import { SuppliersAddModalInputs } from "@components/Intranet/Suppliers/SuppliersAddForm.inputs.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import { Outlet, useLocation } from "react-router";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
 
 const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
     const params = JSON.parse(key);
@@ -32,7 +33,6 @@ const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
 
 export default function SuppliersPage() {
     const { t } = useTranslation();
-    const { setAlert } = useGlobalAlert();
     const { orderBy, orderWay, handleSortChange } = useSort("name", "ASC");
     const { currentPage, limit, handlePageChange, handleLimitChange } =
         usePagination(1, 10);
@@ -61,6 +61,8 @@ export default function SuppliersPage() {
         keepPreviousData: true,
     });
 
+    const isMobile = useMediaQuery("(max-width: 768px)");
+
     useEffect(() => {
         if (location.pathname === "/suppliers") {
             mutate();
@@ -83,15 +85,19 @@ export default function SuppliersPage() {
             await SuppliersProvider.createSupplier(payload);
             await mutate();
             onOpenChange();
-            setAlert({
+            addToast({
+                color: "success",
                 title: t("suppliers.add.alert.success"),
-                type: "success",
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         } catch (e) {
             console.error(e);
-            setAlert({
+            addToast({
+                color: "danger",
                 title: t("suppliers.add.alert.error"),
-                type: "danger",
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         }
     };
@@ -103,52 +109,67 @@ export default function SuppliersPage() {
         })();
     }, []);
 
-    if (error) return <div>{t("error.message")}</div>;
+    if (error) return <div>{t("errors.message")}</div>;
 
     return (
         <div className="space-y-5">
-            <div className="flex items-center justify-between">
-                <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
-                <Button
-                    aria-label="add"
-                    color="primary"
-                    size="md"
-                    onPress={onOpen}
-                >
-                    <AddSquareIcon size={24} color="white" />
-                    {t("suppliers.add.button")}
-                </Button>
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                <div className="w-full md:w-1/4">
+                    <SearchInput setSearch={setSearch} classNames={"w-full"} />
+                </div>
+                <div className="w-full md:w-auto">
+                    <Button
+                        aria-label="add"
+                        color="primary"
+                        size="md"
+                        onPress={onOpen}
+                        className="w-full md:w-auto"
+                    >
+                        <AddSquareIcon size={24} color="white" />
+                        {t("suppliers.add.button")}
+                    </Button>
+                </div>
             </div>
-            <SuppliersTableList
-                suppliers={
-                    suppliers || {
-                        current_page: 1,
-                        data: [],
-                        per_page: 10,
-                        total: 0,
-                        last_page: 1,
+            {isMobile ? (
+                <SuppliersAccordionListMobile
+                    suppliers={suppliers?.data || []}
+                    isLoading={isLoading}
+                    mutate={mutate}
+                />
+            ) : (
+                <SuppliersTableList
+                    suppliers={
+                        suppliers || {
+                            current_page: 1,
+                            data: [],
+                            per_page: 10,
+                            total: 0,
+                            last_page: 1,
+                        }
                     }
-                }
-                onSortChange={handleSortChange}
-                orderBy={orderBy}
-                orderWay={orderWay}
-                isLoading={isLoading}
-                mutate={mutate}
-            />
-            <PaginateFooter
-                values={["10", "50", "100"]}
-                currentPage={currentPage}
-                handlePageChange={handlePageChange}
-                totalPages={suppliers?.last_page || 1}
-                totalItems={suppliers?.total || 0}
-                itemsPerPage={limit}
-                onLimitChange={(newLimit) =>
-                    handleLimitChange(
-                        newLimit,
-                        suppliers ? Number(suppliers.total) : 10,
-                    )
-                }
-            />
+                    onSortChange={handleSortChange}
+                    orderBy={orderBy}
+                    orderWay={orderWay}
+                    isLoading={isLoading}
+                    mutate={mutate}
+                />
+            )}
+            {suppliers && suppliers.data && suppliers.data.length > 0 && (
+                <PaginateFooter
+                    values={["10", "50", "100"]}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    totalPages={suppliers?.last_page || 1}
+                    totalItems={suppliers?.total || 0}
+                    itemsPerPage={limit}
+                    onLimitChange={(newLimit) =>
+                        handleLimitChange(
+                            newLimit,
+                            suppliers ? Number(suppliers.total) : 10,
+                        )
+                    }
+                />
+            )}
             <AddFormModal
                 title={t("suppliers.add.title")}
                 isOpen={isOpen}

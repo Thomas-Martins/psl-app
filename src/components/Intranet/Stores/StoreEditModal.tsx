@@ -159,6 +159,7 @@ export default function StoreEditModal({
             onOpenChange={(open) => {
                 if (!open) handleClose();
             }}
+            scrollBehavior="inside"
         >
             <ModalContent>
                 {(onClose) => (
@@ -166,7 +167,7 @@ export default function StoreEditModal({
                         <ModalHeader>
                             <h2>{t("stores.edit.title")}</h2>
                         </ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="max-h-[60vh] overflow-y-auto">
                             <div className="space-y-4">
                                 <h3 className="underline font-medium">
                                     {t("stores.add.inputs.title")}
@@ -180,7 +181,7 @@ export default function StoreEditModal({
                                     errorMessage={errors.name}
                                     isInvalid={!!errors.name}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("stores.add.inputs.email")}
                                         value={formData.email}
@@ -215,7 +216,7 @@ export default function StoreEditModal({
                                     errorMessage={errors.address}
                                     isInvalid={!!errors.address}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("stores.add.inputs.zipcode")}
                                         value={formData.zipcode}

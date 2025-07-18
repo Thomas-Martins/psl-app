@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { Button, useDisclosure } from "@heroui/react";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import { PaginatedProducts } from "@/types/Products.ts";
@@ -14,8 +13,12 @@ import AddSquareIcon from "@components/ui/icons/AddSquareIcon.tsx";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import AddFormModal from "@components/ui/Form/AddFormModal.tsx";
 import ProductsTableList from "@components/Intranet/Products/ProductsTableList.tsx";
+import ProductsAccordionListMobile from "@components/Intranet/Products/ProductsAccordionListMobile.tsx";
 import { Outlet } from "react-router";
 import { ProductsContext } from "@/contexts/Products/ProductsContext";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
+import { addToast } from "@heroui/react";
+import ProductAddStockModal from "@components/Intranet/Products/ProductAddStockModal";
 
 const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
     const params = JSON.parse(key);
@@ -32,7 +35,6 @@ const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
 export default function ProductsPage() {
     const { t } = useTranslation();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const { setAlert } = useGlobalAlert();
     const { orderWay, orderBy, handleSortChange } = useSort("name", "ASC");
     const { currentPage, limit, handlePageChange, handleLimitChange } =
         usePagination(1, 10);
@@ -74,15 +76,19 @@ export default function ProductsPage() {
             await ProductsProvider.createProduct(payload);
             await mutate();
             onOpenChange();
-            setAlert({
+            addToast({
+                color: "success",
                 title: t("products.add.alert.success"),
-                type: "success",
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         } catch (e) {
             console.error(e);
-            setAlert({
+            addToast({
+                color: "danger",
                 title: t("products.add.alert.error"),
-                type: "danger",
+                shouldShowTimeoutProgress: true,
+                timeout: 5000,
             });
         }
     };
@@ -94,55 +100,85 @@ export default function ProductsPage() {
         })();
     }, []);
 
-    if (error) return <div>{t("error.message")}</div>;
+    const isMobile = useMediaQuery("(max-width: 768px)");
+    const [isAddStockOpen, setIsAddStockOpen] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<string | null>(
+        null,
+    );
+
+    const handleOpenAddStockModal = (productId: string) => {
+        setSelectedProductId(productId);
+        setIsAddStockOpen(true);
+    };
+
+    if (error) return <div>{t("errors.message")}</div>;
 
     return (
         <ProductsContext.Provider value={{ mutate }}>
             <div className="space-y-5">
-                <div className="flex items-center justify-between">
-                    <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
-                    <Button
-                        aria-label="add"
-                        color="primary"
-                        size="md"
-                        onPress={onOpen}
-                    >
-                        <AddSquareIcon size={24} color="white" />
-                        {t("suppliers.add.button")}
-                    </Button>
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                    <div className="w-full md:w-1/4">
+                        <SearchInput
+                            setSearch={setSearch}
+                            classNames={"w-full"}
+                        />
+                    </div>
+                    <div className="w-full md:w-auto">
+                        <Button
+                            aria-label="add"
+                            color="primary"
+                            size="md"
+                            onPress={onOpen}
+                            className="w-full md:w-auto"
+                        >
+                            <AddSquareIcon size={24} color="white" />
+                            {t("products.add.button")}
+                        </Button>
+                    </div>
                 </div>
 
-                <ProductsTableList
-                    products={
-                        products || {
-                            current_page: 1,
-                            data: [],
-                            per_page: 10,
-                            total: 0,
-                            last_page: 1,
+                {isMobile ? (
+                    <ProductsAccordionListMobile
+                        products={products?.data || []}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                        onOpenAddStockModal={handleOpenAddStockModal}
+                    />
+                ) : (
+                    <ProductsTableList
+                        products={
+                            products || {
+                                current_page: 1,
+                                data: [],
+                                per_page: 10,
+                                total: 0,
+                                last_page: 1,
+                            }
                         }
-                    }
-                    onSortChange={handleSortChange}
-                    orderBy={orderBy}
-                    orderWay={orderWay}
-                    isLoading={isLoading}
-                    mutate={mutate}
-                />
+                        onSortChange={handleSortChange}
+                        orderBy={orderBy}
+                        orderWay={orderWay}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                    />
+                )}
 
-                <PaginateFooter
-                    values={["10", "50", "100"]}
-                    totalPages={products?.last_page || 1}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                    itemsPerPage={limit}
-                    totalItems={products?.total || 0}
-                    onLimitChange={(newLimit) =>
-                        handleLimitChange(
-                            newLimit,
-                            products ? Number(products.total) : 10,
-                        )
-                    }
-                />
+                {products && products.data && products.data.length > 0 && (
+                    <PaginateFooter
+                        values={["10", "50", "100"]}
+                        totalPages={products?.last_page || 1}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                        itemsPerPage={limit}
+                        totalItems={products?.total || 0}
+                        onLimitChange={(newLimit) =>
+                            handleLimitChange(
+                                newLimit,
+                                products ? Number(products.total) : 10,
+                            )
+                        }
+                    />
+                )}
 
                 <AddFormModal
                     title={t("products.add.title")}
@@ -150,6 +186,17 @@ export default function ProductsPage() {
                     onOpenChange={onOpenChange}
                     fields={inputs}
                     onSubmit={handleProductsAddSubmit}
+                />
+
+                <ProductAddStockModal
+                    isOpen={isAddStockOpen}
+                    onOpenChange={() => setIsAddStockOpen(false)}
+                    productId={selectedProductId}
+                    onSuccess={async () => {
+                        await mutate();
+                        setIsAddStockOpen(false);
+                        setSelectedProductId(null);
+                    }}
                 />
 
                 <Outlet />

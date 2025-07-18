@@ -17,7 +17,6 @@ import {
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import {
-    downloadPDF,
     orderStatusColor,
     orderStatusName,
     totalHtToTtc,
@@ -26,6 +25,7 @@ import { useNavigate } from "react-router";
 import OrdersProvider from "@core/api/Providers/OrdersProvider.ts";
 import i18n from "@core/i18n/i18n.ts";
 import OrderStatusModal from "@components/Intranet/Orders/OrderStatusModal.tsx";
+import { saveAs } from "file-saver";
 
 interface OrdersTableListProps {
     orders: PaginatedOrders;
@@ -90,8 +90,8 @@ export default function OrdersTableList({
         try {
             await mutate();
         } catch {
-            addToast({ 
-                title: t("generics.errors.surprise"), 
+            addToast({
+                title: t("generics.errors.surprise"),
                 color: "danger",
                 timeout: 2000,
                 shouldShowTimeoutProgress: true,
@@ -115,12 +115,14 @@ export default function OrdersTableList({
                 onRowAction={(id) => {
                     navigate(`/orders/${id}`);
                 }}
+                className="w-full text-xs"
             >
                 <TableHeader>
                     {headers.map((header) => (
                         <TableColumn
                             key={header.key}
                             allowsSorting={header.sortable}
+                            className="px-2 py-1"
                         >
                             {header.label}
                         </TableColumn>
@@ -142,8 +144,10 @@ export default function OrdersTableList({
                             key={order.id}
                             className="hover:bg-foreground-50 cursor-pointer"
                         >
-                            <TableCell>#{order.reference}</TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1">
+                                #{order.reference}
+                            </TableCell>
+                            <TableCell className="px-2 py-1">
                                 <Chip
                                     color={orderStatusColor(order.status)}
                                     variant="flat"
@@ -151,18 +155,24 @@ export default function OrdersTableList({
                                     {orderStatusName(order.status)}
                                 </Chip>
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1">
                                 {order.estimated_delivery_date
                                     ? order.estimated_delivery_date
                                     : "-"}
                             </TableCell>
-                            <TableCell>{order.user.store.address}</TableCell>
-                            <TableCell>{order.user.identity}</TableCell>
-                            <TableCell>{order.total_quantity}</TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1 break-words">
+                                {order.user.store.address}
+                            </TableCell>
+                            <TableCell className="px-2 py-1 break-words">
+                                {order.user.identity}
+                            </TableCell>
+                            <TableCell className="px-2 py-1">
+                                {order.total_quantity}
+                            </TableCell>
+                            <TableCell className="px-2 py-1">
                                 {totalHtToTtc(order.total_price, 20)}€
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="px-2 py-1">
                                 <ThreeDotMenu
                                     actions={[
                                         {
@@ -193,16 +203,27 @@ export default function OrdersTableList({
                                             variant: "default",
                                             onClick: async () => {
                                                 try {
-                                                    const payload = {
-                                                        locale: i18n.language,
+                                                    const queryParams = {
+                                                        locale:
+                                                            i18n.resolvedLanguage ||
+                                                            i18n.language,
                                                     };
                                                     const response =
                                                         await OrdersProvider.downloadInvoice(
                                                             order.id,
+                                                            queryParams,
                                                             {},
-                                                            payload,
                                                         );
-                                                    downloadPDF(response.data);
+                                                    const blob = new Blob(
+                                                        [response.data],
+                                                        {
+                                                            type: "application/pdf",
+                                                        },
+                                                    );
+                                                    saveAs(
+                                                        blob,
+                                                        `facture-${order.reference}.pdf`,
+                                                    );
                                                 } catch (e) {
                                                     console.error(e);
                                                     addToast({

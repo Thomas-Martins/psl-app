@@ -4,16 +4,7 @@ import api from "../api.ts";
 
 class ProductsProvider {
     static getProducts(params: GetProductsParams) {
-        const flatParams = {
-            ...params,
-            ...(params.categories && {
-                categories: Array.isArray(params.categories)
-                    ? params.categories.join(",")
-                    : params.categories,
-            }),
-        };
-
-        return api.get("/products", { params: flatParams });
+        return api.get("/products", { params });
     }
 
     static getProduct(id: string) {

@@ -7,6 +7,7 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    addToast,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
@@ -15,7 +16,6 @@ import { useTranslation } from "react-i18next";
 import { Key, useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useNavigate } from "react-router";
 
 interface CarriersTableListProps {
@@ -36,7 +36,6 @@ export default function CarriersTableList({
 }: CarriersTableListProps) {
     const { t } = useTranslation();
     const headers = CarriersTableListHeaders(t);
-    const { setAlert } = useGlobalAlert();
     const navigate = useNavigate();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
@@ -74,15 +73,15 @@ export default function CarriersTableList({
         try {
             await CarriersProvider.deleteCarrier(carrier.id);
             await mutate();
-            setAlert({
-                type: "success",
+            addToast({
                 title: t("carriers.table.actions.delete.success"),
+                color: "success",
             });
         } catch (e) {
             console.error(e);
-            setAlert({
-                type: "danger",
+            addToast({
                 title: t("carriers.table.actions.delete.error"),
+                color: "danger",
             });
         }
     };

@@ -8,6 +8,7 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    addToast,
 } from "@heroui/react";
 import { UsersTableListHeaders } from "@components/Intranet/Users/UsersTableList.headers.ts";
 import RoleChip from "@components/ui/global/RoleChip.tsx";
@@ -17,7 +18,6 @@ import UsersProvider from "@core/api/Providers/UsersProvider.ts";
 import { Action } from "@utils/Action.ts";
 import { useTranslation } from "react-i18next";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { InitialsLetter } from "@utils/utils.ts";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
@@ -43,7 +43,6 @@ export default function UsersTableList({
     const { t } = useTranslation();
     const navigate = useNavigate();
     const headers = UsersTableListHeaders(t);
-    const { setAlert } = useGlobalAlert();
     const authenticatedUser = useSelector((state: RootState) => state.user);
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
@@ -82,15 +81,15 @@ export default function UsersTableList({
         try {
             await UsersProvider.deleteUser(user.id);
             await mutate();
-            setAlert({
+            addToast({
                 title: t("users.table.actions.delete.success"),
-                type: "success",
+                color: "success",
             });
         } catch (e) {
             console.error(e);
-            setAlert({
+            addToast({
                 title: t("users.table.actions.delete.error"),
-                type: "danger",
+                color: "danger",
             });
         }
     };
@@ -149,16 +148,16 @@ export default function UsersTableList({
                                 />
                                 <div>
                                     <h3 className="text-md">{user.identity}</h3>
-                                    <p className="text-sm text-light-400">
-                                        {user.email} - {user.phone}
-                                    </p>
                                 </div>
                             </TableCell>
                             <TableCell>
-                                <RoleChip role={user.role} />
+                                <p className="text-sm">{user.email}</p>
                             </TableCell>
                             <TableCell>
-                                {user.address} {user.zipcode} {user.city}
+                                <p className="text-sm">{user.phone}</p>
+                            </TableCell>
+                            <TableCell>
+                                <RoleChip role={user.role} />
                             </TableCell>
                             <TableCell>
                                 <ThreeDotMenu

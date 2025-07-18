@@ -10,12 +10,12 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    addToast,
 } from "@heroui/react";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import CustomersProvider from "@core/api/Providers/CustomersProvider.ts";
 import { CustomersTableListHeaders } from "@components/Intranet/Clients/CustomersTableList.headers.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useNavigate } from "react-router";
 
 interface CustomersTableListProps {
@@ -36,7 +36,6 @@ export default function CustomersTableList({
 }: CustomersTableListProps) {
     const { t } = useTranslation();
     const headers = CustomersTableListHeaders(t);
-    const { setAlert } = useGlobalAlert();
     const navigate = useNavigate();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
@@ -74,23 +73,25 @@ export default function CustomersTableList({
         try {
             await CustomersProvider.deleteCustomer(customer.id);
             await mutate();
-            setAlert({
+            addToast({
                 title: t("customer.table.actions.delete.success"),
-                type: "success",
+                color: "success",
                 hideIcon: false,
             });
         } catch (e) {
             console.error(e);
-            setAlert({
+            addToast({
                 title: t("customer.table.actions.delete.error"),
-                type: "danger",
+                color: "danger",
                 hideIcon: false,
             });
         }
     };
 
     const loadingState =
-        isLoading || customers.data.length === 0 ? "loading" : "idle";
+        isLoading || !customers.data || customers.data.length === 0
+            ? "loading"
+            : "idle";
 
     useEffect(() => {
         setSortDescriptor({
@@ -119,7 +120,7 @@ export default function CustomersTableList({
                     ))}
                 </TableHeader>
                 <TableBody
-                    items={customers.data}
+                    items={customers.data || []}
                     loadingContent={
                         <CircularProgress
                             aria-label="loader"
@@ -128,7 +129,7 @@ export default function CustomersTableList({
                     }
                     loadingState={loadingState}
                 >
-                    {customers.data.map((customer) => (
+                    {(customers.data || []).map((customer) => (
                         <TableRow
                             key={customer.id}
                             className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"
@@ -145,12 +146,12 @@ export default function CustomersTableList({
                             </TableCell>
                             <TableCell>
                                 <h3 className="text-md">
-                                    {customer.store.name}
+                                    {customer.store?.name}
                                 </h3>
                             </TableCell>
                             <TableCell>
                                 <p className="text-md">
-                                    {customer.full_address}
+                                    {customer.store?.full_address}
                                 </p>
                             </TableCell>
                             <TableCell>

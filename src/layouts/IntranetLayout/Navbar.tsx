@@ -23,8 +23,24 @@ interface LogoProps {
     height?: number;
 }
 export const Logo = ({ height }: LogoProps) => {
+    const navigate = useNavigate();
+
+    const handleLogoClick = () => {
+        navigate("/orders");
+    };
+
     return (
-        <div>
+        <div
+            className="cursor-pointer"
+            onClick={handleLogoClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    handleLogoClick();
+                }
+            }}
+        >
             <svg
                 height={height}
                 viewBox="0 0 98 20"
@@ -114,7 +130,10 @@ export default function NavbarIntranet() {
                         />
                     </NavbarContent>
                     <NavbarMenu className="bg-primary-500">
-                        {/*<UserAccountActivator />*/}
+                        <div className="flex flex-col gap-4 p-4">
+                            <UserAccountActivator />
+                        </div>
+                        <Divider className="bg-primary-400" />
                         {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
                                 <Link
@@ -126,6 +145,10 @@ export default function NavbarIntranet() {
                                 </Link>
                             </NavbarMenuItem>
                         ))}
+                        <Divider className="bg-primary-400" />
+                        <div className="flex justify-center p-4">
+                            <ToggleLanguage />
+                        </div>
                     </NavbarMenu>
                     <NavbarContent
                         className="hidden lg:flex"

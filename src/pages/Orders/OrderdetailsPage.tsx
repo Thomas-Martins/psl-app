@@ -10,7 +10,6 @@ import {
     DrawerBody,
     DrawerContent,
     DrawerHeader,
-    useDisclosure,
 } from "@heroui/react";
 import { orderStatusColor, orderStatusName } from "@utils/utils.ts";
 import { OrderStatus } from "@/types/OrderStatus.ts";
@@ -20,10 +19,10 @@ import { useTranslation } from "react-i18next";
 export default function OrderDetailsPage() {
     const { id } = useParams();
     const { t } = useTranslation();
-    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const navigate = useNavigate();
 
     const [order, setOrder] = useState<Order>();
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const fetchOrderDetails = async (orderId: string) => {
         return await OrdersProvider.getOrder(orderId);
@@ -36,7 +35,7 @@ export default function OrderDetailsPage() {
             fetchOrderDetails(id)
                 .then((response) => {
                     setOrder(response.data.data);
-                    onOpen();
+                    setDrawerOpen(true);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -54,19 +53,23 @@ export default function OrderDetailsPage() {
         return () => {
             isComponentMounted = false;
         };
-    }, [id, onOpen, onClose, navigate, t]);
+    }, [id, navigate, t]);
+
+    const handleDrawerClose = () => {
+        setDrawerOpen(false);
+        navigate(-1);
+    };
 
     return (
         <>
             <Drawer
                 backdrop="blur"
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                isOpen={drawerOpen}
                 size="xl"
                 hideCloseButton={true}
-                onClose={() => {
-                    navigate(-1);
-                }}
+                isDismissable={false}
+                isKeyboardDismissDisabled={true}
+                onClose={handleDrawerClose}
             >
                 <DrawerContent>
                     <DrawerHeader className="flex flex-col gap-1">

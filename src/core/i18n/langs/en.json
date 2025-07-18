@@ -20,6 +20,7 @@
                 "name": "Carrier",
                 "contact": "Contact",
                 "address": "Address",
+                "phone": "Phone",
                 "actions": "Actions"
             },
             "empty": "No carriers found."
@@ -64,6 +65,7 @@
         "_name": "Cart",
         "your_cart": "Your cart",
         "empty": "Your cart is empty.",
+        "delivery_address": "Delivery address",
         "total_ttc": "Total (incl. tax)",
         "total_ht": "Total (excl. tax)",
         "tva": "VAT",
@@ -201,6 +203,15 @@
         "message": "An error occurred. Please try again later."
     },
     "generics": {
+        "actions": {
+            "view": "View",
+            "edit": "Edit",
+            "delete": "Delete",
+            "add": "Add",
+            "update": "Update",
+            "download": "Download",
+            "print": "Print"
+        },
         "email": "Email",
         "password": "Password",
         "login_btn": "Log In",
@@ -332,7 +343,8 @@
         },
         "download": {
             "title": "Download invoice",
-            "button": "Download"
+            "button": "Download",
+            "error": "Error downloading invoice"
         },
         "empty": "You don't have any orders.",
         "status": {
@@ -359,6 +371,9 @@
                 "print": {
                     "invoice": "Print invoice",
                     "products_lists": "Print products list"
+                },
+                "download": {
+                    "error": "Error downloading invoice"
                 }
             },
             "headers": {
@@ -490,13 +505,18 @@
                         "confirm": "Delete"
                     },
                     "success": "The supplier was successfully deleted.",
-                    "error": "An error occurred while deleting the supplier."
+                    "error": "An error occurred while deleting the supplier.",
+                    "alert": {
+                        "success": "The supplier was successfully deleted.",
+                        "error": "An error occurred while deleting the supplier."
+                    }
                 }
             },
             "headers": {
                 "name": "Supplier",
                 "contact": "Contact",
                 "address": "Address",
+                "phone": "Phone",
                 "actions": "Actions"
             },
             "empty": "No suppliers found."

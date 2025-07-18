@@ -143,18 +143,23 @@ export default function ProductsTableList({
                             className="hover:bg-zinc-500 hover:bg-opacity-10 cursor-pointer"
                         >
                             <TableCell width="60%">
-                                <div className={"flex gap-4"}>
+                                <div
+                                    className={
+                                        "flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center"
+                                    }
+                                >
                                     {product.image_url ? (
                                         <Image
                                             src={product.image_url}
-                                            width={80}
-                                            height={80}
-                                            className={"object-cover"}
+                                            className={
+                                                "w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-lg object-cover mx-auto sm:mx-0"
+                                            }
+                                            alt={product.name}
                                         />
                                     ) : (
                                         <div
                                             className={
-                                                "bg-zinc-500 bg-opacity-20 min-h-20 min-w-20 rounded-lg flex justify-center items-center"
+                                                "w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-zinc-500 bg-opacity-20 rounded-lg flex justify-center items-center mx-auto sm:mx-0"
                                             }
                                         >
                                             <ImageIcon
@@ -163,7 +168,7 @@ export default function ProductsTableList({
                                             />
                                         </div>
                                     )}
-                                    <div>
+                                    <div className="mt-2 sm:mt-0 w-full">
                                         <h3 className="text-md">
                                             {product.name}
                                             {" - "}

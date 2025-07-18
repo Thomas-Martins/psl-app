@@ -81,6 +81,11 @@ export const validators: {
         if (typeof value !== "string") return null;
         return null;
     },
+    store: (value) => {
+        if (!value) return i18n.t("generics.errors.add.store.required");
+        if (typeof value !== "string") return null;
+        return null;
+    },
     stock: (value) => {
         if (!value) return i18n.t("generics.errors.add.stock.required");
         const numberRegex = /^[0-9]+$/;

@@ -22,8 +22,24 @@ interface LogoProps {
     height?: number;
 }
 export const PslShopLogo = ({ height }: LogoProps) => {
+    const navigate = useNavigate();
+
+    const handleLogoClick = () => {
+        navigate("/shop/products");
+    };
+
     return (
-        <div>
+        <div
+            className="cursor-pointer"
+            onClick={handleLogoClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    handleLogoClick();
+                }
+            }}
+        >
             <svg
                 height={height}
                 viewBox="0 0 147 31"
@@ -56,6 +72,11 @@ export default function NavbarShop() {
             url: "/shop/categories",
             visible: true,
         },
+        {
+            label: t("global.links.my_orders"),
+            url: "/user/orders",
+            visible: true,
+        },
     ];
 
     const filteredMenuItems = menuItems.filter((item) => item.visible);
@@ -83,12 +104,20 @@ export default function NavbarShop() {
                         <NavbarBrand>
                             <PslShopLogo height={35} />
                         </NavbarBrand>
+                    </NavbarContent>
+
+                    <NavbarContent className="lg:hidden" justify="end">
+                        <Cart />
                         <NavbarMenuToggle
-                            className="[&>span::before]:bg-white [&>span::after]:bg-white lg:hidden"
+                            className="[&>span::before]:bg-white [&>span::after]:bg-white"
                             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                         />
                     </NavbarContent>
                     <NavbarMenu className="bg-primary-500">
+                        <div className="flex flex-col gap-4 p-4">
+                            <UserAccountActivator customer={true} />
+                        </div>
+                        <Divider className="bg-primary-400" />
                         {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
                                 <Link
@@ -100,6 +129,10 @@ export default function NavbarShop() {
                                 </Link>
                             </NavbarMenuItem>
                         ))}
+                        <Divider className="bg-primary-400" />
+                        <div className="flex justify-center p-4">
+                            <ToggleLanguage />
+                        </div>
                     </NavbarMenu>
                     <NavbarContent
                         className="hidden lg:flex"

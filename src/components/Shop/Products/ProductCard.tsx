@@ -13,19 +13,23 @@ export default function ProductCard({ item }: ProductCardProps) {
                     {item.image_url ? (
                         <img
                             alt={item.name}
-                            className="w-full object-cover h-36"
+                            className="w-full object-cover h-32 md:h-36"
                             src={item.image_url}
                             width="100%"
                         />
                     ) : (
-                        <div className="bg-zinc-500 bg-opacity-20 flex flex-col justify-center items-center h-36">
-                            <ImageIcon size={50} color={"white"} />
+                        <div className="bg-zinc-500 bg-opacity-20 flex flex-col justify-center items-center h-32 md:h-36">
+                            <ImageIcon size={35} color={"white"} />
                         </div>
                     )}
                 </CardBody>
-                <CardFooter className="flex justify-between">
-                    <h2 className="text-xs font-bold">{item.name}</h2>
-                    <p className="text-xs text-light-300">€{item.price}</p>
+                <CardFooter className="flex justify-between p-2 md:p-3">
+                    <h2 className="text-xs md:text-sm font-bold truncate flex-1 mr-2">
+                        {item.name}
+                    </h2>
+                    <p className="text-xs md:text-sm text-light-300 font-semibold">
+                        €{item.price}
+                    </p>
                 </CardFooter>
             </Card>
         </div>

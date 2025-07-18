@@ -10,28 +10,6 @@ export const StoresAddModalInputs = async (): Promise<FieldDefinition[]> => {
                 visible: true,
                 elements: [
                     {
-                        name: "image",
-                        type: "file",
-                        label: i18n.t("stores.add.inputs.image"),
-                        validators: [
-                            (file: FormDataValue) => {
-                                if (
-                                    file instanceof File &&
-                                    file.size > 2048 * 1024
-                                ) {
-                                    return "L'image ne doit pas dépasser 2 Mo";
-                                }
-                                return null;
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                type: "form-row",
-                visible: true,
-                elements: [
-                    {
                         name: "name",
                         type: "text",
                         placeholder: i18n.t("stores.add.inputs.name"),

@@ -296,6 +296,7 @@ export default function AddFormModal({
                 isDismissable={false}
                 isKeyboardDismissDisabled={true}
                 size="2xl"
+                scrollBehavior="inside"
             >
                 <ModalContent>
                     {(onClose) => (
@@ -303,7 +304,7 @@ export default function AddFormModal({
                             <ModalHeader className="flex flex-col gap-1">
                                 {title}
                             </ModalHeader>
-                            <ModalBody>
+                            <ModalBody className="max-h-[60vh] overflow-y-auto">
                                 <Form
                                     id="add-form"
                                     onSubmit={handleSubmit}
@@ -335,7 +336,7 @@ export default function AddFormModal({
                                                             )
                                                             .join("-")
                                                     }
-                                                    className="mb-4 flex flex-row gap-4 w-full"
+                                                    className="mb-4 flex flex-col md:flex-row gap-4 w-full"
                                                 >
                                                     {field.elements.map(
                                                         (el) => (

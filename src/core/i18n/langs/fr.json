@@ -20,6 +20,7 @@
                 "name": "Transporteur",
                 "contact": "Contact",
                 "address": "Adresse",
+                "phone": "Téléphone",
                 "actions": "Actions"
             },
             "empty": "Aucun transporteurs trouvés."
@@ -64,6 +65,7 @@
         "_name": "Panier",
         "your_cart": "Votre panier",
         "empty": "Votre panier est vide.",
+        "delivery_address": "Adresse de livraison",
         "total_ttc": "Total TTC",
         "total_ht": "Total HT",
         "tva": "TVA",
@@ -204,6 +206,15 @@
         "message": "Une erreur est survenue. Veuillez réessayer plus tard."
     },
     "generics": {
+        "actions": {
+            "view": "Voir",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "add": "Ajouter",
+            "update": "Mettre à jour",
+            "download": "Télécharger",
+            "print": "Imprimer"
+        },
         "email": "Email",
         "password": "Mot de passe",
         "login_btn": "Se connecter",
@@ -341,7 +352,8 @@
         },
         "download": {
             "title": "Télécharger la facture",
-            "button": "Télécharger"
+            "button": "Télécharger",
+            "error": "Erreur lors du téléchargement de la facture"
         },
         "empty": "Vous n'avez pas de commandes.",
         "status": {
@@ -368,6 +380,9 @@
                 "print": {
                     "invoice": "Imprimer la facture",
                     "products_lists": "Imprimer la liste des produits"
+                },
+                "download": {
+                    "error": "Erreur lors du téléchargement de la facture"
                 }
             },
             "headers": {
@@ -499,13 +514,18 @@
                         "confirm": "Supprimer"
                     },
                     "success": "Le fournisseur a été supprimé avec succès.",
-                    "error": "Une erreur est survenue lors de la suppression du fournisseur."
+                    "error": "Une erreur est survenue lors de la suppression du fournisseur.",
+                    "alert": {
+                        "success": "Le fournisseur a été supprimé avec succès.",
+                        "error": "Une erreur est survenue lors de la suppression du fournisseur."
+                    }
                 }
             },
             "headers": {
                 "name": "Fournisseur",
                 "contact": "Contact",
                 "address": "Adresse",
+                "phone": "Téléphone",
                 "actions": "Actions"
             },
             "empty": "Aucun fournisseurs trouvés."
@@ -566,6 +586,7 @@
             "headers": {
                 "name": "Point de vente",
                 "address": "Adresse",
+                "phone": "Téléphone",
                 "customers_count": "Nombre de clients",
                 "actions": "Actions"
             },

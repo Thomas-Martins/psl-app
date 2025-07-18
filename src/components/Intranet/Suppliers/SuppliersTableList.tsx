@@ -9,13 +9,13 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    addToast,
 } from "@heroui/react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared";
 import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import { useTranslation } from "react-i18next";
 import SuppliersProvider from "@core/api/Providers/SuppliersProvider.ts";
-import { useGlobalAlert } from "@/contexts/GlobalAlertContext.tsx";
 import { useNavigate } from "react-router";
 
 interface SuppliersTableListProps {
@@ -37,7 +37,6 @@ export default function SuppliersTableList({
 }: SuppliersTableListProps) {
     const { t } = useTranslation();
     const headers = SuppliersTableListHeaders(t);
-    const { setAlert } = useGlobalAlert();
     const navigate = useNavigate();
 
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
@@ -75,15 +74,15 @@ export default function SuppliersTableList({
         try {
             await SuppliersProvider.deleteSupplier(supplier.id);
             await mutate();
-            setAlert({
+            addToast({
                 title: t("suppliers.table.actions.delete.alert.title"),
-                type: "success",
+                color: "success",
             });
         } catch (e) {
             console.error(e);
-            setAlert({
+            addToast({
                 title: t("suppliers.table.actions.delete.alert.error"),
-                type: "danger",
+                color: "danger",
             });
         }
     };

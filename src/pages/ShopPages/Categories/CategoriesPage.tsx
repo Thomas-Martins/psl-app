@@ -50,7 +50,7 @@ export default function CategoriesPage() {
                     <CircularProgress size="lg" aria-label="Loading..." />
                 </div>
             ) : (
-                <div className="grid grid-cols-5 gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
                     {categories.map((category) => (
                         <Link
                             key={category.id}
@@ -70,13 +70,20 @@ export default function CategoriesPage() {
                                         height={225}
                                     />
                                 ) : (
-                                    <div className="bg-zinc-500 bg-opacity-20 h-56 rounded-xl flex items-center justify-center">
-                                        <ImageIcon size={50} color="white" />
+                                    <div className="bg-zinc-500 bg-opacity-20 h-40 md:h-56 rounded-xl flex items-center justify-center">
+                                        <div className="w-10 h-10 md:w-12 md:h-12">
+                                            <ImageIcon
+                                                size={40}
+                                                color="white"
+                                            />
+                                        </div>
                                     </div>
                                 )}
 
                                 <CardFooter className="flex p-2 before:bg-white/10 border-white/20 border-1 overflow-hidden absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                                    <p className="text-xs">{category.name}</p>
+                                    <p className="text-xs md:text-sm">
+                                        {category.name}
+                                    </p>
                                 </CardFooter>
                             </Card>
                         </Link>

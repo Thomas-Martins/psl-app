@@ -186,14 +186,16 @@ export default function SupplierEditModal({
             onOpenChange={(open) => {
                 if (!open) handleClose();
             }}
+            scrollBehavior="inside"
+            className="sm:max-w-2xl w-full max-w-full m-0 sm:m-auto"
         >
-            <ModalContent>
+            <ModalContent className="max-h-[90vh] sm:max-h-[80vh] flex flex-col">
                 {(onClose) => (
                     <>
                         <ModalHeader>
                             <h2>{t("suppliers.edit.title")}</h2>
                         </ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="overflow-y-auto flex-1">
                             <div className="space-y-4">
                                 <h3 className="underline font-medium">
                                     {t("suppliers.add.inputs.title")}
@@ -207,7 +209,7 @@ export default function SupplierEditModal({
                                     errorMessage={errors.name}
                                     isInvalid={!!errors.name}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t("suppliers.add.inputs.email")}
                                         value={formData.email}
@@ -242,7 +244,7 @@ export default function SupplierEditModal({
                                     errorMessage={errors.address}
                                     isInvalid={!!errors.address}
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "suppliers.add.inputs.zipcode",
@@ -270,7 +272,7 @@ export default function SupplierEditModal({
                                 <h3 className="underline font-medium">
                                     {t("suppliers.add.inputs.subtitle")}
                                 </h3>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "suppliers.add.inputs.contact_person_lastname",
@@ -310,7 +312,7 @@ export default function SupplierEditModal({
                                         }
                                     />
                                 </div>
-                                <div className="flex space-x-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <Input
                                         label={t(
                                             "suppliers.add.inputs.contact_person_email",

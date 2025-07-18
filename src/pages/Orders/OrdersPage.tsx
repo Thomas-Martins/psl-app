@@ -11,6 +11,8 @@ import { Select, SelectItem } from "@heroui/react";
 import { orderStatusName } from "@utils/utils.ts";
 import SearchInput from "@components/tools/SearchInput.tsx";
 import { useState } from "react";
+import OrdersAccordionListMobile from "@components/Intranet/Orders/OrdersAccordionListMobile";
+import { useMediaQuery } from "@utils/hook/useMediaQuery";
 
 const fetchOrders = async (key: string): Promise<PaginatedOrders> => {
     const params = JSON.parse(key);
@@ -64,57 +66,60 @@ export default function OrdersPage() {
 
     const orderStatus = data?.status ?? [];
 
+    const isMobile = useMediaQuery("(max-width: 768px)");
+
     const handleStatusChange = (statusValue: string) => {
         setSelectedStatus(statusValue);
         handlePageChange(1);
     };
 
     if (error) {
-        return <div>{t("error.message")}</div>;
+        return <div>{t("errors.message")}</div>;
     }
 
     return (
         <div className="space-y-5">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-5 w-full">
-                    <Select
-                        aria-label="order-status-filter"
-                        className="w-1/4"
-                        radius="md"
-                        defaultSelectedKeys={["all"]}
-                        onChange={(e) => handleStatusChange(e.target.value)}
-                    >
-                        {[
-                            <SelectItem key="all">
-                                {t("orders.status.all")}
-                            </SelectItem>,
-                            ...orderStatus.map((status) => (
-                                <SelectItem key={status}>
-                                    {orderStatusName(status)}
-                                </SelectItem>
-                            )),
-                        ]}
-                    </Select>
-                    <SearchInput setSearch={setSearch} classNames={"w-1/4"} />
-                </div>
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5 w-full">
+                <Select
+                    aria-label="order-status-filter"
+                    className="w-full md:w-1/4"
+                    radius="md"
+                    defaultSelectedKeys={["all"]}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                >
+                    {[
+                        <SelectItem key="all">
+                            {t("orders.status.all")}
+                        </SelectItem>,
+                        ...orderStatus.map((status) => (
+                            <SelectItem key={status}>
+                                {orderStatusName(status)}
+                            </SelectItem>
+                        )),
+                    ]}
+                </Select>
+                <SearchInput
+                    setSearch={setSearch}
+                    classNames={"w-full md:w-1/4"}
+                />
             </div>
-            <OrdersTableList
-                orders={
-                    orders || {
-                        current_page: 1,
-                        data: [],
-                        per_page: 10,
-                        total: 0,
-                        last_page: 1,
-                    }
-                }
-                isLoading={isLoading}
-                onSortChange={handleSortChange}
-                orderBy={orderBy}
-                orderWay={orderWay}
-                mutate={mutate}
-            />
-            {orders.data.length > 0 && (
+            {isMobile ? (
+                <OrdersAccordionListMobile
+                    orders={orders}
+                    isLoading={isLoading}
+                    mutate={mutate}
+                />
+            ) : (
+                <OrdersTableList
+                    orders={orders}
+                    isLoading={isLoading}
+                    onSortChange={handleSortChange}
+                    orderBy={orderBy}
+                    orderWay={orderWay}
+                    mutate={mutate}
+                />
+            )}
+            {orders && orders.data && orders.data.length > 0 && (
                 <PaginateFooter
                     values={["10", "50", "100"]}
                     currentPage={currentPage}

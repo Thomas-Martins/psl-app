@@ -25,14 +25,14 @@ export default function CartConfirmation() {
     const { order } = state;
 
     return (
-        <div className="bg-white p-10 rounded-2xl space-y-20 text-center shadow">
-            <div className="space-y-5">
-                <h1 className="text-3xl font-medium">
+        <div className="bg-white p-4 md:p-10 rounded-2xl space-y-6 md:space-y-20 text-center shadow">
+            <div className="space-y-2 md:space-y-5">
+                <h1 className="text-xl md:text-3xl font-medium">
                     {t("orders.confirmation.title", {
                         reference: order.reference,
                     })}
                 </h1>
-                <div>
+                <div className="text-sm md:text-base">
                     <Trans t={t} parent="span">
                         {t("orders.confirmation.emailing", {
                             email: user.email,
@@ -41,9 +41,11 @@ export default function CartConfirmation() {
                 </div>
             </div>
             <StatusStep status={order.status} />
-            <div>
-                <p>{t("orders.confirmation.info")}</p>
-                <p>
+            <div className="space-y-2 md:space-y-4">
+                <p className="text-sm md:text-base">
+                    {t("orders.confirmation.info")}
+                </p>
+                <p className="text-sm md:text-base">
                     {t("orders.confirmation.detail")}{" "}
                     <Link
                         className="underline"
@@ -54,7 +56,7 @@ export default function CartConfirmation() {
                 </p>
             </div>
             <div>
-                <p className="flex justify-center gap-1 text-light-400">
+                <p className="flex flex-col sm:flex-row justify-center gap-1 text-light-400 text-xs md:text-base">
                     {t("orders.confirmation.contact.title")}
                     <a
                         className="underline hover:text-black"
