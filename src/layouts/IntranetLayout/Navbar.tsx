@@ -23,8 +23,24 @@ interface LogoProps {
     height?: number;
 }
 export const Logo = ({ height }: LogoProps) => {
+    const navigate = useNavigate();
+
+    const handleLogoClick = () => {
+        navigate("/orders");
+    };
+
     return (
-        <div>
+        <div
+            className="cursor-pointer"
+            onClick={handleLogoClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    handleLogoClick();
+                }
+            }}
+        >
             <svg
                 height={height}
                 viewBox="0 0 98 20"

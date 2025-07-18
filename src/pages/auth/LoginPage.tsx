@@ -52,6 +52,15 @@ export default function LoginPage() {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            if (email.trim() && password.trim()) {
+                handleLogin();
+            }
+        }
+    };
+
     return (
         <div className="flex flex-col h-screen lg:flex-row ">
             <div className="py-14 px-6 flex flex-col gap-16 h-full lg:min-w-[30%] lg:px-12 lg:gap-60 shadow-right z-20 xl:max-w-[40%]">
@@ -63,10 +72,8 @@ export default function LoginPage() {
                             alt="psl-solutions-logo"
                         />
                     </div>
-                    {/*Language section*/}
                     <ToggleLanguage />
                 </div>
-                {/*Form section*/}
                 <div>
                     <div className="flex flex-col gap-4 ">
                         <Input
@@ -77,6 +84,7 @@ export default function LoginPage() {
                             errorMessage={t("errors.login.email")}
                             isRequired
                             onChange={(e) => setEmail(e.target.value)}
+                            onKeyDown={handleKeyDown}
                         />
                         <Input
                             type={passwordVisible ? "text" : "password"}
@@ -94,6 +102,7 @@ export default function LoginPage() {
                             errorMessage={t("errors.login.password")}
                             isRequired
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={handleKeyDown}
                         />
                         <div className="flex justify-end">
                             <Button color="primary" onPress={handleLogin}>
@@ -111,7 +120,6 @@ export default function LoginPage() {
                     </div>
                 </div>
             </div>
-            {/*Side image*/}
             <div className="hidden lg:flex ">
                 <img
                     className={"object-cover w-full h-full"}
