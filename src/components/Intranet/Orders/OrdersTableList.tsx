@@ -203,14 +203,16 @@ export default function OrdersTableList({
                                             variant: "default",
                                             onClick: async () => {
                                                 try {
-                                                    const payload = {
-                                                        locale: i18n.language,
+                                                    const queryParams = {
+                                                        locale:
+                                                            i18n.resolvedLanguage ||
+                                                            i18n.language,
                                                     };
                                                     const response =
                                                         await OrdersProvider.downloadInvoice(
                                                             order.id,
+                                                            queryParams,
                                                             {},
-                                                            payload,
                                                         );
                                                     const blob = new Blob(
                                                         [response.data],

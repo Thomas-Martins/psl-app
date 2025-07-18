@@ -5,6 +5,7 @@ import { Order } from "@/types/Orders";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import {
+    addToast,
     Button,
     CircularProgress,
     Divider,
@@ -20,6 +21,8 @@ import FileIcon from "@components/ui/icons/FileIcon.tsx";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
 import { useTranslation } from "react-i18next";
 import ArrowLeftIcon from "@components/ui/icons/ArrowLeftIcon.tsx";
+import { saveAs } from "file-saver";
+import i18n from "@core/i18n/i18n.ts";
 
 export default function OrderDetail() {
     const { t } = useTranslation();
@@ -28,6 +31,38 @@ export default function OrderDetail() {
     const user = useSelector((state: RootState) => state.user);
     const [order, setOrder] = useState<Order>({} as Order);
     const [loading, setLoading] = useState(false);
+    const [downloadingInvoice, setDownloadingInvoice] = useState(false);
+
+    const handleDownloadInvoice = async () => {
+        if (!order.id) return;
+
+        setDownloadingInvoice(true);
+        try {
+            const queryParams = {
+                locale: i18n.resolvedLanguage || i18n.language,
+            };
+            const response = await OrdersProvider.downloadInvoice(
+                order.id,
+                queryParams,
+                {},
+            );
+            const blob = new Blob([response.data], {
+                type: "application/pdf",
+            });
+            saveAs(blob, `facture-${order.reference}.pdf`);
+        } catch (e) {
+            console.error(e);
+            addToast({
+                title: t("generics.errors.surprise"),
+                color: "danger",
+                timeout: 2000,
+                shouldShowTimeoutProgress: true,
+                hideIcon: true,
+            });
+        } finally {
+            setDownloadingInvoice(false);
+        }
+    };
 
     useEffect(() => {
         if (!orderId) {
@@ -76,6 +111,9 @@ export default function OrderDetail() {
                                 variant="light"
                                 size="sm"
                                 className="self-start md:self-center"
+                                onPress={handleDownloadInvoice}
+                                isLoading={downloadingInvoice}
+                                isDisabled={!order.id}
                             >
                                 <span className="text-xs md:text-sm">
                                     {t("orders.download.title")}
