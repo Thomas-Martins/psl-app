@@ -17,9 +17,6 @@ export default function MyAccountInformation() {
     const [lastname, setLastname] = useState(user.lastname);
     const [email, setEmail] = useState(user.email);
     const [phone, setPhone] = useState(user.phone);
-    const [address, setAddress] = useState(user.address);
-    const [zipcode, setZipcode] = useState(user.zipcode);
-    const [city, setCity] = useState(user.city);
     const [previewImage, setPreviewImage] = useState<string>(
         user.image_url || "",
     );
@@ -37,10 +34,7 @@ export default function MyAccountInformation() {
     const uploadProfileImage = async (file: File) => {
         const formData = new FormData();
         formData.append("image", file);
-        const res = await UsersProvider.uploadUserImage(
-            user.id,
-            formData,
-        );
+        const res = await UsersProvider.uploadUserImage(user.id, formData);
         if (!res || !res.data?.image_url) {
             throw new Error("UploadResponse invalide");
         }
@@ -111,24 +105,6 @@ export default function MyAccountInformation() {
             isValid = false;
         }
 
-        if (!address) {
-            newErrors.address = t("generics.errors.add.address.required");
-            isValid = false;
-        }
-
-        if (!zipcode) {
-            newErrors.zipcode = t("generics.errors.add.zipcode.required");
-            isValid = false;
-        } else if (!/^\d{5}$/.test(zipcode)) {
-            newErrors.zipcode = t("generics.errors.add.zipcode.value");
-            isValid = false;
-        }
-
-        if (!city) {
-            newErrors.city = t("generics.errors.add.city.required");
-            isValid = false;
-        }
-
         setErrors(newErrors);
         return isValid;
     };
@@ -141,17 +117,11 @@ export default function MyAccountInformation() {
             lastname,
             email,
             phone,
-            address,
-            zipcode,
-            city,
         };
         setLoading(true);
 
         try {
-            const res = await UsersProvider.updateUser(
-                user.id,
-                payload,
-            );
+            const res = await UsersProvider.updateUser(user.id, payload);
             if (!res || !res.data) throw new Error("Response invalide");
             dispatch(updateUser(res.data));
             addToast({
@@ -245,35 +215,6 @@ export default function MyAccountInformation() {
                     onChange={(e) => setPhone(e.target.value)}
                     errorMessage={errors.phone}
                     isInvalid={!!errors.phone}
-                />
-            </div>
-            <Input
-                type="text"
-                label={t("users.add.inputs.address")}
-                labelPlacement="outside"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                errorMessage={errors.address}
-                isInvalid={!!errors.address}
-            />
-            <div className="flex gap-5">
-                <Input
-                    type="text"
-                    label={t("users.add.inputs.zipcode")}
-                    labelPlacement="outside"
-                    value={zipcode}
-                    onChange={(e) => setZipcode(e.target.value)}
-                    errorMessage={errors.zipcode}
-                    isInvalid={!!errors.zipcode}
-                />
-                <Input
-                    type="text"
-                    label={t("users.add.inputs.city")}
-                    labelPlacement="outside"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    errorMessage={errors.city}
-                    isInvalid={!!errors.city}
                 />
             </div>
 
