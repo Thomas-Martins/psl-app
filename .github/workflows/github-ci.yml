@@ -2,44 +2,43 @@ name: PSL APP CI
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request_target:
-    types:
-      - closed
+    types: [closed]
 
 jobs:
+  ###############################################################################
+  # 1. REBASE-CHECK
+  ###############################################################################
   rebase-check:
     name: Rebase Check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
 
       - name: Skip rebase check if not a PR
         if: ${{ github.event_name != 'pull_request' }}
         run: echo "Not a PR event, skipping rebase check."
 
-      - name: Set target branch variable (for PR events)
+      - name: Set target branch variable
         if: ${{ github.event_name == 'pull_request' }}
-        run: echo "TARGET_BRANCH=${{ github.base_ref }}" >> $GITHUB_ENV
+        run: echo "TARGET_BRANCH=${{ github.base_ref }}" >> "$GITHUB_ENV"
 
-      - name: Check if branch is rebased on target branch (for PR events)
+      - name: Check if branch is rebased
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          git fetch origin $TARGET_BRANCH
+          git fetch origin "$TARGET_BRANCH"
           if [ "$(git merge-base HEAD origin/$TARGET_BRANCH)" != "$(git rev-parse origin/$TARGET_BRANCH)" ]; then
             echo "The branch is not rebased on $TARGET_BRANCH."
             exit 1
           fi
 
+  ###############################################################################
+  # 2. BUILD
+  ###############################################################################
   build:
     name: Build Front Application
     runs-on: ubuntu-latest
@@ -50,77 +49,102 @@ jobs:
       (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true)
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-      - name: Install dependencies
-        run: npm install
-      - name: Build the project
-        run: npm run build
+      - uses: actions/setup-node@v4
+        with: { node-version: "18" }
+      - run: npm ci
+      - run: npm run build
 
+  ###############################################################################
+  # 3. I18N CHECK
+  ###############################################################################
   i18n:
     name: Verify Translations
     runs-on: ubuntu-latest
-    needs: [ build ]
+    needs: [build]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - name: Verify translations
-        run: |
-          node -e "const fs = require('fs');
-          const en = JSON.parse(fs.readFileSync('src/core/i18n/langs/en.json', 'utf8'));
-          const fr = JSON.parse(fs.readFileSync('src/core/i18n/langs/fr.json', 'utf8'));
-          const missingInFr = Object.keys(en).filter(key => !(key in fr));
-          const missingInEn = Object.keys(fr).filter(key => !(key in en));
-          if (missingInFr.length > 0 || missingInEn.length > 0) {
-            console.error('Missing keys detected:');
-            if (missingInFr.length > 0) {
-              console.error('Keys in en.json but not in fr.json:', missingInFr);
-            }
-            if (missingInEn.length > 0) {
-              console.error('Keys in fr.json but not in en.json:', missingInEn);
-            }
-            process.exit(1);
-          } else {
-            console.log('All keys are present in both translation files.');
-          }"
+      - uses: actions/setup-node@v4
+        with: { node-version: "18" }
+      - run: |
+          node -e "
+            const fs = require('fs');
+            const en = JSON.parse(fs.readFileSync('src/core/i18n/langs/en.json','utf8'));
+            const fr = JSON.parse(fs.readFileSync('src/core/i18n/langs/fr.json','utf8'));
+            const missFr = Object.keys(en).filter(k => !(k in fr));
+            const missEn = Object.keys(fr).filter(k => !(k in en));
+            if (missFr.length || missEn.length) { console.error('Missing keys'); process.exit(1); }
+          "
 
+  ###############################################################################
+  # 4. DEPLOY (build on Scaleway)
+  ###############################################################################
+  deploy:
+    name: Build & run on Scaleway
+    needs: [i18n]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Build on server & restart
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          BRANCH: ${{ github.ref_name }}
+          SERVICE: ${{ github.ref == 'refs/heads/main' && 'psl-app-prod' || 'psl-app-dev' }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_URL_DEV: ${{ secrets.VITE_API_URL_DEV }}
+          REPO: ${{ github.repository }}
+        run: |
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST \
+            "BRANCH=$BRANCH SERVICE=$SERVICE REPO=$REPO \
+             VITE_API_URL=$VITE_API_URL VITE_API_URL_DEV=$VITE_API_URL_DEV bash -s" <<'EOF'
+            set -e
+            if [ ! -d /srv/psl/front ]; then
+              git clone --depth 1 https://github.com/$REPO.git /srv/psl/front
+            fi
+            cd /srv/psl/front
+            git fetch origin "$BRANCH"
+            git checkout "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            docker compose build "$SERVICE"
+            docker compose up -d "$SERVICE"
+          EOF
+
+  ###############################################################################
+  # 5. NOTIFY DISCORD
+  ###############################################################################
   notify_discord:
     name: Notify Discord
     runs-on: ubuntu-latest
+    needs: [i18n, deploy]
     if: github.event_name != 'pull_request_target'
-    needs: [i18n]
+
     steps:
-      - name: Define message and notify Discord
+      - name: Build and send Discord message
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
           AUTHOR: ${{ github.actor }}
           BRANCH: ${{ github.head_ref || github.ref_name }}
           TARGET_BRANCH: ${{ github.base_ref || github.ref_name }}
-          STATUS: ${{ needs.i18n.result }}
+          CI_STATUS: ${{ needs.i18n.result }}
+          DEPLOY_STATUS: ${{ needs.deploy.result || 'skipped' }}
         run: |
-          MESSAGE=""
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            if [[ "$STATUS" == "success" ]]; then
-              MESSAGE="✅ **La PR de #$BRANCH vers /$TARGET_BRANCH sur le front-end est prête à être mergée pour le front !** 🎉"
-            else
-              MESSAGE="❌ **La PR de #$BRANCH vers /$TARGET_BRANCH sur le front-end n'est PAS prête à être mergée pour le front.** 🚨"
-            fi
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
-            if [[ "$STATUS" == "success" ]]; then
-              MESSAGE="🚀 **Déploiement réussi du front sur /$TARGET_BRANCH par $AUTHOR !** 🎉"
-            else
-              MESSAGE="❌ **Le déploiement du front sur /$TARGET_BRANCH a échoué car le build a failed.** 🚨"
-            fi
+            [[ "$CI_STATUS" == "success" ]] \
+              && MSG="✅ **La PR *$BRANCH* → *$TARGET_BRANCH* est prête à être mergée.**" \
+              || MSG="❌ **La PR *$BRANCH* → *$TARGET_BRANCH* a échoué dans la CI.**"
+          else
+            ENV=$( [[ "$BRANCH" == "main" ]] && echo "prod" || echo "dev" )
+            [[ "$DEPLOY_STATUS" == "success" ]] \
+              && MSG="🚀 **Déploiement $ENV réussi sur *$BRANCH* par $AUTHOR.**" \
+              || MSG="❌ **Le déploiement $ENV sur *$BRANCH* a échoué.**"
           fi
-
           curl -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
                -H "Content-Type: application/json" \
-               -X POST \
-               -d "{\"content\": \"$MESSAGE\"}" \
+               -X POST -d "{\"content\":\"$MSG\"}" \
                https://discord.com/api/v9/channels/$DISCORD_CHANNEL_ID/messages
