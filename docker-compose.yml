@@ -36,3 +36,4 @@ services:
 networks:
   psl-network:
     external: true
+    name: psl-api_psl-network
