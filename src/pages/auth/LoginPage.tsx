@@ -65,10 +65,9 @@ export default function LoginPage() {
         <div className="flex flex-col h-screen lg:flex-row ">
             <div className="py-14 px-6 flex flex-col gap-16 h-full lg:min-w-[30%] lg:px-12 lg:gap-60 shadow-right z-20 xl:max-w-[40%]">
                 <div className="flex justify-between items-center gap-16">
-                    {/*logo*/}
                     <div className="h-6">
                         <img
-                            src="/src/assets/logos/PslSolutions.svg"
+                            src="/assets/logos/PslSolutions.svg"
                             alt="psl-solutions-logo"
                         />
                     </div>
