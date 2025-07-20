@@ -4,6 +4,7 @@ services:
   psl-app-dev:
     build:
       context: .
+      dockerfile: Dockerfile.react
       args:
         - VITE_API_URL=${VITE_API_URL_DEV}
     container_name: psl-app-dev
@@ -18,6 +19,7 @@ services:
   psl-app-prod:
     build:
       context: .
+      dockerfile: Dockerfile.react
       args:
         - VITE_API_URL=${VITE_API_URL}
     container_name: psl-app-prod
