@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  psl-app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.react
+      args:
+        - VITE_API_URL=${VITE_API_URL_DEV}
+    container_name: psl-app-dev
+    networks: [psl-network]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.front-dev.rule=Host(`dev.psl-app.dev`)"
+      - "traefik.http.routers.front-dev.entrypoints=websecure"
+      - "traefik.http.routers.front-dev.tls.certresolver=letsencrypt"
+      - "traefik.http.services.front-dev.loadbalancer.server.port=80"
+
+  psl-app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.react
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    container_name: psl-app-prod
+    networks: [psl-network]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.front-prod.rule=Host(`app.psl-app.dev`)"
+      - "traefik.http.routers.front-prod.entrypoints=websecure"
+      - "traefik.http.routers.front-prod.tls.certresolver=letsencrypt"
+      - "traefik.http.services.front-prod.loadbalancer.server.port=80"
+
+networks:
+  psl-network:
+    external: true
