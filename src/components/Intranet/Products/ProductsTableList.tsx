@@ -62,7 +62,7 @@ export default function ProductsTableList({
     if (!isLoading && products.data.length === 0) {
         return (
             <div className="py-8 text-center text-gray-400">
-                Aucun produit trouvé.
+                {t("products.table.empty")}
             </div>
         );
     }
@@ -114,13 +114,6 @@ export default function ProductsTableList({
         navigate(`/stocks/${key}`);
     };
 
-    if (!isLoading && products.data.length === 0) {
-        return (
-            <div className="py-8 text-center text-gray-400">
-                Aucun produit trouvé.
-            </div>
-        );
-    }
     const loadingState = isLoading ? "loading" : "idle";
 
     const handleOpenAddStockModal = (productId: string) => {

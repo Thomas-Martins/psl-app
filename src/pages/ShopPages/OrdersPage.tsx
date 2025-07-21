@@ -26,7 +26,6 @@ export default function OrdersPage() {
             });
     }, [setLoading, setOrders, user.id]);
 
-    console.log("ORDERS", orders);
     const calculateTotalPriceTva = (ht: number): number => {
         const TVA_RATE = 0.2;
         const ttc = ht * (1 + TVA_RATE);

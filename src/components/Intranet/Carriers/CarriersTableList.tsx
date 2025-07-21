@@ -96,7 +96,7 @@ export default function CarriersTableList({
     if (!isLoading && carriers.data.length === 0) {
         return (
             <div className="py-8 text-center text-gray-400">
-                Aucun transporteur trouvé.
+                {t("carriers.table.empty")}
             </div>
         );
     }

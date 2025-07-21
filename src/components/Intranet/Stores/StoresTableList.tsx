@@ -100,7 +100,7 @@ export default function StoresTableList({
         <div>
             <Table
                 removeWrapper
-                aria-label="suppliers-table-list"
+                aria-label="stores-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
                 onRowAction={handleRowAction}
