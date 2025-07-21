@@ -121,6 +121,7 @@ export default function ProductsTableList({
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
                 onRowAction={handleRowAction}
+                className="w-full text-xs"
             >
                 <TableHeader>
                     {headers.map((header) => (

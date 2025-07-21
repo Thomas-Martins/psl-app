@@ -93,13 +93,6 @@ export default function CarriersTableList({
         }
     };
 
-    if (!isLoading && carriers.data.length === 0) {
-        return (
-            <div className="py-8 text-center text-gray-400">
-                {t("carriers.table.empty")}
-            </div>
-        );
-    }
     const loadingState = isLoading ? "loading" : "idle";
 
     return (
@@ -110,6 +103,7 @@ export default function CarriersTableList({
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
                 onRowAction={handleRowAction}
+                className="w-full text-xs"
             >
                 <TableHeader>
                     {headers.map((header) => (
