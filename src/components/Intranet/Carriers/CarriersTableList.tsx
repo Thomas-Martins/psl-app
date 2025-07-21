@@ -129,6 +129,7 @@ export default function CarriersTableList({
                             className="stroke-primary-500"
                         />
                     }
+                    emptyContent={t("carriers.table.empty")}
                     loadingState={loadingState}
                 >
                     {carriers.data.map((carrier) => (
