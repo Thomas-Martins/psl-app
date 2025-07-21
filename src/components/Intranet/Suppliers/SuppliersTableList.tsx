@@ -1,4 +1,4 @@
-import { Key, useState } from "react";
+import { Key, useState, useEffect } from "react";
 import { PaginatedSuppliers, Supplier } from "@/types/Suppliers.ts";
 import { SuppliersTableListHeaders } from "@components/Intranet/Suppliers/SuppliersTableList.headers.ts";
 import {
@@ -44,6 +44,14 @@ export default function SuppliersTableList({
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
 
+    // Synchronise le tri avec les props
+    useEffect(() => {
+        setSortDescriptor({
+            column: orderBy,
+            direction: orderWay === "ASC" ? "ascending" : "descending",
+        });
+    }, [orderBy, orderWay]);
+
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
         if (sortDescriptor && sortDescriptor.column === descriptor.column) {
@@ -87,8 +95,14 @@ export default function SuppliersTableList({
         }
     };
 
-    const loadingState =
-        isLoading || suppliers.data.length === 0 ? "loading" : "idle";
+    if (!isLoading && suppliers.data.length === 0) {
+        return (
+            <div className="py-8 text-center text-gray-400">
+                Aucun fournisseur trouvé.
+            </div>
+        );
+    }
+    const loadingState = isLoading ? "loading" : "idle";
 
     return (
         <div>

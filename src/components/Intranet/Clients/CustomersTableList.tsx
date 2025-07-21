@@ -88,17 +88,21 @@ export default function CustomersTableList({
         }
     };
 
-    const loadingState =
-        isLoading || !customers.data || customers.data.length === 0
-            ? "loading"
-            : "idle";
-
     useEffect(() => {
         setSortDescriptor({
             column: orderBy,
             direction: orderWay === "ASC" ? "ascending" : "descending",
         });
     }, [orderBy, orderWay]);
+
+    if (!isLoading && customers.data && customers.data.length === 0) {
+        return (
+            <div className="py-8 text-center text-gray-400">
+                Aucun client trouvé.
+            </div>
+        );
+    }
+    const loadingState = isLoading ? "loading" : "idle";
 
     return (
         <div>

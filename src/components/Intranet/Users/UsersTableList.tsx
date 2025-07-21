@@ -94,14 +94,21 @@ export default function UsersTableList({
         }
     };
 
-    const loadingState = isLoading ? "loading" : "idle";
-
     useEffect(() => {
         setSortDescriptor({
             column: orderBy,
             direction: orderWay === "ASC" ? "ascending" : "descending",
         });
     }, [orderBy, orderWay]);
+
+    if (!isLoading && users.data.length === 0) {
+        return (
+            <div className="py-8 text-center text-gray-400">
+                Aucun utilisateur trouvé.
+            </div>
+        );
+    }
+    const loadingState = isLoading ? "loading" : "idle";
 
     return (
         <div>

@@ -62,7 +62,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex flex-col h-screen lg:flex-row ">
+        <div className="flex flex-col h-screen lg:flex-row">
             <div className="py-14 px-6 flex flex-col gap-16 h-full lg:min-w-[30%] lg:px-12 lg:gap-60 shadow-right z-20 xl:max-w-[40%]">
                 <div className="flex justify-between items-center gap-16">
                     <div className="h-6">
@@ -119,9 +119,9 @@ export default function LoginPage() {
                     </div>
                 </div>
             </div>
-            <div className="hidden lg:flex ">
+            <div className="hidden lg:flex flex-1 h-full w-full">
                 <img
-                    className={"object-cover w-full h-full"}
+                    className="object-cover w-full h-full"
                     src="/img/login-bg.jpg"
                     alt="background-image"
                 />

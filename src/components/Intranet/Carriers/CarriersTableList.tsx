@@ -13,7 +13,7 @@ import ThreeDotMenu from "@components/tools/ThreeDotMenu.tsx";
 import { Action } from "@utils/Action.ts";
 import { CarriersTableListHeaders } from "@components/Intranet/Carriers/CarriersTableList.headers.ts";
 import { useTranslation } from "react-i18next";
-import { Key, useState } from "react";
+import { Key, useState, useEffect } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import CarriersProvider from "@core/api/Providers/CarriersProvider.ts";
 import { useNavigate } from "react-router";
@@ -42,6 +42,13 @@ export default function CarriersTableList({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
+
+    useEffect(() => {
+        setSortDescriptor({
+            column: orderBy,
+            direction: orderWay === "ASC" ? "ascending" : "descending",
+        });
+    }, [orderBy, orderWay]);
 
     const handleRowAction = (key: Key) => {
         navigate(`/carriers/${key}`);
@@ -86,8 +93,14 @@ export default function CarriersTableList({
         }
     };
 
-    const loadingState =
-        isLoading || carriers.data.length === 0 ? "loading" : "idle";
+    if (!isLoading && carriers.data.length === 0) {
+        return (
+            <div className="py-8 text-center text-gray-400">
+                Aucun transporteur trouvé.
+            </div>
+        );
+    }
+    const loadingState = isLoading ? "loading" : "idle";
 
     return (
         <div>
