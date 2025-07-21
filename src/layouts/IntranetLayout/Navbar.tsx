@@ -1,7 +1,6 @@
 import React, { Key } from "react";
 import {
     Divider,
-    Link,
     Navbar,
     NavbarBrand,
     NavbarContent,
@@ -21,12 +20,14 @@ import ToggleLanguage from "@components/tools/ToggleLanguage.tsx";
 interface LogoProps {
     className?: string;
     height?: number;
+    setIsMenuOpen?: (open: boolean) => void;
 }
-export const Logo = ({ height }: LogoProps) => {
+export const Logo = ({ height, setIsMenuOpen }: LogoProps) => {
     const navigate = useNavigate();
 
     const handleLogoClick = () => {
         navigate("/orders");
+        if (setIsMenuOpen) setIsMenuOpen(false);
     };
 
     return (
@@ -117,12 +118,18 @@ export default function NavbarIntranet() {
             <div className="max-w-screen-xl m-auto flex flex-col">
                 <Navbar
                     onMenuOpenChange={setIsMenuOpen}
+                    isMenuOpen={isMenuOpen}
                     maxWidth="xl"
                     className="bg-primary-500"
                 >
                     <NavbarContent>
                         <NavbarBrand>
-                            <Logo height={40} />
+                            <Logo
+                                height={40}
+                                setIsMenuOpen={
+                                    isMenuOpen ? setIsMenuOpen : undefined
+                                }
+                            />
                         </NavbarBrand>
                         <NavbarMenuToggle
                             className="[&>span::before]:bg-white [&>span::after]:bg-white lg:hidden"
@@ -131,18 +138,22 @@ export default function NavbarIntranet() {
                     </NavbarContent>
                     <NavbarMenu className="bg-primary-500">
                         <div className="flex flex-col gap-4 p-4">
-                            <UserAccountActivator />
+                            <UserAccountActivator
+                                onNavigate={() => setIsMenuOpen(false)}
+                            />
                         </div>
                         <Divider className="bg-primary-400" />
                         {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
-                                <Link
-                                    className="w-full text-white"
-                                    href={item.url}
-                                    size="lg"
+                                <button
+                                    className="w-full text-left text-white text-lg py-2"
+                                    onClick={() => {
+                                        navigate(item.url);
+                                        setIsMenuOpen(false);
+                                    }}
                                 >
                                     {item.label}
-                                </Link>
+                                </button>
                             </NavbarMenuItem>
                         ))}
                         <Divider className="bg-primary-400" />

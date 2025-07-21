@@ -1,7 +1,6 @@
 import React, { Key } from "react";
 import {
     Divider,
-    Link,
     Navbar,
     NavbarBrand,
     NavbarContent,
@@ -20,12 +19,14 @@ import Cart from "@components/ui/global/Cart.tsx";
 interface LogoProps {
     className?: string;
     height?: number;
+    setIsMenuOpen?: (open: boolean) => void;
 }
-export const PslShopLogo = ({ height }: LogoProps) => {
+export const PslShopLogo = ({ height, setIsMenuOpen }: LogoProps) => {
     const navigate = useNavigate();
 
     const handleLogoClick = () => {
         navigate("/shop/products");
+        if (setIsMenuOpen) setIsMenuOpen(false);
     };
 
     return (
@@ -97,12 +98,18 @@ export default function NavbarShop() {
             <div className="max-w-screen-xl m-auto flex flex-col">
                 <Navbar
                     onMenuOpenChange={setIsMenuOpen}
+                    isMenuOpen={isMenuOpen}
                     maxWidth="xl"
                     className="bg-primary-500 py-2"
                 >
                     <NavbarContent>
                         <NavbarBrand>
-                            <PslShopLogo height={35} />
+                            <PslShopLogo
+                                height={35}
+                                setIsMenuOpen={
+                                    isMenuOpen ? setIsMenuOpen : undefined
+                                }
+                            />
                         </NavbarBrand>
                     </NavbarContent>
 
@@ -115,18 +122,23 @@ export default function NavbarShop() {
                     </NavbarContent>
                     <NavbarMenu className="bg-primary-500">
                         <div className="flex flex-col gap-4 p-4">
-                            <UserAccountActivator customer={true} />
+                            <UserAccountActivator
+                                customer={true}
+                                onNavigate={() => setIsMenuOpen(false)}
+                            />
                         </div>
                         <Divider className="bg-primary-400" />
                         {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
-                                <Link
-                                    className="w-full text-white"
-                                    href={item.url}
-                                    size="lg"
+                                <button
+                                    className="w-full text-left text-white text-lg py-2"
+                                    onClick={() => {
+                                        navigate(item.url);
+                                        setIsMenuOpen(false);
+                                    }}
                                 >
                                     {item.label}
-                                </Link>
+                                </button>
                             </NavbarMenuItem>
                         ))}
                         <Divider className="bg-primary-400" />
@@ -140,7 +152,10 @@ export default function NavbarShop() {
                         justify="end"
                     >
                         <Cart />
-                        <UserAccountActivator customer={true} />
+                        <UserAccountActivator
+                            customer={true}
+                            onNavigate={() => setIsMenuOpen(false)}
+                        />
                         <ToggleLanguage />
                     </NavbarContent>
                 </Navbar>
