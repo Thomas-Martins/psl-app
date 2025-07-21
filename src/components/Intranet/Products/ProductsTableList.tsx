@@ -59,14 +59,6 @@ export default function ProductsTableList({
         });
     }, [orderBy, orderWay]);
 
-    if (!isLoading && products.data.length === 0) {
-        return (
-            <div className="py-8 text-center text-gray-400">
-                {t("products.table.empty")}
-            </div>
-        );
-    }
-
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
         if (sortDescriptor && sortDescriptor.column === descriptor.column) {
@@ -148,6 +140,7 @@ export default function ProductsTableList({
                             className="stroke-primary-500"
                         />
                     }
+                    emptyContent={t("products.table.empty")}
                     loadingState={loadingState}
                 >
                     {products.data.map((product) => (

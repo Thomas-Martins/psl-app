@@ -95,13 +95,6 @@ export default function CustomersTableList({
         });
     }, [orderBy, orderWay]);
 
-    if (!isLoading && customers.data && customers.data.length === 0) {
-        return (
-            <div className="py-8 text-center text-gray-400">
-                Aucun client trouvé.
-            </div>
-        );
-    }
     const loadingState = isLoading ? "loading" : "idle";
 
     return (
@@ -131,6 +124,7 @@ export default function CustomersTableList({
                             className="stroke-primary-500"
                         />
                     }
+                    emptyContent={t("customer.table.empty")}
                     loadingState={loadingState}
                 >
                     {(customers.data || []).map((customer) => (

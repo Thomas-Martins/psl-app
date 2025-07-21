@@ -87,13 +87,6 @@ export default function StoresTableList({
         }
     };
 
-    if (!isLoading && stores.data.length === 0) {
-        return (
-            <div className="py-8 text-center text-gray-400">
-                Aucun magasin trouvé.
-            </div>
-        );
-    }
     const loadingState = isLoading ? "loading" : "idle";
 
     return (
@@ -123,6 +116,7 @@ export default function StoresTableList({
                             className="stroke-primary-500"
                         />
                     }
+                    emptyContent={t("stores.table.empty")}
                     loadingState={loadingState}
                 >
                     {stores.data.map((store) => (

@@ -131,6 +131,7 @@ export default function SuppliersTableList({
                             className="stroke-primary-500"
                         />
                     }
+                    emptyContent={t("suppliers.table.empty")}
                     loadingState={loadingState}
                 >
                     {suppliers.data.map((supplier) => (
