@@ -1,7 +1,7 @@
 import { PaginatedProducts, Product } from "@/types/Products.ts";
 import { useTranslation } from "react-i18next";
 import { ProductsTableListHeaders } from "@components/Intranet/Products/ProductsTableList.headers.ts";
-import { Key, useState } from "react";
+import { Key, useState, useEffect } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import ProductsProvider from "@core/api/Providers/ProductsProvider.ts";
 import {
@@ -47,11 +47,25 @@ export default function ProductsTableList({
     const [selectedProductId, setSelectedProductId] = useState<string | null>(
         null,
     );
-
     const [sortDescriptor, setSortDescriptor] = useState<TableSortDescriptor>({
         column: orderBy,
         direction: orderWay === "ASC" ? "ascending" : "descending",
     });
+
+    useEffect(() => {
+        setSortDescriptor({
+            column: orderBy,
+            direction: orderWay === "ASC" ? "ascending" : "descending",
+        });
+    }, [orderBy, orderWay]);
+
+    if (!isLoading && products.data.length === 0) {
+        return (
+            <div className="py-8 text-center text-gray-400">
+                {t("products.table.empty")}
+            </div>
+        );
+    }
 
     const handleSortChange = (descriptor: TableSortDescriptor) => {
         let newDirection: "ascending" | "descending" = "ascending";
@@ -100,8 +114,7 @@ export default function ProductsTableList({
         navigate(`/stocks/${key}`);
     };
 
-    const loadingState =
-        isLoading || products.data.length === 0 ? "loading" : "idle";
+    const loadingState = isLoading ? "loading" : "idle";
 
     const handleOpenAddStockModal = (productId: string) => {
         setSelectedProductId(productId);

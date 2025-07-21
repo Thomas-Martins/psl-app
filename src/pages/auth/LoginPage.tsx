@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import GlobalAlert from "@components/ui/global/GlobalAlert.tsx";
 import CartsProvider from "@core/api/Providers/CartsProvider.ts";
 import { clearCart, setCart } from "@store/cartSlice.ts";
+import PageTitle from "@components/tools/PageTitle";
 
 export default function LoginPage() {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -62,70 +63,73 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex flex-col h-screen lg:flex-row ">
-            <div className="py-14 px-6 flex flex-col gap-16 h-full lg:min-w-[30%] lg:px-12 lg:gap-60 shadow-right z-20 xl:max-w-[40%]">
-                <div className="flex justify-between items-center gap-16">
-                    <div className="h-6">
-                        <img
-                            src="/assets/logos/PslSolutions.svg"
-                            alt="psl-solutions-logo"
-                        />
-                    </div>
-                    <ToggleLanguage />
-                </div>
-                <div>
-                    <div className="flex flex-col gap-4 ">
-                        <Input
-                            type="email"
-                            label={t("generics.email")}
-                            labelPlacement={"outside"}
-                            placeholder="example@email.com"
-                            errorMessage={t("errors.login.email")}
-                            isRequired
-                            onChange={(e) => setEmail(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
-                        <Input
-                            type={passwordVisible ? "text" : "password"}
-                            label={t("generics.password")}
-                            labelPlacement={"outside"}
-                            placeholder={t("generics.password")}
-                            endContent={
-                                <ToggleVisibilityPassword
-                                    visible={passwordVisible}
-                                    setVisibility={() =>
-                                        setPasswordVisible(!passwordVisible)
-                                    }
-                                />
-                            }
-                            errorMessage={t("errors.login.password")}
-                            isRequired
-                            onChange={(e) => setPassword(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
-                        <div className="flex justify-end">
-                            <Button color="primary" onPress={handleLogin}>
-                                {t("generics.login_btn")}
-                            </Button>
-                        </div>
-                        {errorMessage && (
-                            <GlobalAlert
-                                type="danger"
-                                hideIcon
-                                title={errorMessage}
-                                variant="solid"
+        <>
+            <PageTitle i18nKey="generics.login_btn" />
+            <div className="flex flex-col h-screen lg:flex-row">
+                <div className="py-14 px-6 flex flex-col gap-16 h-full lg:min-w-[30%] lg:px-12 lg:gap-60 shadow-right z-20 xl:max-w-[40%]">
+                    <div className="flex justify-between items-center gap-16">
+                        <div className="h-6">
+                            <img
+                                src="/assets/logos/PslSolutions.svg"
+                                alt="psl-solutions-logo"
                             />
-                        )}
+                        </div>
+                        <ToggleLanguage />
+                    </div>
+                    <div>
+                        <div className="flex flex-col gap-4 ">
+                            <Input
+                                type="email"
+                                label={t("generics.email")}
+                                labelPlacement={"outside"}
+                                placeholder="example@email.com"
+                                errorMessage={t("errors.login.email")}
+                                isRequired
+                                onChange={(e) => setEmail(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                            <Input
+                                type={passwordVisible ? "text" : "password"}
+                                label={t("generics.password")}
+                                labelPlacement={"outside"}
+                                placeholder={t("generics.password")}
+                                endContent={
+                                    <ToggleVisibilityPassword
+                                        visible={passwordVisible}
+                                        setVisibility={() =>
+                                            setPasswordVisible(!passwordVisible)
+                                        }
+                                    />
+                                }
+                                errorMessage={t("errors.login.password")}
+                                isRequired
+                                onChange={(e) => setPassword(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                            <div className="flex justify-end">
+                                <Button color="primary" onPress={handleLogin}>
+                                    {t("generics.login_btn")}
+                                </Button>
+                            </div>
+                            {errorMessage && (
+                                <GlobalAlert
+                                    type="danger"
+                                    hideIcon
+                                    title={errorMessage}
+                                    variant="solid"
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
+                <div className="hidden lg:flex flex-1 h-full w-full">
+                    <img
+                        className="object-cover w-full h-full"
+                        src="/img/login-bg.jpg"
+                        alt="background-image"
+                    />
+                </div>
             </div>
-            <div className="hidden lg:flex ">
-                <img
-                    className={"object-cover w-full h-full"}
-                    src="/img/login-bg.jpg"
-                    alt="background-image"
-                />
-            </div>
-        </div>
+        </>
     );
 }

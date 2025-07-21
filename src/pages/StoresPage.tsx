@@ -17,6 +17,7 @@ import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import { Outlet } from "react-router";
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
+import PageTitle from "@components/tools/PageTitle";
 
 const fetchStores = async (key: string): Promise<PaginatedStores> => {
     const params = JSON.parse(key);
@@ -103,76 +104,82 @@ export default function StoresPage() {
     }
 
     return (
-        <div className="space-y-5">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
-                <div className="w-full md:w-1/4">
-                    <SearchInput setSearch={setSearch} classNames={"w-full"} />
+        <>
+            <PageTitle i18nKey="stores._name" />
+            <div className="space-y-5">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                    <div className="w-full md:w-1/4">
+                        <SearchInput
+                            setSearch={setSearch}
+                            classNames={"w-full"}
+                        />
+                    </div>
+                    <div className="w-full md:w-auto">
+                        <Button
+                            aria-label="add"
+                            color="primary"
+                            size="md"
+                            onPress={onOpen}
+                            className="w-full md:w-auto"
+                        >
+                            <AddSquareIcon size={24} color="white" />
+                            {t("stores.add.button")}
+                        </Button>
+                    </div>
                 </div>
-                <div className="w-full md:w-auto">
-                    <Button
-                        aria-label="add"
-                        color="primary"
-                        size="md"
-                        onPress={onOpen}
-                        className="w-full md:w-auto"
-                    >
-                        <AddSquareIcon size={24} color="white" />
-                        {t("stores.add.button")}
-                    </Button>
-                </div>
-            </div>
 
-            {isMobile ? (
-                <StoresAccordionListMobile
-                    stores={stores?.data || []}
-                    isLoading={isLoading}
-                    mutate={mutate}
-                />
-            ) : (
-                <StoresTableList
-                    stores={
-                        stores || {
-                            current_page: 1,
-                            data: [],
-                            per_page: 10,
-                            total: 0,
-                            last_page: 1,
+                {isMobile ? (
+                    <StoresAccordionListMobile
+                        stores={stores?.data || []}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                    />
+                ) : (
+                    <StoresTableList
+                        stores={
+                            stores || {
+                                current_page: 1,
+                                data: [],
+                                per_page: 10,
+                                total: 0,
+                                last_page: 1,
+                            }
                         }
-                    }
-                    isLoading={isLoading}
-                    onSortChange={handleSortChange}
-                    orderBy={orderBy}
-                    orderWay={orderWay}
-                    mutate={mutate}
+                        isLoading={isLoading}
+                        onSortChange={handleSortChange}
+                        orderBy={orderBy}
+                        orderWay={orderWay}
+                        mutate={mutate}
+                    />
+                )}
+
+                {stores && stores.data && stores.data.length > 0 && (
+                    <PaginateFooter
+                        values={["10", "50", "100"]}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                        totalPages={stores?.last_page || 1}
+                        totalItems={stores?.total || 0}
+                        itemsPerPage={limit}
+                        onLimitChange={(newLimit) =>
+                            handleLimitChange(
+                                newLimit,
+                                stores ? Number(stores.total) : 10,
+                            )
+                        }
+                    />
+                )}
+
+                <AddFormModal
+                    title={t("stores.add.title")}
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    fields={inputs}
+                    onSubmit={handleStoresAddSubmit}
                 />
-            )}
 
-            {stores && stores.data && stores.data.length > 0 && (
-                <PaginateFooter
-                    values={["10", "50", "100"]}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                    totalPages={stores?.last_page || 1}
-                    totalItems={stores?.total || 0}
-                    itemsPerPage={limit}
-                    onLimitChange={(newLimit) =>
-                        handleLimitChange(
-                            newLimit,
-                            stores ? Number(stores.total) : 10,
-                        )
-                    }
-                />
-            )}
-
-            <AddFormModal
-                title={t("stores.add.title")}
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                fields={inputs}
-                onSubmit={handleStoresAddSubmit}
-            />
-
-            <Outlet context={{ mutate }} />
-        </div>
+                <Outlet context={{ mutate }} />
+            </div>
+        </>
     );
 }

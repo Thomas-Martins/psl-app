@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router";
 import ImageIcon from "@components/ui/icons/ImageIcon.tsx";
 import { useCallback } from "react";
+import PageTitle from "@components/tools/PageTitle";
 
 export default function CategoriesPage() {
     const { t } = useTranslation();
@@ -45,6 +46,7 @@ export default function CategoriesPage() {
 
     return (
         <>
+            <PageTitle i18nKey="categories._name" />
             {!categories ? (
                 <div className="flex justify-center py-10 h-96">
                     <CircularProgress size="lg" aria-label="Loading..." />

@@ -26,6 +26,7 @@ import {
 } from "@heroui/react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "@utils/hook/useMediaQuery.ts";
+import PageTitle from "@components/tools/PageTitle";
 
 export default function ShopProductsPages() {
     const { t } = useTranslation();
@@ -138,6 +139,7 @@ export default function ShopProductsPages() {
 
     return (
         <>
+            <PageTitle i18nKey="products._name" />
             {!products || products?.data.length === 0 ? (
                 <div className="flex justify-center items-center py-6 md:py-10 h-full min-h-[200px]">
                     <CircularProgress aria-label="Loading..." size="lg" />

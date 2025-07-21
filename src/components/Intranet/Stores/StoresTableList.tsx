@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { StoresTableListHeaders } from "@components/Intranet/Stores/StoresTableList.headers.ts";
-import { Key, useEffect, useState } from "react";
+import { Key, useState } from "react";
 import type { SortDescriptor as TableSortDescriptor } from "@react-types/shared/src/collections";
 import { PaginatedStores, Store } from "@/types/Stores.ts";
 import StoresProvider from "@core/api/Providers/StoresProvider.ts";
@@ -87,21 +87,20 @@ export default function StoresTableList({
         }
     };
 
-    const loadingState =
-        isLoading || stores.data.length === 0 ? "loading" : "idle";
-
-    useEffect(() => {
-        setSortDescriptor({
-            column: orderBy,
-            direction: orderWay === "ASC" ? "ascending" : "descending",
-        });
-    }, [orderBy, orderWay]);
+    if (!isLoading && stores.data.length === 0) {
+        return (
+            <div className="py-8 text-center text-gray-400">
+                Aucun magasin trouvé.
+            </div>
+        );
+    }
+    const loadingState = isLoading ? "loading" : "idle";
 
     return (
         <div>
             <Table
                 removeWrapper
-                aria-label="suppliers-table-list"
+                aria-label="stores-table-list"
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
                 onRowAction={handleRowAction}

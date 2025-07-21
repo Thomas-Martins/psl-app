@@ -17,6 +17,7 @@ import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import { Outlet, useLocation } from "react-router";
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
+import PageTitle from "@components/tools/PageTitle";
 
 const fetchSuppliers = async (key: string): Promise<PaginatedSuppliers> => {
     const params = JSON.parse(key);
@@ -112,73 +113,79 @@ export default function SuppliersPage() {
     if (error) return <div>{t("errors.message")}</div>;
 
     return (
-        <div className="space-y-5">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
-                <div className="w-full md:w-1/4">
-                    <SearchInput setSearch={setSearch} classNames={"w-full"} />
+        <>
+            <PageTitle i18nKey="suppliers._name" />
+            <div className="space-y-5">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                    <div className="w-full md:w-1/4">
+                        <SearchInput
+                            setSearch={setSearch}
+                            classNames={"w-full"}
+                        />
+                    </div>
+                    <div className="w-full md:w-auto">
+                        <Button
+                            aria-label="add"
+                            color="primary"
+                            size="md"
+                            onPress={onOpen}
+                            className="w-full md:w-auto"
+                        >
+                            <AddSquareIcon size={24} color="white" />
+                            {t("suppliers.add.button")}
+                        </Button>
+                    </div>
                 </div>
-                <div className="w-full md:w-auto">
-                    <Button
-                        aria-label="add"
-                        color="primary"
-                        size="md"
-                        onPress={onOpen}
-                        className="w-full md:w-auto"
-                    >
-                        <AddSquareIcon size={24} color="white" />
-                        {t("suppliers.add.button")}
-                    </Button>
-                </div>
-            </div>
-            {isMobile ? (
-                <SuppliersAccordionListMobile
-                    suppliers={suppliers?.data || []}
-                    isLoading={isLoading}
-                    mutate={mutate}
-                />
-            ) : (
-                <SuppliersTableList
-                    suppliers={
-                        suppliers || {
-                            current_page: 1,
-                            data: [],
-                            per_page: 10,
-                            total: 0,
-                            last_page: 1,
+                {isMobile ? (
+                    <SuppliersAccordionListMobile
+                        suppliers={suppliers?.data || []}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                    />
+                ) : (
+                    <SuppliersTableList
+                        suppliers={
+                            suppliers || {
+                                current_page: 1,
+                                data: [],
+                                per_page: 10,
+                                total: 0,
+                                last_page: 1,
+                            }
                         }
-                    }
-                    onSortChange={handleSortChange}
-                    orderBy={orderBy}
-                    orderWay={orderWay}
-                    isLoading={isLoading}
-                    mutate={mutate}
+                        onSortChange={handleSortChange}
+                        orderBy={orderBy}
+                        orderWay={orderWay}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                    />
+                )}
+                {suppliers && suppliers.data && suppliers.data.length > 0 && (
+                    <PaginateFooter
+                        values={["10", "50", "100"]}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                        totalPages={suppliers?.last_page || 1}
+                        totalItems={suppliers?.total || 0}
+                        itemsPerPage={limit}
+                        onLimitChange={(newLimit) =>
+                            handleLimitChange(
+                                newLimit,
+                                suppliers ? Number(suppliers.total) : 10,
+                            )
+                        }
+                    />
+                )}
+                <AddFormModal
+                    title={t("suppliers.add.title")}
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    fields={inputs}
+                    onSubmit={handleSupplierAddSubmit}
                 />
-            )}
-            {suppliers && suppliers.data && suppliers.data.length > 0 && (
-                <PaginateFooter
-                    values={["10", "50", "100"]}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                    totalPages={suppliers?.last_page || 1}
-                    totalItems={suppliers?.total || 0}
-                    itemsPerPage={limit}
-                    onLimitChange={(newLimit) =>
-                        handleLimitChange(
-                            newLimit,
-                            suppliers ? Number(suppliers.total) : 10,
-                        )
-                    }
-                />
-            )}
-            <AddFormModal
-                title={t("suppliers.add.title")}
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                fields={inputs}
-                onSubmit={handleSupplierAddSubmit}
-            />
 
-            <Outlet context={{ mutate }} />
-        </div>
+                <Outlet context={{ mutate }} />
+            </div>
+        </>
     );
 }

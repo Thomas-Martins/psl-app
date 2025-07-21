@@ -18,10 +18,12 @@ import { clearCart } from "@store/cartSlice.ts";
 
 interface UserAccountActivatorProps {
     customer?: boolean;
+    onNavigate?: () => void;
 }
 
 export default function UserAccountActivator({
     customer = false,
+    onNavigate,
 }: UserAccountActivatorProps) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -44,6 +46,7 @@ export default function UserAccountActivator({
         } finally {
             dispatch(clearUser());
             dispatch(clearCart());
+            if (onNavigate) onNavigate();
             navigate("/login");
         }
     };
@@ -93,7 +96,10 @@ export default function UserAccountActivator({
             <DropdownMenu aria-label="Profile Actions" variant="solid">
                 <DropdownItem
                     key="settings"
-                    onPress={() => navigate("/my-account")}
+                    onPress={() => {
+                        if (onNavigate) onNavigate();
+                        navigate("/my-account");
+                    }}
                 >
                     {t("global.links.my_account")}
                 </DropdownItem>

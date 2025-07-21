@@ -8,6 +8,7 @@ import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import { CircularProgress } from "@heroui/react";
 import { useTranslation } from "react-i18next";
 import GlobalAlert from "@components/ui/global/GlobalAlert.tsx";
+import PageTitle from "@components/tools/PageTitle";
 
 export default function CategoryShowPage() {
     const { t } = useTranslation();
@@ -41,6 +42,7 @@ export default function CategoryShowPage() {
 
     return (
         <>
+            <PageTitle i18nKey="categories._name" />
             <div className="space-y-3 md:space-y-5">
                 <Link
                     to="/shop/categories"

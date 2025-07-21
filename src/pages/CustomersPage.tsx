@@ -19,6 +19,7 @@ import { Outlet } from "react-router";
 import { CustomersContext } from "@/contexts/Customers/CustomersContext";
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
 import CustomersAccordionListMobile from "@components/Intranet/Clients/CustomersAccordionListMobile";
+import PageTitle from "@components/tools/PageTitle";
 
 const fetchCustomers = async (key: string): Promise<PaginatedCustomers> => {
     const params = JSON.parse(key);
@@ -101,6 +102,7 @@ export default function CustomersPage() {
 
     return (
         <CustomersContext.Provider value={{ mutate }}>
+            <PageTitle i18nKey="customer._name" />
             <div className="space-y-5">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
                     <div className="w-full md:w-1/4">

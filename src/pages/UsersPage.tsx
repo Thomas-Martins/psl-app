@@ -25,6 +25,7 @@ import UsersAccordionListMobile from "@components/Intranet/Users/UsersAccordionL
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store";
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
+import PageTitle from "@components/tools/PageTitle";
 
 const fetchUsers = async (key: string): Promise<PaginatedUsers> => {
     const params = JSON.parse(key);
@@ -125,100 +126,103 @@ export default function UsersPage() {
     }
 
     return (
-        <div className="space-y-5">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
-                <div className="flex flex-col md:flex-row w-full gap-4 md:gap-5 lg:w-2/3">
-                    <Select
-                        aria-label="role-filter"
-                        className="w-full md:w-1/4"
-                        size="md"
-                        defaultSelectedKeys={["all"]}
-                        onChange={(e) => handleRoleChange(e.target.value)}
-                    >
-                        <SelectItem key="all">
-                            {t("users.table.filter.role.all")}
-                        </SelectItem>
-                        <SelectItem key="admin">
-                            {t("users.table.filter.role.admin")}
-                        </SelectItem>
-                        <SelectItem key="gestionnaire">
-                            {t("users.table.filter.role.gestionnaire")}
-                        </SelectItem>
-                        <SelectItem key="logisticien">
-                            {t("users.table.filter.role.logisticien")}
-                        </SelectItem>
-                    </Select>
-                    <SearchInput
-                        setSearch={setSearch}
-                        classNames={"w-full md:w-1/4"}
+        <>
+            <PageTitle i18nKey="users._name" />
+            <div className="space-y-5">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
+                    <div className="flex flex-col md:flex-row w-full gap-4 md:gap-5 lg:w-2/3">
+                        <Select
+                            aria-label="role-filter"
+                            className="w-full md:w-1/4"
+                            size="md"
+                            defaultSelectedKeys={["all"]}
+                            onChange={(e) => handleRoleChange(e.target.value)}
+                        >
+                            <SelectItem key="all">
+                                {t("users.table.filter.role.all")}
+                            </SelectItem>
+                            <SelectItem key="admin">
+                                {t("users.table.filter.role.admin")}
+                            </SelectItem>
+                            <SelectItem key="gestionnaire">
+                                {t("users.table.filter.role.gestionnaire")}
+                            </SelectItem>
+                            <SelectItem key="logisticien">
+                                {t("users.table.filter.role.logisticien")}
+                            </SelectItem>
+                        </Select>
+                        <SearchInput
+                            setSearch={setSearch}
+                            classNames={"w-full md:w-1/4"}
+                        />
+                    </div>
+                    <div className="w-full md:w-auto">
+                        <Button
+                            aria-label="add"
+                            color="primary"
+                            size="md"
+                            onPress={onOpen}
+                            className="w-full md:w-auto"
+                        >
+                            <AddSquareIcon size={24} color="white" />
+                            {t("users.add.button")}
+                        </Button>
+                    </div>
+                </div>
+
+                {isMobile ? (
+                    <UsersAccordionListMobile
+                        users={users?.data || []}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                        authenticatedUserId={authenticatedUserId}
                     />
-                </div>
-                <div className="w-full md:w-auto">
-                    <Button
-                        aria-label="add"
-                        color="primary"
-                        size="md"
-                        onPress={onOpen}
-                        className="w-full md:w-auto"
-                    >
-                        <AddSquareIcon size={24} color="white" />
-                        {t("users.add.button")}
-                    </Button>
-                </div>
-            </div>
-
-            {isMobile ? (
-                <UsersAccordionListMobile
-                    users={users?.data || []}
-                    isLoading={isLoading}
-                    mutate={mutate}
-                    authenticatedUserId={authenticatedUserId}
-                />
-            ) : (
-                <UsersTableList
-                    users={
-                        users || {
-                            current_page: 1,
-                            data: [],
-                            per_page: 10,
-                            total: 0,
-                            last_page: 1,
+                ) : (
+                    <UsersTableList
+                        users={
+                            users || {
+                                current_page: 1,
+                                data: [],
+                                per_page: 10,
+                                total: 0,
+                                last_page: 1,
+                            }
                         }
-                    }
-                    isLoading={isLoading}
-                    onSortChange={handleSortChange}
-                    orderBy={orderBy}
-                    orderWay={orderWay}
-                    mutate={mutate}
+                        isLoading={isLoading}
+                        onSortChange={handleSortChange}
+                        orderBy={orderBy}
+                        orderWay={orderWay}
+                        mutate={mutate}
+                    />
+                )}
+
+                {users && users.data && users.data.length > 0 && (
+                    <PaginateFooter
+                        values={["10", "50", "100"]}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                        totalPages={users?.last_page || 1}
+                        totalItems={users?.total || 0}
+                        itemsPerPage={limit}
+                        onLimitChange={(newLimit) =>
+                            handleLimitChange(
+                                newLimit,
+                                users ? Number(users.total) : 10,
+                            )
+                        }
+                    />
+                )}
+
+                <AddFormModal
+                    title={t("users.add.title")}
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    fields={inputs}
+                    onSubmit={handleUserAddSubmit}
                 />
-            )}
 
-            {users && users.data && users.data.length > 0 && (
-                <PaginateFooter
-                    values={["10", "50", "100"]}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                    totalPages={users?.last_page || 1}
-                    totalItems={users?.total || 0}
-                    itemsPerPage={limit}
-                    onLimitChange={(newLimit) =>
-                        handleLimitChange(
-                            newLimit,
-                            users ? Number(users.total) : 10,
-                        )
-                    }
-                />
-            )}
-
-            <AddFormModal
-                title={t("users.add.title")}
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                fields={inputs}
-                onSubmit={handleUserAddSubmit}
-            />
-
-            <Outlet context={{ mutate }} />
-        </div>
+                <Outlet context={{ mutate }} />
+            </div>
+        </>
     );
 }

@@ -147,14 +147,14 @@ export default function MyAccountInformation() {
         <div className="flex flex-col gap-5">
             <div className="flex items-center gap-4">
                 <div
-                    className="w-24 h-24 bg-black rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors"
+                    className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors flex-shrink-0"
                     onClick={() => fileInputRef.current?.click()}
                 >
                     {previewImage ? (
                         <img
                             src={previewImage}
                             alt={t("users.add.inputs.image.alt")}
-                            className="object-cover w-full h-full"
+                            className="object-cover object-center w-full h-full rounded-full"
                         />
                     ) : (
                         <UploadFileIcon color="white" />
@@ -167,7 +167,7 @@ export default function MyAccountInformation() {
                         onChange={handleFileChange}
                     />
                 </div>
-                <div>
+                <div className="max-w-xs">
                     <label className="font-medium">
                         {t("users.add.inputs.image.title")}
                     </label>
