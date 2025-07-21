@@ -95,13 +95,6 @@ export default function SuppliersTableList({
         }
     };
 
-    if (!isLoading && suppliers.data.length === 0) {
-        return (
-            <div className="py-8 text-center text-gray-400">
-                Aucun fournisseur trouvé.
-            </div>
-        );
-    }
     const loadingState = isLoading ? "loading" : "idle";
 
     return (
@@ -112,6 +105,7 @@ export default function SuppliersTableList({
                 sortDescriptor={sortDescriptor}
                 onSortChange={handleSortChange}
                 onRowAction={handleRowAction}
+                className="w-full text-xs"
             >
                 <TableHeader>
                     {headers.map((header) => (
