@@ -12,6 +12,7 @@ class Api {
             headers: {
                 Accept: "application/json",
             },
+            withCredentials: true,
         });
 
         this.axiosInstance.interceptors.request.use(
