@@ -19,6 +19,7 @@ import { ProductsContext } from "@/contexts/Products/ProductsContext";
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
 import { addToast } from "@heroui/react";
 import ProductAddStockModal from "@components/Intranet/Products/ProductAddStockModal";
+import PageTitle from "@components/tools/PageTitle";
 
 const fetchProducts = async (key: string): Promise<PaginatedProducts> => {
     const params = JSON.parse(key);
@@ -115,6 +116,7 @@ export default function ProductsPage() {
 
     return (
         <ProductsContext.Provider value={{ mutate }}>
+            <PageTitle i18nKey="products._name" />
             <div className="space-y-5">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5">
                     <div className="w-full md:w-1/4">

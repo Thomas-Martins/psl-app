@@ -13,6 +13,7 @@ import SearchInput from "@components/tools/SearchInput.tsx";
 import { useState } from "react";
 import OrdersAccordionListMobile from "@components/Intranet/Orders/OrdersAccordionListMobile";
 import { useMediaQuery } from "@utils/hook/useMediaQuery";
+import PageTitle from "@components/tools/PageTitle";
 
 const fetchOrders = async (key: string): Promise<PaginatedOrders> => {
     const params = JSON.parse(key);
@@ -78,65 +79,68 @@ export default function OrdersPage() {
     }
 
     return (
-        <div className="space-y-5">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5 w-full">
-                <Select
-                    aria-label="order-status-filter"
-                    className="w-full md:w-1/4"
-                    radius="md"
-                    defaultSelectedKeys={["all"]}
-                    onChange={(e) => handleStatusChange(e.target.value)}
-                >
-                    {[
-                        <SelectItem key="all">
-                            {t("orders.status.all")}
-                        </SelectItem>,
-                        ...orderStatus.map((status) => (
-                            <SelectItem key={status}>
-                                {orderStatusName(status)}
-                            </SelectItem>
-                        )),
-                    ]}
-                </Select>
-                <SearchInput
-                    setSearch={setSearch}
-                    classNames={"w-full md:w-1/4"}
-                />
-            </div>
-            {isMobile ? (
-                <OrdersAccordionListMobile
-                    orders={orders}
-                    isLoading={isLoading}
-                    mutate={mutate}
-                />
-            ) : (
-                <OrdersTableList
-                    orders={orders}
-                    isLoading={isLoading}
-                    onSortChange={handleSortChange}
-                    orderBy={orderBy}
-                    orderWay={orderWay}
-                    mutate={mutate}
-                />
-            )}
-            {orders && orders.data && orders.data.length > 0 && (
-                <PaginateFooter
-                    values={["10", "50", "100"]}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                    totalPages={orders?.last_page || 1}
-                    totalItems={orders?.total || 0}
-                    itemsPerPage={limit}
-                    onLimitChange={(newLimit) =>
-                        handleLimitChange(
-                            newLimit,
-                            orders ? Number(orders.total) : 10,
-                        )
-                    }
-                />
-            )}
+        <>
+            <PageTitle i18nKey="orders._name" />
+            <div className="space-y-5">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 md:space-x-5 w-full">
+                    <Select
+                        aria-label="order-status-filter"
+                        className="w-full md:w-1/4"
+                        radius="md"
+                        defaultSelectedKeys={["all"]}
+                        onChange={(e) => handleStatusChange(e.target.value)}
+                    >
+                        {[
+                            <SelectItem key="all">
+                                {t("orders.status.all")}
+                            </SelectItem>,
+                            ...orderStatus.map((status) => (
+                                <SelectItem key={status}>
+                                    {orderStatusName(status)}
+                                </SelectItem>
+                            )),
+                        ]}
+                    </Select>
+                    <SearchInput
+                        setSearch={setSearch}
+                        classNames={"w-full md:w-1/4"}
+                    />
+                </div>
+                {isMobile ? (
+                    <OrdersAccordionListMobile
+                        orders={orders}
+                        isLoading={isLoading}
+                        mutate={mutate}
+                    />
+                ) : (
+                    <OrdersTableList
+                        orders={orders}
+                        isLoading={isLoading}
+                        onSortChange={handleSortChange}
+                        orderBy={orderBy}
+                        orderWay={orderWay}
+                        mutate={mutate}
+                    />
+                )}
+                {orders && orders.data && orders.data.length > 0 && (
+                    <PaginateFooter
+                        values={["10", "50", "100"]}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                        totalPages={orders?.last_page || 1}
+                        totalItems={orders?.total || 0}
+                        itemsPerPage={limit}
+                        onLimitChange={(newLimit) =>
+                            handleLimitChange(
+                                newLimit,
+                                orders ? Number(orders.total) : 10,
+                            )
+                        }
+                    />
+                )}
 
-            <Outlet />
-        </div>
+                <Outlet />
+            </div>
+        </>
     );
 }
