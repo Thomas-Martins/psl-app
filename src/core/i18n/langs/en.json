@@ -119,7 +119,7 @@
         }
     },
     "customer": {
-        "_name": "Customer",
+        "_name": "Customers",
         "table": {
             "actions": {
                 "view": "View",
