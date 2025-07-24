@@ -101,7 +101,6 @@ export default function OrdersAccordionListMobile({
                                 });
                                 return;
                             }
-
                             setStatusModalOrder({
                                 id: order.id,
                                 status: order.status,
@@ -117,11 +116,9 @@ export default function OrdersAccordionListMobile({
                                 const response =
                                     await OrdersProvider.downloadProductsList(
                                         order.id,
+                                        {},
                                         {
-                                            headers: {
-                                                "Accept-Language":
-                                                    i18n.language,
-                                            },
+                                            "Accept-Language": i18n.language,
                                         },
                                     );
                                 const blob = new Blob([response.data], {

@@ -194,12 +194,11 @@ export default function OrdersTableList({
                                                     const response =
                                                         await OrdersProvider.downloadProductsList(
                                                             order.id,
+                                                            {},
                                                             {
-                                                                headers: {
-                                                                    "Accept-Language":
-                                                                        i18n.resolvedLanguage ||
-                                                                        i18n.language,
-                                                                },
+                                                                "Accept-Language":
+                                                                    i18n.resolvedLanguage ||
+                                                                    i18n.language,
                                                             },
                                                         );
                                                     const blob = new Blob(

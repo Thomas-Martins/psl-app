@@ -29,10 +29,11 @@ class OrdersProvider {
         });
     }
 
-    static downloadProductsList(id: string, headers: object = {}) {
+    static downloadProductsList(id: string, query = {}, headers: object = {}) {
         return api.get(`/orders/${id}/products-list`, {
+            params: query,
             responseType: "blob",
-            ...headers,
+            headers,
         });
     }
 }
