@@ -1,4 +1,6 @@
 import React, { Key } from "react";
+import ToggleGrid from "@components/Shop/Products/ToggleGrid.tsx";
+import { useProductView } from "@/contexts/Products/useProductView";
 import {
     Divider,
     Navbar,
@@ -61,6 +63,17 @@ export default function NavbarShop() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+    let view: "grid" | "list" = "grid";
+    let setView: (v: "grid" | "list") => void = () => {};
+    try {
+        const ctx = useProductView();
+        view = ctx.view;
+        setView = ctx.setView;
+    } catch {
+        console.warn(
+            "useProductView context not available, using default view 'grid'",
+        );
+    }
 
     const menuItems = [
         {
@@ -92,6 +105,8 @@ export default function NavbarShop() {
     const handleTabChange = (key: Key) => {
         navigate(String(key));
     };
+
+    const isProductsPage = location.pathname.startsWith("/shop/products");
 
     return (
         <div>
@@ -161,7 +176,7 @@ export default function NavbarShop() {
                 </Navbar>
                 <Divider className="bg-primary-400" />
             </div>
-            <div className="hidden lg:flex max-w-screen-xl m-auto">
+            <div className="hidden lg:flex max-w-screen-xl m-auto justify-between items-center">
                 <Tabs
                     selectedKey={selectedKey}
                     onSelectionChange={handleTabChange}
@@ -180,7 +195,13 @@ export default function NavbarShop() {
                         <Tab key={item.url} title={item.label} />
                     ))}
                 </Tabs>
+                {isProductsPage && (
+                    <div className="">
+                        <ToggleGrid view={view} onChange={setView} />
+                    </div>
+                )}
             </div>
+
             <div className="bg-primary-500 h-96 absolute inset-0 top-0 -z-10"></div>
         </div>
     );

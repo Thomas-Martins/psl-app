@@ -4,6 +4,7 @@ import { useSort } from "@utils/hook/useSort.ts";
 import { usePagination } from "@utils/hook/usePagination.ts";
 import useSWR from "swr";
 import ProductsGrid from "@components/Shop/Products/ProductsGrid.tsx";
+import { useProductView } from "@/contexts/Products/useProductView";
 import PaginateFooter from "@components/tools/PaginateFooter.tsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useShopLayout } from "@utils/hook/useShopLayoutContext.ts";
@@ -29,6 +30,7 @@ import { useMediaQuery } from "@utils/hook/useMediaQuery.ts";
 import PageTitle from "@components/tools/PageTitle";
 
 export default function ShopProductsPages() {
+    const { view } = useProductView();
     const { t } = useTranslation();
     const [filters, setFilters] = useState<ProductFilters>({});
     const { orderWay, orderBy } = useSort("name", "ASC");
@@ -46,12 +48,10 @@ export default function ShopProductsPages() {
             try {
                 const params = JSON.parse(key);
 
-                // Filtrer les paramètres vides avant de les envoyer à l'API
                 const cleanFilters = Object.entries(
                     params.filters || {},
                 ).reduce(
                     (acc, [key, value]) => {
-                        // Exclure les tableaux vides et les chaînes vides
                         if (Array.isArray(value) && value.length > 0) {
                             acc[key] = value;
                         } else if (
@@ -112,8 +112,6 @@ export default function ShopProductsPages() {
     const layout = useShopLayout();
 
     useEffect(() => {
-        // Sur mobile, on masque le menu latéral (on utilise le drawer)
-        // Sur desktop, on affiche le menu latéral
         layout.setShowAside?.(!isMobile);
         return () => {
             layout.setShowAside?.(false);
@@ -131,7 +129,6 @@ export default function ShopProductsPages() {
     );
 
     useEffect(() => {
-        // On définit le contenu du menu latéral seulement sur desktop
         if (!isMobile) {
             layout.setAside?.(asideComponent);
         }
@@ -147,7 +144,6 @@ export default function ShopProductsPages() {
             ) : (
                 <ProductFiltersContext.Provider value={{ filters, setFilters }}>
                     <div className="space-y-3 md:space-y-5">
-                        {/* Bouton Filtres pour mobile */}
                         {isMobile && (
                             <div className="flex justify-between items-center">
                                 <Button
@@ -169,8 +165,7 @@ export default function ShopProductsPages() {
                                 </Button>
                             </div>
                         )}
-
-                        <ProductsGrid products={products} />
+                        <ProductsGrid products={products} view={view} />
                         <PaginateFooter
                             values={["20", "50", "100"]}
                             totalPages={products?.last_page || 1}
