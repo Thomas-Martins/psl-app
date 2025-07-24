@@ -28,6 +28,13 @@ class OrdersProvider {
             ...payload,
         });
     }
+
+    static downloadProductsList(id: string, headers: object = {}) {
+        return api.get(`/orders/${id}/products-list`, {
+            responseType: "blob",
+            ...headers,
+        });
+    }
 }
 
 export default OrdersProvider;
