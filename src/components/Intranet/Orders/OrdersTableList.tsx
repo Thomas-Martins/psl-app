@@ -189,11 +189,41 @@ export default function OrdersTableList({
                                                 "orders.table.actions.print.products_lists",
                                             ),
                                             variant: "default",
-                                            onClick: () => {
-                                                console.log(
-                                                    "Print products lists",
-                                                    order.id,
-                                                );
+                                            onClick: async () => {
+                                                try {
+                                                    const response =
+                                                        await OrdersProvider.downloadProductsList(
+                                                            order.id,
+                                                            {},
+                                                            {
+                                                                "Accept-Language":
+                                                                    i18n.resolvedLanguage ||
+                                                                    i18n.language,
+                                                            },
+                                                        );
+                                                    const blob = new Blob(
+                                                        [response.data],
+                                                        {
+                                                            type: "application/pdf",
+                                                        },
+                                                    );
+                                                    saveAs(
+                                                        blob,
+                                                        `liste-produits-${order.reference}.pdf`,
+                                                    );
+                                                } catch (e) {
+                                                    console.error(e);
+                                                    addToast({
+                                                        title: t(
+                                                            "generics.errors.surprise",
+                                                        ),
+                                                        color: "danger",
+                                                        timeout: 2000,
+                                                        shouldShowTimeoutProgress:
+                                                            true,
+                                                        hideIcon: true,
+                                                    });
+                                                }
                                             },
                                         },
                                         {

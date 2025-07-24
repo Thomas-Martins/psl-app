@@ -101,7 +101,6 @@ export default function OrdersAccordionListMobile({
                                 });
                                 return;
                             }
-
                             setStatusModalOrder({
                                 id: order.id,
                                 status: order.status,
@@ -112,8 +111,33 @@ export default function OrdersAccordionListMobile({
                     {
                         label: t("orders.table.actions.print.products_lists"),
                         variant: "default",
-                        onClick: () => {
-                            console.log("Print products lists", order.id);
+                        onClick: async () => {
+                            try {
+                                const response =
+                                    await OrdersProvider.downloadProductsList(
+                                        order.id,
+                                        {},
+                                        {
+                                            "Accept-Language": i18n.language,
+                                        },
+                                    );
+                                const blob = new Blob([response.data], {
+                                    type: "application/pdf",
+                                });
+                                saveAs(
+                                    blob,
+                                    `liste-produits-${order.reference}.pdf`,
+                                );
+                            } catch {
+                                addToast({
+                                    title: t(
+                                        "orders.table.actions.download.error",
+                                    ),
+                                    color: "danger",
+                                    hideIcon: true,
+                                    timeout: 5000,
+                                });
+                            }
                         },
                     },
                     {

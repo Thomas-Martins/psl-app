@@ -27,7 +27,7 @@ export default function ProductCard({ item }: ProductCardProps) {
                     <h2 className="text-xs md:text-sm font-bold truncate flex-1 mr-2">
                         {item.name}
                     </h2>
-                    <p className="text-xs md:text-sm text-light-300 font-semibold">
+                    <p className="text-xs md:text-sm text-light-300">
                         €{item.price}
                     </p>
                 </CardFooter>
