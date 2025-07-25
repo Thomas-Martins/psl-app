@@ -19,10 +19,10 @@ interface ProductsListProps {
 
 export default function ProductsList({ products }: ProductsListProps) {
     return (
-        <div>
+        <div className="space-y-3">
             {products?.data?.map((product) => (
                 <Link key={product.id} to={`${product.id}`} className="block">
-                    <div className="flex items-center  border-b border-zinc-200 min-h-[110px] md:min-h-[120px] py-2">
+                    <div className="flex items-center  border-b border-zinc-200 pb-2">
                         <div className="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-zinc-100 flex items-center justify-center">
                             {product.image_url ? (
                                 <img
