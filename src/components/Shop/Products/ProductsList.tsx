@@ -1,6 +1,17 @@
 import { Link } from "react-router";
+
 import { PaginatedProducts } from "@/types/Products.ts";
 import ImageIcon from "@/components/ui/icons/ImageIcon";
+
+const formatPrice = (price: string | number): string => {
+    const numPrice = typeof price === "string" ? parseFloat(price) : price;
+    return isNaN(numPrice)
+        ? "0,00"
+        : numPrice.toLocaleString("fr-FR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+          });
+};
 
 interface ProductsListProps {
     products: PaginatedProducts | undefined;
@@ -38,11 +49,7 @@ export default function ProductsList({ products }: ProductsListProps) {
                         </div>
                         <div className="flex flex-col items-end min-w-[70px]">
                             <span className="text-sm">
-                                €
-                                {Number(product.price).toLocaleString("fr-FR", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                })}
+                                €{formatPrice(product.price)}
                             </span>
                         </div>
                     </div>

@@ -63,17 +63,9 @@ export default function NavbarShop() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-    let view: "grid" | "list" = "grid";
-    let setView: (v: "grid" | "list") => void = () => {};
-    try {
-        const ctx = useProductView();
-        view = ctx.view;
-        setView = ctx.setView;
-    } catch {
-        console.warn(
-            "useProductView context not available, using default view 'grid'",
-        );
-    }
+    const productViewContext = useProductView();
+    const view = productViewContext?.view ?? "grid";
+    const setView = productViewContext?.setView ?? (() => {});
 
     const menuItems = [
         {

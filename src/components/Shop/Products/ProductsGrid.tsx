@@ -2,8 +2,7 @@ import { Link } from "react-router";
 import { PaginatedProducts } from "@/types/Products.ts";
 import ProductCard from "@components/Shop/Products/ProductCard.tsx";
 import ProductsList from "@components/Shop/Products/ProductsList.tsx";
-
-export type ProductViewType = "grid" | "list";
+import { ProductViewType } from "@/contexts/Products/ProductViewContextInstance";
 
 interface ProductsGridProps {
     products: PaginatedProducts | undefined;
