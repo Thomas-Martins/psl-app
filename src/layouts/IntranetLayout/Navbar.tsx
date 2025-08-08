@@ -137,13 +137,13 @@ export default function NavbarIntranet() {
                             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                         />
                     </NavbarContent>
-                    <NavbarMenu className="bg-primary-500">
+                    <NavbarMenu className="bg-primary-500 dark:bg-neutral-950">
                         <div className="flex flex-col gap-4 p-4">
                             <UserAccountActivator
                                 onNavigate={() => setIsMenuOpen(false)}
                             />
                         </div>
-                        <Divider className="bg-primary-400" />
+                        <Divider className="bg-primary-400 dark:bg-neutral-600" />
                         {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
                                 <button
@@ -157,9 +157,10 @@ export default function NavbarIntranet() {
                                 </button>
                             </NavbarMenuItem>
                         ))}
-                        <Divider className="bg-primary-400" />
-                        <div className="flex justify-center p-4">
+                        <Divider className="bg-primary-400 dark:bg-neutral-600" />
+                        <div className="flex justify-center p-4 gap-4">
                             <ToggleLanguage />
+                            <ToggleTheme />
                         </div>
                     </NavbarMenu>
                     <NavbarContent

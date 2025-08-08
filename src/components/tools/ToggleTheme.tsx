@@ -29,6 +29,11 @@ export default function ToggleTheme() {
                 isIconOnly
                 onPress={handleTheme}
                 className="text-white"
+                aria-label={
+                    theme === "dark"
+                        ? "Activer le thème clair"
+                        : "Activer le thème sombre"
+                }
             >
                 {theme === "dark" ? (
                     <SunIcon color="white" size={24} />

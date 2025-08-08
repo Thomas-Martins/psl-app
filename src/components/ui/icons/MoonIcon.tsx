@@ -1,6 +1,6 @@
 import { IconsProps } from "@/types/icons";
 
-export default function MoonIcon({ color = "black", size }: IconsProps) {
+export default function MoonIcon({ color = "black", size = 24 }: IconsProps) {
     return (
         <svg
             height={size}

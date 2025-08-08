@@ -54,7 +54,7 @@ export default function OrdersPage() {
                                         title={t("orders.title", {
                                             reference: order.reference,
                                         })}
-                                        className="dark:border-zinc-700 dark:border-solid dark:border-1"
+                                        className="dark:border-zinc-700 dark:border-solid dark:border"
                                     >
                                         <div>
                                             {t("orders.details.products.count")}{" "}

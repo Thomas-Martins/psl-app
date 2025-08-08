@@ -7,9 +7,10 @@ import {
 } from "@heroui/react";
 import ThreeDotIcons from "@components/ui/icons/ThreeDotIcons.tsx";
 import { ThreeDotMenuProps } from "@/types/ThreeDotMenu.ts";
+import { useIsDark } from "@/utils/hook/useIsDark";
 
 export default function ThreeDotMenu({ actions = [] }: ThreeDotMenuProps) {
-    const theme = localStorage.getItem("theme") || "light";
+    const isDark = useIsDark();
 
     return (
         <Dropdown>
@@ -17,7 +18,7 @@ export default function ThreeDotMenu({ actions = [] }: ThreeDotMenuProps) {
                 <Button isIconOnly variant="light">
                     <ThreeDotIcons
                         size={20}
-                        color={theme === "dark" ? "white" : "black"}
+                        color={isDark ? "white" : "black"}
                     />
                 </Button>
             </DropdownTrigger>

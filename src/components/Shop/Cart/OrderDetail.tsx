@@ -32,9 +32,12 @@ export default function OrderDetail() {
     const [order, setOrder] = useState<Order>({} as Order);
     const [loading, setLoading] = useState(false);
     const [downloadingInvoice, setDownloadingInvoice] = useState(false);
-    const [isDark, setIsDark] = useState(
-        document.documentElement.classList.contains("dark"),
-    );
+    const [isDark, setIsDark] = useState(() => {
+        if (typeof document !== "undefined") {
+            return document.documentElement.classList.contains("dark");
+        }
+        return false;
+    });
 
     const handleDownloadInvoice = async () => {
         if (!order.id) return;
@@ -86,6 +89,14 @@ export default function OrderDetail() {
     }, [navigate, orderId]);
 
     useEffect(() => {
+        if (
+            typeof document === "undefined" ||
+            typeof MutationObserver === "undefined"
+        ) {
+            return;
+        }
+        setIsDark(document.documentElement.classList.contains("dark"));
+
         const observer = new MutationObserver(() => {
             setIsDark(document.documentElement.classList.contains("dark"));
         });

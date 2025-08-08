@@ -24,7 +24,7 @@ export default function StatusStep({ status }: StatusStepProps) {
 
     const circleClass = (stepNumber: number) =>
         clsx(
-            "bg-white p-2 md:p-5 rounded-full shadow w-12 h-12 md:w-24 md:h-24 flex justify-center items-center border-1 border-solid border-neutral-100",
+            "bg-white p-2 md:p-5 rounded-full shadow w-12 h-12 md:w-24 md:h-24 flex justify-center items-center border border-solid border-neutral-100",
             currentStep >= stepNumber && "!bg-green-500 !border-none",
         );
 

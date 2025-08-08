@@ -245,7 +245,7 @@ export default function AddFormModal({
     ) => (
         <div className="flex flex-row items-center gap-4">
             <div
-                className="w-[100px] h-[100px] bg-black dark:bg-neutral-400 rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors duration-200"
+                className="w-[100px] h-[100px] bg-black dark:bg-neutral-700 rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 dark:hover:bg-neutral-600 transition-colors duration-200"
                 onClick={() => fileInputRefs.current[name]?.click()}
             >
                 {previewImages[name] ? (

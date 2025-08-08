@@ -46,7 +46,7 @@ export default function CategoryShowPage() {
             <div className="space-y-3 md:space-y-5">
                 <Link
                     to="/shop/categories"
-                    className="text-sm md:text-base text-light-500 hover:text-zinc-500 hover:dark:text-zinc-400 inline-flex items-center gap-1"
+                    className="text-sm md:text-base text-light-500 hover:text-zinc-500 dark:hover:text-zinc-400 inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-400"
                 >
                     ← {t("categories.back_to.categories")}
                 </Link>
