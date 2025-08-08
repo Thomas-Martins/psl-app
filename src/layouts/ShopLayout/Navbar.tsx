@@ -17,6 +17,7 @@ import { useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import ToggleLanguage from "@components/tools/ToggleLanguage.tsx";
 import Cart from "@components/ui/global/Cart.tsx";
+import ToggleTheme from "@/components/tools/ToggleTheme";
 
 interface LogoProps {
     className?: string;
@@ -107,7 +108,7 @@ export default function NavbarShop() {
                     onMenuOpenChange={setIsMenuOpen}
                     isMenuOpen={isMenuOpen}
                     maxWidth="xl"
-                    className="bg-primary-500 py-2"
+                    className="bg-primary-500 dark:bg-neutral-950 py-2"
                 >
                     <NavbarContent>
                         <NavbarBrand>
@@ -127,14 +128,14 @@ export default function NavbarShop() {
                             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                         />
                     </NavbarContent>
-                    <NavbarMenu className="bg-primary-500">
+                    <NavbarMenu className="bg-primary-500 dark:bg-neutral-950">
                         <div className="flex flex-col gap-4 p-4">
                             <UserAccountActivator
                                 customer={true}
                                 onNavigate={() => setIsMenuOpen(false)}
                             />
                         </div>
-                        <Divider className="bg-primary-400" />
+                        <Divider className="bg-primary-400 dark:bg-neutral-600" />
                         {filteredMenuItems.map((item) => (
                             <NavbarMenuItem key={item.url}>
                                 <button
@@ -148,9 +149,10 @@ export default function NavbarShop() {
                                 </button>
                             </NavbarMenuItem>
                         ))}
-                        <Divider className="bg-primary-400" />
-                        <div className="flex justify-center p-4">
+                        <Divider className="bg-primary-400 dark:bg-neutral-600" />
+                        <div className="flex justify-center p-4 gap-4">
                             <ToggleLanguage />
+                            <ToggleTheme />
                         </div>
                     </NavbarMenu>
                     <NavbarContent
@@ -164,9 +166,10 @@ export default function NavbarShop() {
                             onNavigate={() => setIsMenuOpen(false)}
                         />
                         <ToggleLanguage />
+                        <ToggleTheme />
                     </NavbarContent>
                 </Navbar>
-                <Divider className="bg-primary-400" />
+                <Divider className="bg-primary-400 dark:bg-neutral-600" />
             </div>
             <div className="hidden lg:flex max-w-screen-xl m-auto justify-between items-center">
                 <Tabs
@@ -178,7 +181,7 @@ export default function NavbarShop() {
                         cursor: "w-full bg-white",
                         tab: "max-w-fit px-4 h-10 ",
                         tabContent:
-                            "group-data-[selected=true]:text-white text-primary-200",
+                            "group-data-[selected=true]:text-white text-primary-200 dark:text-neutral-400",
                     }}
                     color="primary"
                     variant="underlined"
@@ -194,7 +197,7 @@ export default function NavbarShop() {
                 )}
             </div>
 
-            <div className="bg-primary-500 h-96 absolute inset-0 top-0 -z-10"></div>
+            <div className="bg-primary-500 dark:bg-neutral-950 h-96 absolute inset-0 top-0 -z-10"></div>
         </div>
     );
 }

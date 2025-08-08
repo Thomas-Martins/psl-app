@@ -4,3 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html.dark {
+    background-color: #232327 !important;
+}
+
+html.dark body {
+    background-color: #232327 !important;
+}
+
+body {
+    min-height: 100vh;
+}

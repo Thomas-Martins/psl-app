@@ -32,6 +32,12 @@ export default function OrderDetail() {
     const [order, setOrder] = useState<Order>({} as Order);
     const [loading, setLoading] = useState(false);
     const [downloadingInvoice, setDownloadingInvoice] = useState(false);
+    const [isDark, setIsDark] = useState(() => {
+        if (typeof document !== "undefined") {
+            return document.documentElement.classList.contains("dark");
+        }
+        return false;
+    });
 
     const handleDownloadInvoice = async () => {
         if (!order.id) return;
@@ -82,8 +88,27 @@ export default function OrderDetail() {
             });
     }, [navigate, orderId]);
 
+    useEffect(() => {
+        if (
+            typeof document === "undefined" ||
+            typeof MutationObserver === "undefined"
+        ) {
+            return;
+        }
+        setIsDark(document.documentElement.classList.contains("dark"));
+
+        const observer = new MutationObserver(() => {
+            setIsDark(document.documentElement.classList.contains("dark"));
+        });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+        });
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <div className="bg-white p-3 md:p-5 rounded-2xl shadow-md space-y-8 md:space-y-20">
+        <div className="bg-white dark:bg-zinc-900 p-3 md:p-5 rounded-2xl shadow-md space-y-8 md:space-y-20">
             {loading ? (
                 <div className="flex justify-center items-center h-64">
                     <CircularProgress />
@@ -99,7 +124,10 @@ export default function OrderDetail() {
                                     onPress={() => navigate(-1)}
                                     size="sm"
                                 >
-                                    <ArrowLeftIcon size={20} />
+                                    <ArrowLeftIcon
+                                        size={20}
+                                        color={isDark ? "white" : "black"}
+                                    />
                                 </Button>
                                 <h3 className="text-lg md:text-xl font-medium">
                                     {t("orders.title", {
@@ -118,7 +146,7 @@ export default function OrderDetail() {
                                 <span className="text-xs md:text-sm">
                                     {t("orders.download.title")}
                                 </span>
-                                <FileIcon />
+                                <FileIcon color={isDark ? "white" : "black"} />
                             </Button>
                         </div>
                         <Divider />
