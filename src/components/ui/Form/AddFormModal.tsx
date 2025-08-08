@@ -54,6 +54,7 @@ export default function AddFormModal({
     const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
     const [selectKey, setSelectKey] = useState(0);
     const [localFields, setLocalFields] = useState<FieldDefinition[]>(fields);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
@@ -225,11 +226,14 @@ export default function AddFormModal({
     ): Promise<void> => {
         e.preventDefault();
         if (validate()) {
+            setIsSubmitting(true);
             try {
                 await onSubmit(formData);
                 onOpenChange(false);
             } catch (e) {
                 console.error(e);
+            } finally {
+                setIsSubmitting(false);
             }
         }
     };
@@ -651,6 +655,8 @@ export default function AddFormModal({
                                     color="primary"
                                     type="submit"
                                     form="add-form"
+                                    isLoading={isSubmitting}
+                                    isDisabled={isSubmitting}
                                 >
                                     {t("generics.add")}
                                 </Button>

@@ -111,57 +111,6 @@ export const UserAddModalInputs = async (): Promise<FieldDefinition[]> => {
                 visible: true,
                 elements: [
                     {
-                        name: "address",
-                        type: "text",
-                        placeholder: i18n.t("users.add.inputs.address"),
-                        label: i18n.t("users.add.inputs.address"),
-                        required: true,
-                        validators: [
-                            (value: FormDataValue) =>
-                                validators.address(
-                                    typeof value === "string" ? value : "",
-                                ),
-                        ],
-                    },
-                ],
-            },
-            {
-                type: "form-row",
-                visible: true,
-                elements: [
-                    {
-                        name: "zipcode",
-                        type: "text",
-                        placeholder: "75000",
-                        label: i18n.t("users.add.inputs.zipcode"),
-                        required: true,
-                        validators: [
-                            (value: FormDataValue) =>
-                                validators.zipcode(
-                                    typeof value === "string" ? value : "",
-                                ),
-                        ],
-                    },
-                    {
-                        name: "city",
-                        type: "text",
-                        placeholder: "Paris",
-                        label: i18n.t("users.add.inputs.city"),
-                        required: true,
-                        validators: [
-                            (value: FormDataValue) =>
-                                validators.city(
-                                    typeof value === "string" ? value : "",
-                                ),
-                        ],
-                    },
-                ],
-            },
-            {
-                type: "form-row",
-                visible: true,
-                elements: [
-                    {
                         name: "role_id",
                         type: "select",
                         placeholder: i18n.t(

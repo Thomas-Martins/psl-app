@@ -62,42 +62,6 @@ export const CustomersAddModalInputs = async (): Promise<FieldDefinition[]> => {
                 visible: true,
                 elements: [
                     {
-                        name: "address",
-                        type: "text",
-                        placeholder: i18n.t("customer.add.inputs.address"),
-                        label: i18n.t("customer.add.inputs.address"),
-                        required: true,
-                        validators: [validators.address],
-                    },
-                ],
-            },
-            {
-                type: "form-row",
-                visible: true,
-                elements: [
-                    {
-                        name: "zipcode",
-                        type: "text",
-                        placeholder: "75000",
-                        label: i18n.t("customer.add.inputs.zipcode"),
-                        required: true,
-                        validators: [validators.zipcode],
-                    },
-                    {
-                        name: "city",
-                        type: "text",
-                        placeholder: "Paris",
-                        label: i18n.t("customer.add.inputs.city"),
-                        required: true,
-                        validators: [validators.city],
-                    },
-                ],
-            },
-            {
-                type: "form-row",
-                visible: true,
-                elements: [
-                    {
                         name: "store_id",
                         type: "select",
                         placeholder: i18n.t(
