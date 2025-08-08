@@ -25,7 +25,7 @@ export default function CartConfirmation() {
     const { order } = state;
 
     return (
-        <div className="bg-white p-4 md:p-10 rounded-2xl space-y-6 md:space-y-20 text-center shadow">
+        <div className="bg-white dark:bg-zinc-900 p-4 md:p-10 rounded-2xl space-y-6 md:space-y-20 text-center shadow">
             <div className="space-y-2 md:space-y-5">
                 <h1 className="text-xl md:text-3xl font-medium">
                     {t("orders.confirmation.title", {

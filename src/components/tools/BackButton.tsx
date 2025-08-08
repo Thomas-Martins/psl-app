@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 export default function BackButton() {
     const navigate = useNavigate();
 
+    const theme = localStorage.getItem("theme") || "light";
+
     return (
         <Button
             variant="light"
@@ -13,7 +15,10 @@ export default function BackButton() {
                 navigate(-1);
             }}
         >
-            <ArrowLeftIcon size={20} />
+            <ArrowLeftIcon
+                size={20}
+                color={theme === "dark" ? "white" : "black"}
+            />
         </Button>
     );
 }

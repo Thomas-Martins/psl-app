@@ -107,7 +107,7 @@ export default function UserAccountActivator({
                     key="logout"
                     color="danger"
                     onPress={handleLogout}
-                    className="flex flex-row text-black"
+                    className="flex flex-row text-black dark:text-white"
                     startContent={<LogoutIcon size={15} />}
                 >
                     {t("global.links.logout")}

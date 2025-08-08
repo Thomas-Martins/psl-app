@@ -35,7 +35,7 @@ export default function OrdersPage() {
     return (
         <>
             <PageTitle i18nKey="orders.my_orders" />
-            <div className="bg-white px-3 py-5 rounded-2xl shadow">
+            <div className="bg-white dark:bg-zinc-900 px-3 py-5 rounded-2xl shadow">
                 <h1 className="text-2xl font-bold mb-4 px-2">
                     {t("orders.my_orders")}
                 </h1>
@@ -54,6 +54,7 @@ export default function OrdersPage() {
                                         title={t("orders.title", {
                                             reference: order.reference,
                                         })}
+                                        className="dark:border-zinc-700 dark:border-solid dark:border-1"
                                     >
                                         <div>
                                             {t("orders.details.products.count")}{" "}

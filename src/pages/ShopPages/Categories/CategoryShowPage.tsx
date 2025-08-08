@@ -46,7 +46,7 @@ export default function CategoryShowPage() {
             <div className="space-y-3 md:space-y-5">
                 <Link
                     to="/shop/categories"
-                    className="text-sm md:text-base text-light-500 hover:underline hover:text-black inline-flex items-center gap-1"
+                    className="text-sm md:text-base text-light-500 hover:text-zinc-500 hover:dark:text-zinc-400 inline-flex items-center gap-1"
                 >
                     ← {t("categories.back_to.categories")}
                 </Link>

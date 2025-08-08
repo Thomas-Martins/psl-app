@@ -69,7 +69,7 @@ export default function CartVerification() {
 
     return (
         <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4 items-start h-full">
-            <div className="bg-white w-full lg:col-span-3 p-5 rounded-2xl flex flex-col gap-3 shadow">
+            <div className="bg-white dark:bg-zinc-900 w-full lg:col-span-3 p-5 rounded-2xl flex flex-col gap-3 shadow">
                 <h1 className="text-2xl font-medium">
                     {t("cart.info_confirmation")}
                 </h1>
@@ -121,7 +121,7 @@ export default function CartVerification() {
                 />
             </div>
 
-            <div className="bg-white w-full lg:col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between lg:h-full gap-5">
+            <div className="bg-white dark:bg-zinc-900 w-full lg:col-span-2 p-5 rounded-2xl shadow flex flex-col justify-between lg:h-full gap-5">
                 <h1 className="text-2xl font-medium">{t("cart.your_cart")}</h1>
                 <CartDetail />
                 <Button

@@ -64,7 +64,7 @@ export default function CartDetail() {
                                             className="object-cover rounded-2xl"
                                         />
                                     ) : (
-                                        <div className="bg-zinc-500 bg-opacity-20 flex justify-center items-center w-16 h-16 rounded-2xl">
+                                        <div className="bg-zinc-800 dark:bg-neutral-400 bg-opacity-20 flex justify-center items-center w-16 h-16 rounded-2xl">
                                             <ImageIcon
                                                 size={30}
                                                 color="white"

@@ -9,11 +9,16 @@ import ThreeDotIcons from "@components/ui/icons/ThreeDotIcons.tsx";
 import { ThreeDotMenuProps } from "@/types/ThreeDotMenu.ts";
 
 export default function ThreeDotMenu({ actions = [] }: ThreeDotMenuProps) {
+    const theme = localStorage.getItem("theme") || "light";
+
     return (
         <Dropdown>
             <DropdownTrigger>
                 <Button isIconOnly variant="light">
-                    <ThreeDotIcons size={20} />
+                    <ThreeDotIcons
+                        size={20}
+                        color={theme === "dark" ? "white" : "black"}
+                    />
                 </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="three-dot-menu-item" variant="solid">

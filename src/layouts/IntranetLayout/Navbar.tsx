@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "@store/store.ts";
 import ToggleLanguage from "@components/tools/ToggleLanguage.tsx";
+import ToggleTheme from "@/components/tools/ToggleTheme";
 
 interface LogoProps {
     className?: string;
@@ -120,7 +121,7 @@ export default function NavbarIntranet() {
                     onMenuOpenChange={setIsMenuOpen}
                     isMenuOpen={isMenuOpen}
                     maxWidth="xl"
-                    className="bg-primary-500"
+                    className="bg-primary-500 dark:bg-neutral-950"
                 >
                     <NavbarContent>
                         <NavbarBrand>
@@ -168,9 +169,10 @@ export default function NavbarIntranet() {
                     >
                         <UserAccountActivator />
                         <ToggleLanguage />
+                        <ToggleTheme />
                     </NavbarContent>
                 </Navbar>
-                <Divider className="bg-primary-400" />
+                <Divider className="bg-primary-400 dark:bg-neutral-600" />
             </div>
             <div className="hidden lg:flex max-w-screen-xl m-auto">
                 <Tabs
@@ -182,7 +184,7 @@ export default function NavbarIntranet() {
                         cursor: "w-full bg-white",
                         tab: "max-w-fit px-4 h-10 ",
                         tabContent:
-                            "group-data-[selected=true]:text-white text-primary-200",
+                            "group-data-[selected=true]:text-white text-primary-200 dark:text-neutral-400",
                     }}
                     color="primary"
                     variant="underlined"
@@ -192,7 +194,7 @@ export default function NavbarIntranet() {
                     ))}
                 </Tabs>
             </div>
-            <div className="bg-primary-500 h-96 absolute inset-0 top-0 -z-10"></div>
+            <div className="bg-primary-500 dark:bg-neutral-950  h-96 absolute inset-0 top-0 -z-10"></div>
         </div>
     );
 }

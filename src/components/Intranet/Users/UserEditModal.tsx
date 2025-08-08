@@ -237,7 +237,7 @@ export default function UserEditModal({
                             <div className="space-y-4">
                                 <div className="flex flex-col md:flex-row items-center gap-4">
                                     <div
-                                        className="w-24 h-24 bg-black rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors"
+                                        className="w-24 h-24 bg-black dark:bg-neutral-400 rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:bg-light-800 transition-colors"
                                         onClick={() =>
                                             fileInputRef.current?.click()
                                         }

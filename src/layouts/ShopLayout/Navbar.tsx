@@ -17,6 +17,7 @@ import { useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import ToggleLanguage from "@components/tools/ToggleLanguage.tsx";
 import Cart from "@components/ui/global/Cart.tsx";
+import ToggleTheme from "@/components/tools/ToggleTheme";
 
 interface LogoProps {
     className?: string;
@@ -107,7 +108,7 @@ export default function NavbarShop() {
                     onMenuOpenChange={setIsMenuOpen}
                     isMenuOpen={isMenuOpen}
                     maxWidth="xl"
-                    className="bg-primary-500 py-2"
+                    className="bg-primary-500 dark:bg-neutral-950 py-2"
                 >
                     <NavbarContent>
                         <NavbarBrand>
@@ -164,9 +165,10 @@ export default function NavbarShop() {
                             onNavigate={() => setIsMenuOpen(false)}
                         />
                         <ToggleLanguage />
+                        <ToggleTheme />
                     </NavbarContent>
                 </Navbar>
-                <Divider className="bg-primary-400" />
+                <Divider className="bg-primary-400 dark:bg-neutral-600" />
             </div>
             <div className="hidden lg:flex max-w-screen-xl m-auto justify-between items-center">
                 <Tabs
@@ -178,7 +180,7 @@ export default function NavbarShop() {
                         cursor: "w-full bg-white",
                         tab: "max-w-fit px-4 h-10 ",
                         tabContent:
-                            "group-data-[selected=true]:text-white text-primary-200",
+                            "group-data-[selected=true]:text-white text-primary-200 dark:text-neutral-400",
                     }}
                     color="primary"
                     variant="underlined"
@@ -194,7 +196,7 @@ export default function NavbarShop() {
                 )}
             </div>
 
-            <div className="bg-primary-500 h-96 absolute inset-0 top-0 -z-10"></div>
+            <div className="bg-primary-500 dark:bg-neutral-950 h-96 absolute inset-0 top-0 -z-10"></div>
         </div>
     );
 }
