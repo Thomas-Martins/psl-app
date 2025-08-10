@@ -17,11 +17,13 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleLogin = async () => {
+        setLoading(true);
         try {
             setErrorMessage("");
             const response = await LoginProvider.login({ email, password });
@@ -50,6 +52,8 @@ export default function LoginPage() {
         } catch (loginError) {
             console.error(loginError);
             setErrorMessage(t("errors.login.invalid"));
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -107,7 +111,12 @@ export default function LoginPage() {
                                 onKeyDown={handleKeyDown}
                             />
                             <div className="flex justify-end">
-                                <Button color="primary" onPress={handleLogin}>
+                                <Button
+                                    color="primary"
+                                    isLoading={loading}
+                                    isDisabled={!email || !password || loading}
+                                    onPress={handleLogin}
+                                >
                                     {t("generics.login_btn")}
                                 </Button>
                             </div>
