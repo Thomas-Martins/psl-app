@@ -150,6 +150,19 @@ export default function OrderDetail() {
                             </Button>
                         </div>
                         <Divider />
+                        <div>
+                            {order.estimated_delivery_date && (
+                                <>
+                                    <h3 className="text-lg md:text-sm font-medium">
+                                        {t("orders.details.delivery.estimated")}{" "}
+                                        :{" "}
+                                        <span className="font-normal">
+                                            {order.estimated_delivery_date}
+                                        </span>
+                                    </h3>
+                                </>
+                            )}
+                        </div>
                         <h3 className="text-sm font-medium">
                             {t("orders.details.delivery.title")}
                         </h3>
@@ -171,9 +184,17 @@ export default function OrderDetail() {
                         </div>
                     </div>
                     {order.status ? (
-                        <div className="py-4">
-                            <StatusStep status={order.status} />
-                        </div>
+                        order.status === "cancelled" ? (
+                            <div className="py-4 flex justify-center">
+                                <span className="font-semibold text-center text-2xl">
+                                    {t("orders.details.cancelled_message")}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="py-4">
+                                <StatusStep status={order.status} />
+                            </div>
+                        )
                     ) : (
                         <div className="flex justify-center">
                             <CircularProgress />

@@ -339,7 +339,8 @@
                 "ref": "Ref",
                 "location": "Location",
                 "count": "Number of products"
-            }
+            },
+            "cancelled_message": "This order has been cancelled."
         },
         "download": {
             "title": "Download invoice",
